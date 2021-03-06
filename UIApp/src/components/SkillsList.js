@@ -107,6 +107,9 @@ const SkillsList = () => {
         >
           Remove All
         </button>
+        <Link to={"/add"} className="m-3 btn btn-sm btn-primary">
+              Add
+            </Link>
       </div>
       <div className="col-md-6">
         {currentSkill ? (

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import SkillDataService from "../services/SkillService";
+import SkillDataService from "../services/SkillService"
 
 const Skill = props => {
   const initialSkillState = {
