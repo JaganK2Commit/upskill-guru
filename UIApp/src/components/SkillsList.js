@@ -53,7 +53,7 @@ const SkillsList = () => {
   const findByTitle = () => {
     SkillDataService.findByTitle(searchTitle)
       .then(response => {
-        setSkills(response.data);
+        setSkills(response.data.skills);
         console.log(response.data);
       })
       .catch(e => {
