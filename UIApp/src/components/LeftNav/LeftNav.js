@@ -20,9 +20,9 @@ const LeftNav = ({className: classNameProp, ...other }) => {
       key: 'account',
     },
     {
-      name: 'Jobs',
-      url: '/jobs',
-      key: 'jobs',
+      name: 'Skill search',
+      url: '/skill-search',
+      key: 'skill-search',
     },
     {
       name: 'Saved Search',
