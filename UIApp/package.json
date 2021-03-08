@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@entypo-icons/core": "^1.0.1",
+    "@entypo-icons/react": "^1.0.4",
+    "@entypo-icons/utils": "^1.0.3",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -13,8 +16,12 @@
     "office-ui-fabric-react": "^7.162.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-native": "^0.63.4",
+    "react-native-vector-icons": "^8.1.0",
+    "react-native-web": "^0.15.0",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.4.1",
+    "styled-components": "^5.2.1"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -10,6 +10,7 @@ import AddSkill from "./components/AddSkill";
 import Skill from "./components/Skill";
 import SkillsList from "./components/SkillsList";
 import LeftNav from "./components/LeftNav/LeftNav";
+import Account from "./components/Account/Account";
 
 function App() {
   return (
