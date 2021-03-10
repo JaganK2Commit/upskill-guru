@@ -16,7 +16,7 @@ const LeftNav = ({className: classNameProp, ...other }) => {
     },
     {
       name: 'Account',
-      url: '/Account.js',
+      url: '/Account',
       key: 'account',
     },
     {
