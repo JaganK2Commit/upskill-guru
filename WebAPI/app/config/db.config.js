@@ -1,8 +1,8 @@
 module.exports = {
   HOST: "localhost",
-  USER: "root",
-  PASSWORD: "1234",
-  DB: "upskillgurudb",
+  USER: "cs411upskillguru_admin",
+  PASSWORD: "admin123admin",
+  DB: "cs411upskillguru_main",
   dialect: "mysql",
   pool: {
     max: 5,
