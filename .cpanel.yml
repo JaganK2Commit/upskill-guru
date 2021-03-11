@@ -2,4 +2,4 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/cs411upskillguru/public_html/
-    - /bin/cp -R UIApp/build/ $DEPLOYPATH
+    - /bin/cp -R UIApp/build/* $DEPLOYPATH
