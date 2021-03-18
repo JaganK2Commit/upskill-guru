@@ -16,23 +16,23 @@ const LeftNav = ({className: classNameProp, ...other }) => {
     },
     {
       name: 'Account',
-      url: '/Account.js',
+      url: '/Account',
       key: 'account',
     },
     {
-      name: 'Skill search',
-      url: '/skill-search',
-      key: 'skill-search',
-    },
-    {
-      name: 'Saved Search',
-      url: '/saved-search',
-      key: 'saved-search',
+      name: 'Favorite Search',
+      url: '/SavedSearch',
+      key: 'SavedSearch',
     },
     {
       name: 'Logout',
       url: '/logout',
       key: 'logout',
+    },
+    {
+      name: 'Search Result',
+      url: '/SearchResult',
+      key: 'SearchResult',
     },
   ];
 

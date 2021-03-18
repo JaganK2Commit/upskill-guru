@@ -1,27 +1,23 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { Label } from 'office-ui-fabric-react/lib/Label';
+import { TextField, MaskedTextField  } from 'office-ui-fabric-react/lib/TextField';
 import { DefaultButton, PrimaryButton, Stack, IStackTokens } from 'office-ui-fabric-react';
 import { Dropdown, DropdownMenuItemType, IDropdownStyles, IDropdownOption } from 'office-ui-fabric-react/lib/Dropdown';
 import { ColorClassNames, FontClassNames } from "@uifabric/styling";
 import { useHistory } from "react-router-dom";
-import { initializeIcons } from '@uifabric/icons';
-initializeIcons();
 
 const stackStyles: Partial<IStackStyles> = { root: { width: 650, marginLeft: 50, marginTop: 2 } };
 const buttonStyle: Partial<IStackStyles> = { root: { width: 250, marginLeft: 50, marginTop: 2 } };
 
 const dropdownStyles: Partial<IDropdownStyles> = { dropdown: { width: 200, marginLeft: 87 },};
 
-function Account(props) {
+function ChangePassword(props) {
   const { disabled, checked } = props;
 
   let history = useHistory();
-  function editClick() {
-    history.push("/AccountEdit");
-  }
-  function changeClick() {
-    history.push("/ChangePassword");
+  function backClick() {
+    history.push("/Account");
   }
 
   return (
@@ -44,7 +40,8 @@ function Account(props) {
         <ValueLabel>first name  </ValueLabel>
         <ValueLabel>location </ValueLabel>
         <ValueLabel>email </ValueLabel>
-        <ValueLabel>skill_1, skill_2, skill_3, skill_4, skill_5 </ValueLabel>
+        <ValueLabel>skill1 </ValueLabel>
+        <ValueLabel>skill2 </ValueLabel>
       </Stack>
       </Stack>
       </Stack>
@@ -56,30 +53,21 @@ function Account(props) {
           <FieldLabel>Password</FieldLabel>
         </Stack>
         <Stack>
-          <ValueLabel>**************  &nbsp;</ValueLabel><Label> &nbsp;</Label>
-          <Label> &nbsp;</Label>
+          <TextField placeholder="New email" required />
+          <TextField placeholder="Confirm" required />
         </Stack>
         <Stack>
         <Label> </Label>
         </Stack>
         <Stack>
-     
+        
         </Stack>
       </Stack>
       <Stack styles={buttonStyle}>
       <Label></Label>
-      <PrimaryButton text="Edit" onClick={editClick} allowDisabledFocus disabled={disabled} checked={checked} className={[ColorClassNames.whiteBackground, ColorClassNames.black].join(" ")}/>
+      <PrimaryButton text="Save" onClick={backClick} allowDisabledFocus disabled={disabled} checked={checked} className={[ColorClassNames.blueBackground, ColorClassNames.white].join(" ")}/>
     
-
-      
-    <Label></Label>
-     
-      <Stack>
-      <Label></Label><Label></Label>
-      <DefaultButton className={[ColorClassNames.redBackground, ColorClassNames.white].join(" ")} onClick={_alertClickedDelete} allowDisabledFocus disabled={disabled} checked={checked}>
-         Delete account
-      </DefaultButton>
-      </Stack>
+   
     </Stack>
    </Stack>
 
@@ -87,9 +75,6 @@ function Account(props) {
 }
 
 
-function _alertClickedDelete(): void {
-  alert('Delete');
-}
 
 const HeadingStyles = styled.span`
   
@@ -124,5 +109,5 @@ const EditLabel = styled.span`
   margin-left: 10px;
   margin-bottom: 5px;
 `;
-export default Account;
+export default ChangePassword;
 
