@@ -27,19 +27,5 @@ module.exports = (sequelize, Sequelize) => {
     timestamps: false
   });
 
-  sequelize.models.users;
-
-  User.authenticate = async function(username, password) {
-    // console.log('username', username, 'password', password);
-    const users = await User.findOne({ where: { username } });
-    console.log(users.dataValues);
-    console.log("user: ", users.dataValues.UserName, " pass:", users.dataValues.Password);
-    if (password === users.dataValues.Password) {
-      return users.authorize();
-    }
-
-    throw new Error('invalid password');
-  }
-
   return User;
 }
