@@ -4,6 +4,7 @@
   "description": "Node.js Rest Apis with Express, Sequelize pagination & MySQL.",
   "main": "server.js",
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -20,7 +21,11 @@
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "mariadb": "^2.5.3",
     "mysql2": "^2.1.0",
     "sequelize": "^5.21.12"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
   }
 }
