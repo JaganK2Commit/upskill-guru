@@ -115,7 +115,6 @@ const ValueLabel = styled.span`
   font-size: 14px;
   margin-left: 2px;
   margin-bottom: 15px;
-`;
 
 const EditLabel = styled.span`
   font-style: normal;
