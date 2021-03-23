@@ -3,8 +3,6 @@ import { useState } from 'react';
 import MaterialTable from 'material-table';
 import { data } from '../FavSearchData';
 import { forwardRef } from "react";
-
-
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Check from '@material-ui/icons/Check';

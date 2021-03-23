@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   textfield:{
       '& .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"][class*="MuiOutlinedInput-marginDense"]':{
           padding:"2px",
-          width:600,
+          width:685,
       },
       '& .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"][class*="MuiOutlinedInput-marginDense"] .MuiAutocomplete-input':{
         fontSize:"14px"
@@ -48,7 +48,7 @@ export default function Tags({data}) {
   const [open, setOpen] = React.useState(false);
 
   const [state, setstate] = React.useState({
-    value:[skillData[0],skillData[1]]
+    value:[]
   })
 // handleClickOpen
   const handleClickOpen = () => {
@@ -93,8 +93,6 @@ export default function Tags({data}) {
 
 
 const skillData = [
-    {title:data[0].skills[0]},
-    {title:data[0].skills[1]},
     {title:skillsData[0].skillName},
     {title:skillsData[1].skillName},
     {title:skillsData[2].skillName},

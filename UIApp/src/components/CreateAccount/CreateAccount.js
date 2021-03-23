@@ -1,61 +1,76 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { TextField, MaskedTextField  } from 'office-ui-fabric-react/lib/TextField';
-import { Label } from 'office-ui-fabric-react/lib/Label';
-import { DefaultButton, PrimaryButton, Stack, IStackTokens } from 'office-ui-fabric-react';
-import { Dropdown, DropdownMenuItemType, IDropdownStyles, IDropdownOption } from 'office-ui-fabric-react/lib/Dropdown';
-
-const stackStyles: Partial<IStackStyles> = { root: { width: 650, marginLeft: 50 } };
-const dropdownStyles: Partial<IDropdownStyles> = { dropdown: { width: 300 },};
-const DropdownControlledMultiExampleOptions = [
-  { key: 'React.js', text: 'React.js' },
-  { key: 'PHP', text: 'PHP' },
-  { key: 'Python', text: 'Python' },
-  { key: 'C++', text: 'C++' },
-  { key: 'Javascript', text: 'Javascript' },
-  { key: 'AWS', text: 'AWS' },
-  { key: 'Java', text: 'Java' },
-  { key: 'Statistics', text: 'Statistics' },
-];
-
+import { PrimaryButton, Label} from 'office-ui-fabric-react';
+import { ColorClassNames, FontClassNames } from "@uifabric/styling";
+import AutocompleteComp from './Autocomplete'
+import { skillsData } from '../SkillData';
+import { Link } from "react-router-dom";
 
 function CreateAccount(props) {
   const { disabled, checked } = props;
+
+  function _createAccClicked(): void {
+    alert('Account created');
+  }
+
+  const [state, setState] = React.useState({
+    data:skillsData[0],
+    field:null,
+    skills:false,
+    name:null,
+  })
   return (
-    <Stack horizontal styles={stackStyles}>
-      <Stack class="ms-Fabric">
+    <div>
       <HeadingStyles>Create Account</HeadingStyles>
-      <TextField label="Username" required />
-      <TextField label="Password" required />
-      <TextField label="Email" required />
-      <TextField label="First Name" required />
-      <TextField label="Last Name" />
-      <TextField label="Location" />
-      <Dropdown
-      placeholder="Select multiple options"
-      label="Your Skills"
-      multiSelect
-      options={DropdownControlledMultiExampleOptions}
-      styles={dropdownStyles}
-    />
-      <Label></Label><Label></Label>
-      <PrimaryButton color = "blue" text="Save" onClick={_alertClicked} allowDisabledFocus disabled={disabled} checked={checked} styles={ButtonStyle} />
-      </Stack>
-     
-    </Stack>
-   
+      <div className="ms-Grid main-id" dir="ltr">
+        <div style={{marginTop:'20px',marginRight:'100px', }} className="ms-Grid-row">
+          <div className="ms-Grid-col ms-lg6" style={{display:"inline-block"}}>
+            <TextField label="Username" required />
+          </div>
+          <div className="ms-Grid-col ms-lg6" style={{display:"inline-block"}}>
+            <TextField label="Location" />
+          </div>
+        </div>
+        <div style={{marginTop:'20px',marginRight:'100px', }} className="ms-Grid-row">
+          <div className="ms-Grid-col ms-lg6" style={{display:"inline-block"}}>
+            <TextField label="First Name" required />
+          </div>
+          <div className="ms-Grid-col ms-lg6" style={{display:"inline-block"}}>
+            <TextField label="Last Name" />
+          </div>
+        </div>
+        <div style={{marginTop:'20px',marginRight:'100px', }} className="ms-Grid-row">
+          <div className="ms-Grid-col ms-lg6" style={{display:"inline-block"}}>
+            <TextField label="Password" required />
+          </div>
+          <div className="ms-Grid-col ms-lg6" style={{display:"inline-block"}}>
+            <TextField label="Confirm Password" required />
+          </div>
+        </div>
+        <div style={{marginTop:'30px',marginRight:'0px', }} className="ms-Grid-row">
+          <div className="ms-Grid-col ms-u-sm12 block">
+            <AutocompleteComp data={state.skills} />
+          </div> 
+        </div>
+        <div style={{textAlign:"center", marginRight:'100px', marginTop:'30px'}}>
+          <PrimaryButton text="Create account" onClick={_createAccClicked} allowDisabledFocus style={{width:300}} disabled={disabled} checked={checked} className={[ColorClassNames.blueBackground, ColorClassNames.white].join(" ")} />
+        </div>
+        <div style={{textAlign:"center", marginRight:'100px', marginTop:'30px'}}>
+            <Label>If you already have an account, please <Link to="/Login" >login here</Link></Label>
+        </div>
+     </div>
+     </div>
   );
 }
 
-function _alertClicked(): void {
-  alert('Clicked');
-}
+
 
 const HeadingStyles = styled.span`
   font-family: Roboto;
   font-style: normal;
   font-weight: 400;
-  font-size: 26px;
+  font-size: 20px;
   margin-left: 1px;
   margin-top: 9px;
 `;

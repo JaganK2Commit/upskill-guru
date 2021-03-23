@@ -34,6 +34,21 @@ const LeftNav = ({className: classNameProp, ...other }) => {
       url: '/SearchResult',
       key: 'SearchResult',
     },
+    {
+      name: 'Create Account',
+      url: '/CreateAccount',
+      key: 'CreateAccount',
+    },
+    {
+      name: 'Login',
+      url: '/Login',
+      key: 'Login',
+    },
+    {
+      name: 'Manage Database',
+      url: '/ManageDB',
+      key: 'ManageDB',
+    },
   ];
 
   const handleLinkClick = (event, link) => {

@@ -5,7 +5,7 @@ export const data = [
       lastName: 'Dow',
       firstName: 'John',
       location: 'Seattle, WA',
-      email: 'johndow1@gmail.com',
+      jobTitle: 'Software Developer',
       password: 'monkey123',
       skills: ['Java', 'C']
     }

@@ -1,127 +1,142 @@
-import React from "react";
+import React from 'react';
+import 'office-ui-fabric-react/dist/css/fabric.css';
 import styled, { css } from "styled-components";
-import { Label } from 'office-ui-fabric-react/lib/Label';
-import { DefaultButton, PrimaryButton, Stack, IStackTokens } from 'office-ui-fabric-react';
-import { Dropdown, DropdownMenuItemType, IDropdownStyles, IDropdownOption } from 'office-ui-fabric-react/lib/Dropdown';
-import { ColorClassNames, FontClassNames } from "@uifabric/styling";
-import { useHistory } from "react-router-dom";
-import { initializeIcons } from '@uifabric/icons';
-initializeIcons();
+import { Text, TextField, DefaultButton, IIconProps, initializeIcons, ActionButton, Dialog, PrimaryButton,
+DialogFooter, Label, DialogType} from 'office-ui-fabric-react';
+import { useBoolean } from '@uifabric/react-hooks';
+import {data} from '../UserData';
+import AutocompleteComp from './Autocomplete'
+import { ColorClassNames} from "@uifabric/styling";
 
-const stackStyles: Partial<IStackStyles> = { root: { width: 650, marginLeft: 50, marginTop: 2 } };
-const buttonStyle: Partial<IStackStyles> = { root: { width: 250, marginLeft: 50, marginTop: 2 } };
+const editIcon: IIconProps = { iconName: 'edit' };
 
-const dropdownStyles: Partial<IDropdownStyles> = { dropdown: { width: 200, marginLeft: 87 },};
+const btnStyle ={
+  backgroundColor:"red",
+  width:"200px",
+  marginRight:'200px',
+  marginTop:'50px'
+};
+const textFieldStyle ={
+  corder: "0px"
+};
+export default function Account() {
+  initializeIcons();
 
-function Account(props) {
-  const { disabled, checked } = props;
+  const [state, setState] = React.useState({
+    data:data[0],
+    field:null,
+    skills:false,
+    name:null,
+  })
 
-  let history = useHistory();
-  function editClick() {
-    history.push("/AccountEdit");
-  }
-  function changeClick() {
-    history.push("/ChangePassword");
-  }
+  const [hideDialog, { toggle: toggleHideDialog }] = useBoolean(true);
 
+  const handleChange = (props) =>(event)=> {
+    setState({...state,data:{
+      ...state.data,[props]:event.target.value,
+    }})
+  };
+  const dialogContentProps = {
+    type: DialogType.normal,
+    closeButtonAriaLabel: 'Close',
+    subText: <TextField defaultValue={state.field} onBlur={handleChange(state.name)} />,
+  };
   return (
-    <Stack>
-    <Stack horizontal styles={stackStyles}>
-      <Stack >
+    <div className="account-main">
       <HeadingStyles>Your Profile</HeadingStyles>
-      <Stack style={{flexDirection: 'row'}}>
-      <Stack> 
-        <FieldLabel>Username</FieldLabel>
-        <FieldLabel>Last Name</FieldLabel>
-        <FieldLabel>First name</FieldLabel>
-        <FieldLabel>Location</FieldLabel>
-        <FieldLabel>Email</FieldLabel>
-        <FieldLabel>Skills</FieldLabel>
-      </Stack>
-      <Stack> 
-        <ValueLabel>username </ValueLabel>
-        <ValueLabel>last name  </ValueLabel>
-        <ValueLabel>first name  </ValueLabel>
-        <ValueLabel>location </ValueLabel>
-        <ValueLabel>email </ValueLabel>
-        <ValueLabel>skill_1, skill_2, skill_3, skill_4, skill_5 </ValueLabel>
-      </Stack>
-      </Stack>
-      </Stack>
-      </Stack>
-      <Stack>
-      </Stack>
-      <Stack horizontal styles={stackStyles}>
-        <Stack>
-          <FieldLabel>Password</FieldLabel>
-        </Stack>
-        <Stack>
-          <ValueLabel>**************  &nbsp;</ValueLabel><Label> &nbsp;</Label>
-          <Label> &nbsp;</Label>
-        </Stack>
-        <Stack>
-        <Label> </Label>
-        </Stack>
-        <Stack>
-     
-        </Stack>
-      </Stack>
-      <Stack styles={buttonStyle}>
-      <Label></Label>
-      <PrimaryButton text="Edit" onClick={editClick} allowDisabledFocus disabled={disabled} checked={checked} className={[ColorClassNames.whiteBackground, ColorClassNames.black].join(" ")}/>
-    
-
+      <div className="ms-Grid main-id" dir="ltr">
+      <div style={{marginTop:'20px',marginRight:'120px'}} className="ms-Grid-row">
+        <div className="ms-Grid-col ms-lg2" style={{display:"inline-flex"}}>
+        <Label>First Name</Label>
+          </div>
+        <div className="ms-Grid-col ms-lg2" style={{display:"inline-flex"}}>
+        <TextField id="t1" value={state.data.firstName} style={{fontWeight: 'normal'}} readOnly borderless  className="input-style" />
+        </div>
+        <div className="ms-Grid-col ms-lg2" style={{display:"inline-flex"}}>
+          <ActionButton id="" onClick={()=> {toggleHideDialog();setState({...state,field:state.data.firstName,name:'firstName'})}}  iconProps={editIcon} style={{marginTop:"-4px", marginRight:"300px",color:"gray"}}>Edit</ActionButton>
+        </div>
+        
+        <div className="ms-Grid-col ms-lg2" style={{display:"inline-flex"}}>
+        <Label>Last Name</Label>
+          </div>
+        <div className="ms-Grid-col ms-lg2" style={{display:"inline-flex"}}>
+          <TextField value={state.data.lastName} style={{fontWeight: 'normal'}} readOnly borderless className="input-style" />
+        </div>
+        <div className="ms-Grid-col ms-lg2" style={{display:"inline-flex"}}>
+          <ActionButton onClick={()=> {toggleHideDialog();setState({...state,field:state.data.lastName,name:'lastName'})}} iconProps={editIcon} style={{marginTop:"-4px",color:"gray"}}>Edit</ActionButton>
+        </div>
+      </div>
+      <div style={{marginRight:'120px'}} className="ms-Grid-row">
+      <div className="ms-Grid-col ms-lg2" style={{display:"inline-flex"}}>
+        <Label>Username</Label>
+          </div>
+            <div className="ms-Grid-col ms-lg2" style={{display:"inline-flex"}}>
+              <TextField value={state.data.username} style={{fontWeight: 'normal'}} readOnly borderless className="input-style" />
+              </div>
+              <div className="ms-Grid-col ms-lg2" style={{display:"inline-flex"}}>
+              <ActionButton onClick={()=> {toggleHideDialog();setState({...state,field:state.data.username,name:'username'})}} iconProps={editIcon} style={{marginTop:"-4px",color:"gray"}}>Edit</ActionButton>
+            </div>
+            <div className="ms-Grid-col ms-lg2" style={{display:"inline-flex"}}>
+        <Label>Password</Label>
+          </div>
+            <div className="ms-Grid-col ms-lg2" style={{display:"inline-flex"}}>
+              <TextField value={state.data.password} type="password" style={{fontWeight: 'normal'}} readOnly borderless className="input-style" />
+              </div>
+              <div className="ms-Grid-col ms-lg2" style={{display:"inline-flex"}}>
+              <ActionButton onClick={()=> {toggleHideDialog();setState({...state,field:state.data.password,name:'password'})}} iconProps={editIcon} style={{marginTop:"-4px",color:"gray"}}>Edit</ActionButton>
+            </div>
+      </div>
+      <div style={{marginRight:'120px'}} className="ms-Grid-row">
+      <div className="ms-Grid-col ms-lg2" style={{display:"inline-flex"}}>
+        <Label>Location</Label>
+          </div>
+            <div className="ms-Grid-col ms-lg2" style={{display:"inline-flex"}}>
+              <TextField value={state.data.location} style={{fontWeight: 'normal'}} readOnly borderless className="input-style" />
+              </div>
+            <div className="ms-Grid-col ms-lg2" style={{display:"inline-flex"}}>
+              <ActionButton onClick={()=> {toggleHideDialog();setState({...state,field:state.data.location,name:'location'})}} iconProps={editIcon} style={{marginTop:"-4px",color:"gray"}}>Edit</ActionButton>
+            </div>
+            <div className="ms-Grid-col ms-lg2" style={{display:"inline-flex"}}>
+        <Label>Job title</Label>
+          </div>
+            <div className="ms-Grid-col ms-lg3" style={{display:"inline-flex"}}>
+              <TextField value={state.data.jobTitle} style={{fontWeight: 'normal'}} readOnly borderless className="input-style" />
+              </div>
+            <div className="ms-Grid-col ms-lg1" style={{display:"inline-flex"}}>
+              <ActionButton onClick={()=> {toggleHideDialog();setState({...state,field:state.data.jobTitle,name:'jobTitle'})}} iconProps={editIcon} style={{marginTop:"-4px",color:"gray"}}>Edit</ActionButton>
+            </div>  
+          </div>
+      <div style={{marginTop:'20px',marginBottom:'20px',marginRight:'120px'}} className="ms-Grid-row">
+            <HeadingStyles>Your Skills</HeadingStyles>
+             <div className="ms-Grid-row" style={{marginBottom:'10px',marginTop:'20px', marginLeft:'1px'}}>
+             <div className="ms-Grid-col ms-lg10">
+               <AutocompleteComp data={state.skills} />
+             </div> 
+             </div>
+        </div>
+        <div className="ms-Grid-row" style={{textAlign:"center"}}>
+          <PrimaryButton style={btnStyle}>Delete Account</PrimaryButton>
+        </div>
+      </div>
       
-    <Label></Label>
-     
-      <Stack>
-      <Label></Label><Label></Label>
-      <DefaultButton className={[ColorClassNames.redBackground, ColorClassNames.white].join(" ")} onClick={_alertClickedDelete} allowDisabledFocus disabled={disabled} checked={checked}>
-         Delete account
-      </DefaultButton>
-      </Stack>
-    </Stack>
-   </Stack>
+        <Dialog hidden={hideDialog} onDismiss={toggleHideDialog} dialogContentProps={dialogContentProps} >
+          <DialogFooter>
+           <PrimaryButton onClick={()=>{toggleHideDialog();setState({...state,skills:false})}} text="Save" />
+            <DefaultButton onClick={()=>{toggleHideDialog();setState({...state,skills:false})}} text="Close" />
+          </DialogFooter>
+        </Dialog>
 
-  );
+    </div>
+  )
 }
-
-
-function _alertClickedDelete(): void {
-  alert('Delete');
+function _changePassword(): void {
+  alert('Password changed');
 }
-
 const HeadingStyles = styled.span`
-  
   font-style: normal;
   font-weight: 400;
-  font-size: 18px;
-  margin-left: 1px;
+  font-size: 20px;
+  margin-left: 10px;
   margin-top: 9px;
   margin-bottom: 12px;
 `;
-
-const FieldLabel = styled.span`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  margin-left: 1px;
-  margin-right: 20px;
-  margin-bottom: 13px;
-`;
-
-const ValueLabel = styled.span`
-  font-style: normal;
-  font-size: 14px;
-  margin-left: 2px;
-  margin-bottom: 15px;
-
-const EditLabel = styled.span`
-  font-style: normal;
-  color: #696969;
-  font-size: 14px;
-  margin-left: 10px;
-  margin-bottom: 5px;
-`;
-export default Account;
-
