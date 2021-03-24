@@ -27,8 +27,14 @@ db.sequelize.sync();
 
 // simple route
 app.get("/", (req, res) => {
+  console.log('welcome');
   res.json({ message: "Welcome to UpSkill-Guru." });
 });
+
+app.use('/api/account', (req, res) => {
+  console.log('your account');
+  res.json({ message: 'Your account '});
+})
 
 require("./app/routes/skill.routes")(app);
 require("./app/routes/user.routes")(app);
