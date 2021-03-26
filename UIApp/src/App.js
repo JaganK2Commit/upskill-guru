@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Switch, Route, Link } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import { initializeIcons } from '@uifabric/icons';
 
-import { Stack } from 'office-ui-fabric-react';
+import { Stack, Link } from 'office-ui-fabric-react';
 import "./App.css";
 
 import styles from './App.style';
@@ -15,8 +15,14 @@ import Login from "./components/Login/Login"
 import LeftNav from "./components/LeftNav/LeftNav";
 
 function App() {
-  const [token, setToken] = useState();
+  const [loggedIn, setLoggedIn] = useState(localStorage.getItem('token'));
   initializeIcons();
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    setLoggedIn(false);
+  }
+  
   return (
     <div>
       <Stack vertical className={styles.Container}>
@@ -25,14 +31,12 @@ function App() {
             <a href="/" className="navbar-brand">
               UpSkill-Guru
             </a>
-
-            <div>
-            { !token 
-              ? <a href="/Login" setToken={setToken}>login</a>
-              : <a href="#">logout</a>
+            <div align='end'>
+            { !loggedIn 
+              ? <Link href="/login">login</Link>
+              : <Link href="#" onClick={() => logout()}>logout</Link>
             }
             </div>
-
           </nav>
         </Stack>
         <Stack>
