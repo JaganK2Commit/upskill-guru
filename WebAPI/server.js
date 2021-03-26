@@ -1,6 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const jwt = require('jsonwebtoken');
+const auth = require("./middleware/authorize.js");
 
 const app = express();
 
@@ -31,13 +33,25 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to UpSkill-Guru." });
 });
 
-app.use('/api/account', (req, res) => {
-  console.log('your account');
-  res.json({ message: 'Your account '});
-})
+// app.use('/api/account', (req, res) => {
+//   console.log('your account');
+//   res.json({ message: 'Your account '});
+// })
 
 require("./app/routes/skill.routes")(app);
 require("./app/routes/user.routes")(app);
+// app.use(auth);
+app.get('/api/account', auth, (req, res) => {
+  jwt.verify(req.token, 'secret', (err, authData) => {
+    if (err) {
+      res.sendStatus(403)
+    }
+    else {
+      res.status(200).json({ message: 'successfully accessed account page'});
+      console.log('successfully accessed account page');
+    }
+  })
+});
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Nav } from 'office-ui-fabric-react/lib/Nav';
 import { useHistory, useLocation } from 'react-router-dom';
 import styles from './LeftNav.style';
+import httpCommon from '../../http-common';
 
 const LeftNav = ({className: classNameProp, ...other }) => {
   const history = useHistory();
@@ -16,7 +17,8 @@ const LeftNav = ({className: classNameProp, ...other }) => {
     },
     {
       name: 'Account',
-      url: '/account',
+      // url: '/account',
+      url: httpCommon.get('/api/account?token=' + localStorage.getItem('token')),
       key: 'account',
     },
     {
@@ -64,7 +66,8 @@ const LeftNav = ({className: classNameProp, ...other }) => {
         onLinkClick={handleLinkClick}
         groups={[
           {
-            links: links.filter(l => l.url.trim() !== ''),
+            links,
+            // links: links.filter(l => l.url.trim() !== ''),
           },
         ]}
         {...other}
