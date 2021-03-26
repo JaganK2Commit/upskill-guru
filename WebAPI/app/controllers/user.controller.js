@@ -16,12 +16,14 @@ exports.login = async (req, res) => {
     const token = jwt.sign({ sub: user.userId }, 'secret', { expiresIn: '7d' });
     console.log('success!');
     // exclude password
-    const { Password, ...userData } = user.get();
-    console.log({ ...userData, token })
-    return { ...omitHash(user.get()), token };
+    // const { Password, ...userData } = user.get();
+    // console.log({ ...userData, token })
+    // res.status(200).send({ ...userData, token });
+    res.send({ token });
   }
-
-  throw new Error('invalid password');
+  else {
+    throw new Error('invalid password');
+  }
 };
 
 
