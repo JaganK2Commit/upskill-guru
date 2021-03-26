@@ -5,6 +5,7 @@ export default axios.create({
   //baseURL: "http://localhost/api",
   baseURL: "http://localhost:8080/",
   headers: {
-    "Content-type": "application/json"
+    "Content-type": "application/json",
+    "Authorization": "Bearer " + localStorage.getItem('token')
   }
 });
