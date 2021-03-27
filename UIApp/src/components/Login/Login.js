@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React from "react";
+import styled, { css } from "styled-components";
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
-import { Stack } from 'office-ui-fabric-react/lib/Stack';
-import { PrimaryButton } from 'office-ui-fabric-react';
-import http from "../../http-common";
-import { Redirect } from 'react-router-dom';
+import { PrimaryButton, Label } from 'office-ui-fabric-react';
+import { Link } from "react-router-dom";
+import { ColorClassNames} from "@uifabric/styling";
+import { skillsData } from '../SkillData';
 
-export default function Login() {
+export default function Login(props) {
+  const { disabled, checked } = props;
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -19,19 +21,44 @@ export default function Login() {
     }
   }
 
+  const [state, setState] = React.useState({
+    data:skillsData[0],
+    field:null,
+    skills:false,
+    name:null,
+  })
   return (
-    <Stack tokens={{childrenGap: 15}}>
-      <Stack vertical tokens={{childrenGap: 15}} styles={{root: {width: 300}}}>
-        <TextField label='Username' required onChange={e => setUsername(e.target.value)} />
-        <TextField label="Password" required type='password' canRevealPassword onChange={e => setPassword(e.target.value)} />
-        
-        <PrimaryButton 
-          text="submit" 
-          onClick={handleSubmit}
-          styles={{root: {width: 100}}}>
-            Submit
-        </PrimaryButton>
-      </Stack>
-    </Stack>
-  )
+    <div>
+      <HeadingStyles>Login</HeadingStyles>
+      <div className="ms-Grid main-id" dir="ltr">
+        <div style={{marginTop:'20px',marginRight:'100px', }} className="ms-Grid-row">
+          <div className="ms-Grid-col ms-lg6" style={{display:"inline-block"}}>
+          <TextField label="Username" style={{width:300}} required />
+        </div></div>
+        <div style={{marginTop:'20px',marginRight:'100px', }} className="ms-Grid-row">
+          <div className="ms-Grid-col ms-lg6" style={{display:"inline-block"}}>
+          <TextField label="Password" style={{width:300}} required />
+        </div></div>
+        <div style={{ marginTop:'40px'}}>
+          <PrimaryButton text="Login" onClick={_loginClicked} allowDisabledFocus style={{width:335}} disabled={disabled} checked={checked} className={[ColorClassNames.blueBackground, ColorClassNames.white].join(" ")} />
+        </div>
+        <div style={{ marginTop:'30px'}}>
+            <Label>If you don't have an account, <Link to="/CreateAccount" >create account</Link> here</Label>
+        </div>
+     </div>
+     </div>
+  );
 }
+
+
+const HeadingStyles = styled.span`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  margin-left: 1px;
+  margin-top: 9px;
+`;
+
+export default Login;
+

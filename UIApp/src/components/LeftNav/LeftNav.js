@@ -22,19 +22,39 @@ const LeftNav = ({className: classNameProp, ...other }) => {
       key: 'account',
     },
     {
-      name: 'Jobs',
-      url: '/jobs',
-      key: 'jobs',
-    },
-    {
-      name: 'Saved Search',
-      url: '/saved-search',
-      key: 'saved-search',
+      name: 'Favorite Search',
+      url: '/SavedSearch',
+      key: 'SavedSearch',
     },
     {
       name: 'Logout',
       url: '/logout',
       key: 'logout',
+    },
+    {
+      name: 'Search Result',
+      url: '/SearchResult',
+      key: 'SearchResult',
+    },
+    {
+      name: 'Front Page',
+      url: '/Front',
+      key: 'Front',
+    },
+    {
+      name: 'Create Account',
+      url: '/CreateAccount',
+      key: 'CreateAccount',
+    },
+    {
+      name: 'Login',
+      url: '/Login',
+      key: 'Login',
+    },
+    {
+      name: 'Manage Database',
+      url: '/ManageDB',
+      key: 'ManageDB',
     },
   ];
 
