@@ -1,7 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { Label } from 'office-ui-fabric-react/lib/Label';
-import { DefaultButton, PrimaryButton, Stack, IStackTokens } from 'office-ui-fabric-react';
+import { DefaultButton, PrimaryButton, Stack, TextField, IStackTokens } from 'office-ui-fabric-react';
 import { IDropdownStyles } from 'office-ui-fabric-react/lib/Dropdown';
 import { ColorClassNames, FontClassNames } from "@uifabric/styling";
 
@@ -14,39 +14,43 @@ function SearchResult(props) {
   const { disabled, checked } = props;
 
   return (
-    <Stack>
-    <Stack horizontal styles={stackStyles}>
-      <Stack>
-      <HeadingStyles>Search</HeadingStyles>
-      <Stack>
-      
-      
-      </Stack>
-      </Stack>
+    <div className="account-main">
+      <HeadingStyles>Search result</HeadingStyles>
 
+      <div className="ms-Grid main-id" dir="ltr">
+      <div style={{marginTop:'20px',marginRight:'120px'}} className="ms-Grid-row">
+        <div className="ms-Grid-col ms-lg12" style={{display:"inline-flex"}}>
+          <TextField value="Software Developer" />
+        </div>
+      </div>
 
-      </Stack>
-   
-   
-      <Stack styles={buttonStyle}>
-      <Label></Label>
-      <PrimaryButton text="Edit" onClick={_editAction} allowDisabledFocus disabled={disabled} checked={checked} className={[ColorClassNames.whiteBackground, ColorClassNames.black].join(" ")}/>
-    
-  
-    </Stack>
-    <Stack>
+      <div style={{marginTop:'20px',marginRight:'120px'}} className="ms-Grid-row">
+        <div className="ms-Grid-col ms-lg12" style={{display:"inline-flex"}}>
+        <Label>Bar chart here</Label>
+        </div>
+      </div>
+
+      <div style={{marginTop:'20px',marginRight:'120px'}} className="ms-Grid-row">
+        <div className="ms-Grid-col ms-lg12" style={{display:"inline-flex"}}>
+        <Label>World map here</Label>
+        </div>
+      </div>
+
+      <div style={{marginTop:'20px',marginRight:'120px'}} className="ms-Grid-row">
+        <div className="ms-Grid-col ms-lg12" style={{display:"inline-flex"}}>
+        <PrimaryButton text="Save search result" onClick={_saveAction} allowDisabledFocus disabled={disabled} checked={checked} className={[ColorClassNames.blueBackground, ColorClassNames.white].join(" ")}/>
+        </div>
+      </div>
       
-    </Stack>
-   </Stack>
+      </div>
+
+    </div>
 
   );
 }
 
-function _alertClickedDelete(): void {
-  alert('Delete');
-}
-function _editAction(): void {
-      window.location.href.indexOf('AccountEdit');
+function _saveAction(): void {
+  alert('Search has been saved');
       
 }
 
@@ -60,29 +64,6 @@ const HeadingStyles = styled.span`
   margin-bottom: 12px;
 `;
 
-const FieldLabel = styled.span`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  margin-left: 1px;
-  margin-right: 20px;
-  margin-bottom: 13px;
-`;
-
-const ValueLabel = styled.span`
-  font-style: normal;
-  font-size: 14px;
-  margin-left: 2px;
-  margin-bottom: 15px;
-`;
-
-const EditLabel = styled.span`
-  font-style: normal;
-  color: #696969;
-  font-size: 14px;
-  margin-left: 10px;
-  margin-bottom: 5px;
-`;
 export default SearchResult;
 
 

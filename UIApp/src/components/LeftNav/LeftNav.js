@@ -35,6 +35,11 @@ const LeftNav = ({className: classNameProp, ...other }) => {
       key: 'SearchResult',
     },
     {
+      name: 'Front Page',
+      url: '/Front',
+      key: 'Front',
+    },
+    {
       name: 'Create Account',
       url: '/CreateAccount',
       key: 'CreateAccount',
