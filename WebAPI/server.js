@@ -42,6 +42,7 @@ require("./app/routes/skill.routes")(app);
 require("./app/routes/user.routes")(app);
 // app.use(auth);
 app.get('/api/account', auth, (req, res) => {
+  // console.log('triggered')
   jwt.verify(req.token, 'secret', (err, authData) => {
     if (err) {
       res.sendStatus(403)

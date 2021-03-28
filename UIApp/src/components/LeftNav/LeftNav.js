@@ -17,8 +17,8 @@ const LeftNav = ({className: classNameProp, ...other }) => {
     },
     {
       name: 'Account',
-      // url: '/account',
-      url: httpCommon.get('/api/account?token=' + localStorage.getItem('token')),
+      url: '/account',
+      // url: httpCommon.get('/api/account?token=' + localStorage.getItem('token')),
       key: 'account',
     },
     {
@@ -26,11 +26,11 @@ const LeftNav = ({className: classNameProp, ...other }) => {
       url: '/SavedSearch',
       key: 'SavedSearch',
     },
-    {
-      name: 'Logout',
-      url: '/logout',
-      key: 'logout',
-    },
+    // {
+    //   name: 'Logout',
+    //   url: '/logout',
+    //   key: 'logout',
+    // },
     {
       name: 'Search Result',
       url: '/SearchResult',
@@ -46,11 +46,11 @@ const LeftNav = ({className: classNameProp, ...other }) => {
       url: '/CreateAccount',
       key: 'CreateAccount',
     },
-    {
-      name: 'Login',
-      url: '/Login',
-      key: 'Login',
-    },
+    // {
+    //   name: 'Login',
+    //   url: '/Login',
+    //   key: 'Login',
+    // },
     {
       name: 'Manage Database',
       url: '/ManageDB',

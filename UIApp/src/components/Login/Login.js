@@ -5,13 +5,10 @@ import { TextField } from 'office-ui-fabric-react/lib/TextField';
 import { PrimaryButton, Label } from 'office-ui-fabric-react';
 import { Link } from "react-router-dom";
 import { ColorClassNames} from "@uifabric/styling";
-import { skillsData } from '../SkillData';
 import http from '../../http-common';
 import { UserContext } from '../../UserContext';
 
-function Login(props) {
-  const { disabled, checked } = props;
-
+function Login() {
   const { user, setUser } = useContext(UserContext);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -20,35 +17,35 @@ function Login(props) {
     e.preventDefault();
     const res = await http.get(`/api/login?username=${username}&password=${password}`);
 
-    console.log(res.data);
+    // if login was successful
     if (res.data.token) {
       setUser(res.data);
       localStorage.setItem('token', res.data.token);
+      localStorage.setItem('uid', res.data.uid);
       // return <Redirect to='/' />
     }
   }
 
-  const [state, setState] = React.useState({
-    data:skillsData[0],
-    field:null,
-    skills:false,
-    name:null,
-  })
   return (
     <div>
       <HeadingStyles>Login</HeadingStyles>
       <div className="ms-Grid main-id" dir="ltr">
-        <div style={{marginTop:'20px',marginRight:'100px', }} className="ms-Grid-row">
+        {/* <div style={{marginTop:'20px',marginRight:'100px', }} className="ms-Grid-row">
           <div className="ms-Grid-col ms-lg6" style={{display:"inline-block"}}>
-          <TextField label="Username" style={{width:300}} required onChange={e => setUsername(e.target.value)} />
-        </div></div>
-        <div style={{marginTop:'20px',marginRight:'100px', }} className="ms-Grid-row">
+        </div></div> */}
+          <TextField label="Username" styles={{root: {width: 300}}} required onChange={e => setUsername(e.target.value)} />
+          <TextField label="Password" type="password" canRevealPassword styles={{root: {width: 300}}} required onChange={e => setPassword(e.target.value)} />
+          <PrimaryButton 
+            text="Login" 
+            onClick={handleSubmit} 
+            allowDisabledFocus 
+            styles={{root: {width: 100, marginTop: 15}}} 
+            className={[ColorClassNames.blueBackground, ColorClassNames.white].join(" ")} />
+        {/* <div style={{marginTop:'20px',marginRight:'100px', }} className="ms-Grid-row">
           <div className="ms-Grid-col ms-lg6" style={{display:"inline-block"}}>
-          <TextField label="Password" type="password" canRevealPassword style={{width:300}} required onChange={e => setPassword(e.target.value)} />
-        </div></div>
-        <div style={{ marginTop:'40px'}}>
-          <PrimaryButton text="Login" onClick={handleSubmit} allowDisabledFocus style={{width:335}} disabled={disabled} checked={checked} className={[ColorClassNames.blueBackground, ColorClassNames.white].join(" ")} />
-        </div>
+        </div></div> */}
+        {/* <div style={{ marginTop:'40px'}}>
+        </div> */}
         <div style={{ marginTop:'30px'}}>
             <Label>If you don't have an account, <Link to="/CreateAccount" >create account</Link> here</Label>
         </div>

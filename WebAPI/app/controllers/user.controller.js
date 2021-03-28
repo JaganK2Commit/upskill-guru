@@ -9,7 +9,7 @@ exports.login = async (req, res) => {
   const user = await db.users.findOne({ where: { username } });
 
   if (!user) {
-    throw new Error('User not found in the database');
+    throw new Error(username + ' not found in the database');
   }
 
   if (await comparePassword(password, user.dataValues.Password)) {
@@ -19,7 +19,9 @@ exports.login = async (req, res) => {
     // const { Password, ...userData } = user.get();
     // console.log({ ...userData, token })
     // res.status(200).send({ ...userData, token });
-    res.send({ token });
+    // console.log(userData);
+    res.status(200).send({ 'uid': user.get().UserId, token });
+    // res.send({ token });
   }
   else {
     throw new Error('invalid password');
@@ -28,11 +30,6 @@ exports.login = async (req, res) => {
 
 
 
-
-function omitHash(user) {
-  const { hash, ...userWithoutHash } = user;
-  return userWithoutHash;
-}
 
 const hashPassword = async(password, saltRounds=10) => {
   try {

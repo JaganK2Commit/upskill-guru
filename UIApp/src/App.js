@@ -31,6 +31,7 @@ function App() {
 
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('uid');
     setUser(null);
   }
   
@@ -74,7 +75,7 @@ function App() {
                 <Route exact path={["/ManageDB"]} component={ManageDB} />
                 <Route exact path="/add" component={AddSkill} />
                 <Route path="/skills/:id" component={Skill} />
-                <Route path="/login" component={Login} />
+                {/* <Route path="/login" component={Login} /> */}
               </Switch>
               </div>
               </Stack>
