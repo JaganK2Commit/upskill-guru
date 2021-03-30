@@ -17,6 +17,7 @@ import Front from "./components/Front/Front";
 import CreateAccount from "./components/CreateAccount/CreateAccount";
 import Login from "./components/Login/Login";
 import ManageDB from "./components/ManageDB/ManageDB";
+import TopBar from './components/TopBar/TopBar';
 
 import { UserContext } from './UserContext';
 
@@ -28,29 +29,13 @@ function App() {
     setUser(localStorage.getItem('token'));
   });
   // initializeIcons();
-
-  const logout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('uid');
-    setUser(null);
-  }
   
   return (
     <UserContext.Provider value={value}>
       <div>
         <Stack vertical className={styles.Container}>
           <Stack>
-            <nav className="navbar navbar-expand navbar-dark bg-dark">
-              <a href="/" className="navbar-brand">
-                UpSkill-Guru
-              </a>
-              <div align='end'>
-              { !user 
-                ? <Link href="/login">login</Link>
-                : <Link href="#" onClick={() => logout()}>logout</Link>
-              }
-              </div>
-            </nav>
+            <TopBar />
           </Stack>
           <Stack>
             <Stack horizontal>
