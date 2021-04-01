@@ -15,19 +15,20 @@ const dropdownStyles: Partial<IDropdownStyles> = { dropdown: { width: 200, margi
 function SearchResult(props) {
   const { disabled, checked } = props;
   
-  let data = d3.range(5).map((item, index) => ({
-    index: index,
-    label: index,
-    value: Math.random() * 100
-  }));
-  console.log(data)
+  // let data = d3.range(5).map((item, index) => ({
+  //   index: index,
+  //   label: index,
+  //   value: Math.random() * 100
+  // }));
+  // console.log(data)
 
-  // const data = [
-  //   { label: 'SQL', value: 15.5 },
-  //   { label: 'React.JS', value: 17.12 },
-    // {label: 'NoSQL', value: 17},
-    // {label: 'Javascript', value: 10}
-  // ]
+  const data = [
+    { index: 0, label: 'SQL', value: 15 },
+    { index: 1, label: 'React.JS', value: 17 },
+    { index: 2, label: 'NoSQL', value: 30 },
+    { index: 3, label: 'Javascript', value: 10 },
+    { index: 4, label: 'Java', value: 5 }
+  ]
 
   return (
     <div className="account-main">
