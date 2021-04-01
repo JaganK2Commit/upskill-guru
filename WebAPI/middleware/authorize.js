@@ -6,13 +6,13 @@ module.exports = authorize;
 function authorize(req, res, next) {
   // req.headers.authorization
   const bearerHeader = req.headers.authorization;
-  // console.log(req.headers)
+  // console.log(bearerHeader)
   if (typeof bearerHeader !== 'undefined') {
     const bearer = bearerHeader.split(' ');
     const bearerToken = bearer[1];
     // console.log(bearerToken);
     req.token = bearerToken;
-    console.log('access granted');
+    // console.log('access granted');
     next();    
   }
   else {
