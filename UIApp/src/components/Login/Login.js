@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import  { Redirect } from 'react-router-dom'
+import  { useHistory } from 'react-router-dom'
 import styled, { css } from "styled-components";
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
 import { PrimaryButton, Label } from 'office-ui-fabric-react';
@@ -10,6 +10,7 @@ import { UserContext } from '../../UserContext';
 
 function Login() {
   const { user, setUser } = useContext(UserContext);
+  const history = useHistory();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -20,9 +21,8 @@ function Login() {
     // if login was successful
     if (res.data.token) {
       setUser(res.data);
-      localStorage.setItem('token', res.data.token);
-      localStorage.setItem('uid', res.data.uid);
-      // return <Redirect to='/' />
+      localStorage.setItem('user', JSON.stringify(res.data))
+      history.push('/');
     }
   }
 
