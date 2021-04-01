@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
 import 'office-ui-fabric-react/dist/css/fabric.css';
 import styled, { css } from "styled-components";
 import { Text, TextField, DefaultButton, IIconProps, initializeIcons, ActionButton, Dialog, PrimaryButton,
@@ -7,6 +7,9 @@ import { useBoolean } from '@uifabric/react-hooks';
 import {data} from '../UserData';
 import AutocompleteComp from './Autocomplete'
 import { ColorClassNames} from "@uifabric/styling";
+import { UserContext } from '../../UserContext';
+import httpCommon from '../../http-common';
+import { useHistory } from 'react-router-dom';
 
 const editIcon: IIconProps = { iconName: 'edit' };
 
@@ -21,6 +24,18 @@ const textFieldStyle ={
 };
 export default function Account() {
   initializeIcons();
+  const history = useHistory();
+
+  const { user, setUser } = useContext(UserContext);
+  useEffect(() => {
+    if (user) {
+      httpCommon.get('/api/account?token=' + user.token)
+    }
+    else {
+      console.log("Not authorized to access this page!");
+      history.push('/');
+    }
+  }, []);
 
   const [state, setState] = React.useState({
     data:data[0],
