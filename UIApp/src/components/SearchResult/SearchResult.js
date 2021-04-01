@@ -4,6 +4,8 @@ import { Label } from 'office-ui-fabric-react/lib/Label';
 import { DefaultButton, PrimaryButton, Stack, TextField, IStackTokens } from 'office-ui-fabric-react';
 import { IDropdownStyles } from 'office-ui-fabric-react/lib/Dropdown';
 import { ColorClassNames, FontClassNames } from "@uifabric/styling";
+import BarChart from '../Charts/BarChart';
+import * as d3 from "d3";
 
 const stackStyles: Partial<IStackStyles> = { root: { width: 650, marginLeft: 50, marginTop: 2 } };
 const buttonStyle: Partial<IStackStyles> = { root: { width: 250, marginLeft: 50, marginTop: 2 } };
@@ -12,6 +14,20 @@ const dropdownStyles: Partial<IDropdownStyles> = { dropdown: { width: 200, margi
 
 function SearchResult(props) {
   const { disabled, checked } = props;
+  
+  let data = d3.range(5).map((item, index) => ({
+    index: index,
+    label: index,
+    value: Math.random() * 100
+  }));
+  console.log(data)
+
+  // const data = [
+  //   { label: 'SQL', value: 15.5 },
+  //   { label: 'React.JS', value: 17.12 },
+    // {label: 'NoSQL', value: 17},
+    // {label: 'Javascript', value: 10}
+  // ]
 
   return (
     <div className="account-main">
@@ -26,7 +42,14 @@ function SearchResult(props) {
 
       <div style={{marginTop:'20px',marginRight:'120px'}} className="ms-Grid-row">
         <div className="ms-Grid-col ms-lg12" style={{display:"inline-flex"}}>
-        <Label>Bar chart here</Label>
+          <BarChart 
+            data={data}
+            width={800}
+            height={200}
+            top={20}
+            bottom={30}
+            left={30}
+            right={0} />
         </div>
       </div>
 
