@@ -25,13 +25,16 @@ function App() {
   const value = useMemo(() => ({ user, setUser }), [user, setUser]);
 
   useEffect(() => {
-    setUser(localStorage.getItem('token'));
-  });
+    if (localStorage.getItem('user')) {
+      setUser(
+        JSON.parse(localStorage.getItem('user'))
+      );
+    }
+  }, []);
   // initializeIcons();
 
   const logout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('uid');
+    localStorage.removeItem('user');
     setUser(null);
   }
   
