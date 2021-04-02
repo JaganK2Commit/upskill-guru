@@ -24,3 +24,4 @@ npm install
 Update mySQL db configurations at app/config/db.config.js
 npm run start
 ```
+# skillProject
