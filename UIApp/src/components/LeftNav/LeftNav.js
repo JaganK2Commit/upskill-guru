@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Nav } from 'office-ui-fabric-react/lib/Nav';
 import { useHistory, useLocation } from 'react-router-dom';
 import styles from './LeftNav.style';
+import httpCommon from '../../http-common';
 
 const LeftNav = ({className: classNameProp, ...other }) => {
   const history = useHistory();
@@ -17,22 +18,43 @@ const LeftNav = ({className: classNameProp, ...other }) => {
     {
       name: 'Account',
       url: '/account',
+      // url: httpCommon.get('/api/account?token=' + localStorage.getItem('token')),
       key: 'account',
     },
     {
-      name: 'Jobs',
-      url: '/jobs',
-      key: 'jobs',
+      name: 'Favorite Search',
+      url: '/SavedSearch',
+      key: 'SavedSearch',
+    },
+    // {
+    //   name: 'Logout',
+    //   url: '/logout',
+    //   key: 'logout',
+    // },
+    {
+      name: 'Search Result',
+      url: '/SearchResult',
+      key: 'SearchResult',
     },
     {
-      name: 'Saved Search',
-      url: '/saved-search',
-      key: 'saved-search',
+      name: 'Front Page',
+      url: '/Front',
+      key: 'Front',
     },
     {
-      name: 'Logout',
-      url: '/logout',
-      key: 'logout',
+      name: 'Create Account',
+      url: '/CreateAccount',
+      key: 'CreateAccount',
+    },
+    // {
+    //   name: 'Login',
+    //   url: '/Login',
+    //   key: 'Login',
+    // },
+    {
+      name: 'Manage Database',
+      url: '/ManageDB',
+      key: 'ManageDB',
     },
   ];
 
@@ -64,7 +86,8 @@ const LeftNav = ({className: classNameProp, ...other }) => {
         onLinkClick={handleLinkClick}
         groups={[
           {
-            links: links.filter(l => l.url.trim() !== ''),
+            links,
+            // links: links.filter(l => l.url.trim() !== ''),
           },
         ]}
         {...other}
