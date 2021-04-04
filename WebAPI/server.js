@@ -10,7 +10,7 @@ var corsOptions = {
   origin: "http://localhost:8081",
   //origin: "https://cs411upskillguru.web.illinois.edu"
   //origin: "http://localhost:3000",
-  credentials: true
+  //credentials: true
 };
 
 app.use(cors(corsOptions));
@@ -42,6 +42,7 @@ app.get("/", (req, res) => {
 
 require("./app/routes/skill.routes")(app);
 require("./app/routes/user.routes")(app);
+require("./app/routes/favorite.routes")(app);
 // app.use(auth);
 app.get('/api/account', auth, (req, res) => {
   // console.log(req.token)
@@ -60,8 +61,8 @@ app.get('/api/account', auth, (req, res) => {
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
-app.listen();
+// app.listen();
 
-// app.listen(PORT, () => {
-//   console.log(`Server is running on port ${PORT}.`);
-// });
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}.`);
+});
