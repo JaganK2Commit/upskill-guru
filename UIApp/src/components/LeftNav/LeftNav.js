@@ -12,45 +12,19 @@ const LeftNav = ({className: classNameProp, ...other }) => {
   const links = [
     {
       name: 'Home',
-      url: '/',
+      url: '/home',
       key: 'home',
     },
     {
       name: 'Account',
       url: '/account',
-      // url: httpCommon.get('/api/account?token=' + localStorage.getItem('token')),
       key: 'account',
     },
     {
       name: 'Favorite Search',
-      url: '/SavedSearch',
-      key: 'SavedSearch',
+      url: '/favorites',
+      key: 'favorites',
     },
-    // {
-    //   name: 'Logout',
-    //   url: '/logout',
-    //   key: 'logout',
-    // },
-    {
-      name: 'Search Result',
-      url: '/SearchResult',
-      key: 'SearchResult',
-    },
-    {
-      name: 'Front Page',
-      url: '/Front',
-      key: 'Front',
-    },
-    {
-      name: 'Create Account',
-      url: '/CreateAccount',
-      key: 'CreateAccount',
-    },
-    // {
-    //   name: 'Login',
-    //   url: '/Login',
-    //   key: 'Login',
-    // },
     {
       name: 'Manage Database',
       url: '/ManageDB',
