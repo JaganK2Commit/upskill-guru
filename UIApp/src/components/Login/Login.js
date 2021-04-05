@@ -9,20 +9,20 @@ import http from '../../http-common';
 import { UserContext } from '../../UserContext';
 
 function Login() {
-  const { user, setUser } = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
   const history = useHistory();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = async e => {
     e.preventDefault();
-    const res = await http.get(`/api/login?username=${username}&password=${password}`);
+    const res = await http.get(`/login?username=${username}&password=${password}`);
 
     // if login was successful
     if (res.data.token) {
       setUser(res.data);
       localStorage.setItem('user', JSON.stringify(res.data))
-      history.push('/');
+      history.push('/home');
     }
   }
 
