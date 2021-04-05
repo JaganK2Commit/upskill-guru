@@ -16,7 +16,7 @@ export default function TopBar() {
   return (
       <nav className="navbar navbar-expand navbar-dark bg-dark ms-Grid">
         {/* <div className='ms-Grid-row'> */}
-          <a href="/" className="navbar-brand">UpSkill-Guru</a>
+          <a href="#" className="navbar-brand">UpSkill-Guru</a>
           <div className={styles}>
             {!user
               ? (

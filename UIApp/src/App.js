@@ -22,6 +22,14 @@ function App() {
   const [user, setUser] = useState(null);
   const value = useMemo(() => ({ user, setUser }), [user, setUser]);
   
+  useEffect(() => {
+    if (localStorage.getItem('user')) {
+      setUser(
+        JSON.parse(localStorage.getItem('user'))
+      );
+    }
+  }, []);
+  
   return (
     <UserContext.Provider value={value}>
       <div>
