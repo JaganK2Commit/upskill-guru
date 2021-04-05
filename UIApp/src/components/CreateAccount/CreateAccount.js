@@ -32,7 +32,7 @@ function CreateAccount(props) {
     e.preventDefault();
     try {
       const res = await http.post(
-        `/api/register`, { 
+        `/register`, { 
           username, firstName, lastName, password, confirmPassword 
         }
       );
