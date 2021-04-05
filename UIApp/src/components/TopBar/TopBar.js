@@ -2,13 +2,15 @@ import React, { useContext } from 'react';
 import { Stack, Link } from 'office-ui-fabric-react';
 import styles from './TopBar.style';
 import { UserContext } from '../../UserContext';
+import  { useHistory } from 'react-router-dom'
 
 export default function TopBar() {
   const { user, setUser } = useContext(UserContext);
-
+  const history = useHistory();
   const logout = () => {
     localStorage.removeItem('user');
     setUser(null);
+    history.push('/');
   }
 
   return (

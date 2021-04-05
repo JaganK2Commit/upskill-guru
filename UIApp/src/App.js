@@ -6,12 +6,9 @@ import { Stack, Link } from 'office-ui-fabric-react';
 import "./App.css";
 
 import styles from './App.style';
-import AddSkill from "./components/AddSkill";
-import Skill from "./components/Skill";
-import SkillsList from "./components/SkillsList";
 import LeftNav from "./components/LeftNav/LeftNav";
 import Account from "./components/Account/Account";
-import SavedSearch from "./components/SavedSearch/SavedSearch";
+import Favorites from "./components/Favorites/Favorites";
 import SearchResult from "./components/SearchResult/SearchResult";
 import Front from "./components/Front/Front";
 import CreateAccount from "./components/CreateAccount/CreateAccount";
@@ -20,19 +17,10 @@ import ManageDB from "./components/ManageDB/ManageDB";
 import TopBar from './components/TopBar/TopBar';
 
 import { UserContext } from './UserContext';
-
+import PrivateRoute from './PrivateRoute'
 function App() {
   const [user, setUser] = useState(null);
   const value = useMemo(() => ({ user, setUser }), [user, setUser]);
-
-  useEffect(() => {
-    if (localStorage.getItem('user')) {
-      setUser(
-        JSON.parse(localStorage.getItem('user'))
-      );
-    }
-  }, []);
-  // initializeIcons();
   
   return (
     <UserContext.Provider value={value}>
@@ -44,8 +32,9 @@ function App() {
           <Stack>
             <Stack horizontal>
               <Stack>
-                  <LeftNav>
-                  </LeftNav>
+                {value.user &&                    
+                <LeftNav>
+                  </LeftNav>}
               </Stack>
 
               <Stack
@@ -54,17 +43,14 @@ function App() {
 
               <div>
               <Switch>
-                <Route exact path={["/", "/skills"]} component={SkillsList} />
-                <Route exact path={["/Account"]} component={Account} />
-                <Route exact path={["/SavedSearch"]} component={SavedSearch} />
+                <Route exact path={["/"]} component={Front} />
                 <Route exact path={["/CreateAccount"]} component={CreateAccount} />
-                <Route exact path={["/Login"]} component={Login} />
-                <Route exact path={["/SearchResult"]} component={SearchResult} />
-                <Route exact path={["/Front"]} component={Front} />
-                <Route exact path={["/ManageDB"]} component={ManageDB} />
-                <Route exact path="/add" component={AddSkill} />
-                <Route path="/skills/:id" component={Skill} />
-                {/* <Route path="/login" component={Login} /> */}
+                <Route exact path={["/login"]} component={Login} />
+                
+                <PrivateRoute exact path={["/account"]} > <Account/> </PrivateRoute>
+                <PrivateRoute exact path={["/favorites"]} > <Favorites/> </PrivateRoute>
+                <PrivateRoute exact path={["/home"]} > <SearchResult/> </PrivateRoute>
+                <PrivateRoute exact path={["/ManageDB"]} > <ManageDB/> </PrivateRoute>
               </Switch>
               </div>
               </Stack>

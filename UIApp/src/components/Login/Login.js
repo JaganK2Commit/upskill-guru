@@ -9,7 +9,7 @@ import http from '../../http-common';
 import { UserContext } from '../../UserContext';
 
 function Login() {
-  const { user, setUser } = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
   const history = useHistory();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -22,7 +22,7 @@ function Login() {
     if (res.data.token) {
       setUser(res.data);
       localStorage.setItem('user', JSON.stringify(res.data))
-      history.push('/');
+      history.push('/home');
     }
   }
 
