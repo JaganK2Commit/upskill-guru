@@ -130,6 +130,24 @@ updateChart =(skill_name)=>{
       if(skill.toLowerCase()=='react.js'){
         skill=`React\\.js`
       }
+      if(skill.toLowerCase()=='vb.net'){
+        skill=`VB\\.NET`
+      }
+      if(skill.toLowerCase()=='.net'){
+        skill=`\\.NET`
+      }
+      if(skill.toLowerCase()=='cpm-cpmhc'){
+        skill=`CPM\\-CPMHC`
+      }
+      if(skill.toLowerCase()=='node.js'){
+        skill=`NODE\\.JS`
+      }
+      if(skill.toLowerCase()=='tcp/ip'){
+        skill=`TCP\\/IP`
+      }
+      if(skill.toLowerCase()=='unix/linux'){
+        skill=`UNIX\\/LINUX`
+      }
       this.svg.selectAll("."+skill).transition().duration(1000).style("opacity", 1).attr("r", function(d){ return size(d.frequency) })
       
     // if not checked, hide it
@@ -142,6 +160,24 @@ updateChart =(skill_name)=>{
       }
       if(skill.toLowerCase()=='react.js'){
         skill=`React\\.js`
+      }
+      if(skill.toLowerCase()=='vb.net'){
+        skill=`VB\\.NET`
+      }
+      if(skill.toLowerCase()=='.net'){
+        skill=`\\.NET`
+      }
+      if(skill.toLowerCase()=='cpm-cpmhc'){
+        skill=`CPM\\-CPMHC`
+      }
+      if(skill.toLowerCase()=='node.js'){
+        skill=`NODE\\.JS`
+      }
+      if(skill.toLowerCase()=='tcp/ip'){
+        skill=`TCP\\/IP`
+      }
+      if(skill.toLowerCase()=='unix/linux'){
+        skill=`UNIX\\/LINUX`
       }
       // console.log("skill",skill)
       this.svg.selectAll("."+skill).transition().duration(1000).style("opacity", 0).attr("r", 0)
