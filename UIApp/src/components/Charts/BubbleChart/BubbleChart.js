@@ -41,7 +41,7 @@ var projection = d3.geoMercator().scale(800)
 
       var colors = d3.scaleOrdinal()
       .domain(this.state.skillNameArray)
-      .range(['red', 'steelblue', 'green', 'blue', 'yellow', 'pink', 'lime', 'orange','black','grey' ])
+      .range(['red','steelblue','green','blue','yellow','pink','lime','orange','black','teal','magenta','maroon','lavander','coffee','gray' ])
     
       // scale for bubble size
       var size = d3.scaleLinear()
@@ -79,31 +79,6 @@ var projection = d3.geoMercator().scale(800)
           .attr("stroke", function(d){ return colors(d.skill_name) })
           .attr("stroke-width", 3)
           .attr("fill-opacity", .4)
-          // .on("mouseover", showTooltip )
-          // .on("mousemove", moveTooltip )
-          // .on("mouseleave", hideTooltip )
-
-
-          // function update(){
-          //   // if you check box:
-          //   d3.selectAll(".checkbox").each(function(d){
-          //     var cb = d3.select(this);
-          //     var grp = cb.property("value")
-          //     // if checked, show data
-          //     if(cb.property("checked")){
-          //       svg.selectAll("."+grp).transition().duration(1000).style("opacity", 1).attr("r", function(d){ return size(d.size) })
-                
-          //     // if not checked, hide it
-          //     }else{
-          //       svg.selectAll("."+grp).transition().duration(1000).style("opacity", 0).attr("r", 0)
-                
-          //     }
-          //   })
-          // } 
-          
-          
-
-          // d3.selectAll(".checkbox").on("change",update);
 
           
     }).catch(err=>{
