@@ -6,7 +6,7 @@ const token = (u) ? u.token : null
 export default axios.create({
   // baseURL: "https://api.cs411upskillguru.web.illinois.edu/api",
   //baseURL: "http://localhost/api",
-  baseURL: "http://localhost:8080/",
+  baseURL: "http://localhost:8080/api",
   headers: {
     "Content-type": "application/json",
     "Authorization": "Bearer " + token,

@@ -28,6 +28,37 @@ exports.login = async (req, res) => {
   }
 };
 
+exports.register = async (req, res) => {
+  const {username, firstName, lastName, password, confirmPassword} = req.body;
+  if (!username) {
+    res.status(449).send({ message: 'username cannot be blank'});
+    // throw new Error('username cannot be blank');
+  }
+  if (!firstName) {
+    // throw new Error('first name cannot be blank');
+    res.status(449).send({ message: 'first name cannot be blank'});
+  }
+  if (!password) {
+    // throw new Error('password cannot be blank');
+    res.status(449).send({ message: 'password cannot be blank'});
+  }
+  if (password !== confirmPassword) {
+    // throw new Error('password does not match confirm password field');
+    res.status(449).send({ message: 'password does not match confirm password field'});
+  }
+
+  const user = await db.users.create({
+    UserName: username,
+    FirstName: firstName,
+    LastName: lastName,
+    Password: await hashPassword(password),
+    RoleId: 1
+  });
+
+  const token = jwt.sign({ sub: user.userId }, 'secret', { expiresIn: '7d' });
+  res.status(200).send({ 'uid': user.get().UserId, token });
+}
+
 
 
 
