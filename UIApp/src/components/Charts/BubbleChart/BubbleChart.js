@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState,useEffect } from "react";
 import * as d3 from 'd3';
 import * as bubbleStyle from './bubbleStyle.css';
 
@@ -15,7 +15,6 @@ constructor(props){
 componentDidMount() {
   this.drawChart();
 }
-
 
 drawChart() {
 const markers = this.props.data;
@@ -45,7 +44,7 @@ var projection = d3.geoMercator().scale(800)
     
       // scale for bubble size
       var size = d3.scaleLinear()
-        .domain([1,100])  
+        .domain([1,d3.max(markers, function(d){ return d.frequency; })])  
         .range([ 4, 50])  
   
       
@@ -72,8 +71,8 @@ var projection = d3.geoMercator().scale(800)
         .enter()
         .append("circle")
           .attr("class" , function(d){ return d.skill_name })
-          .attr("cx", function(d){ return projection([d.long, d.lat])[0] })
-          .attr("cy", function(d){ return projection([d.long, d.lat])[1] })
+          .attr("cx", function(d){ return projection([d.longi, d.lat])[0] })
+          .attr("cy", function(d){ return projection([d.longi, d.lat])[1] })
           .attr("r", function(d){ return size(d.frequency) })
           .style("fill", function(d){ return colors(d.skill_name) })
           .attr("stroke", function(d){ return colors(d.skill_name) })

@@ -5,14 +5,15 @@ export const barChartDataMapping = (chartArrayData) =>{
         if (dupeIndex === -1) {
           // Not found, so initialize.
           row.push({
-            freq: 1,
+            freq: val.frequency,
             skill_name:val.skill_name
           });
         } else {
           // Found, so increment counter.
-          row[dupeIndex].freq++;
+          row[dupeIndex].freq += val.frequency;
         }
         return row;
     }, []);
+
     return uniqueArrayWithCounts
 }
