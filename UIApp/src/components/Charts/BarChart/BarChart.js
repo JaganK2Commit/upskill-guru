@@ -48,7 +48,7 @@ y.domain(data.map(function(d) { return d.skill_name; }));
 
 var colors = d3.scaleOrdinal()
     .domain(skillNameArray)
-    .range(['red', 'steelblue', 'green', 'blue', 'yellow', 'pink', 'lime', 'orange','black','grey' ])
+    .range(['red','steelblue','green','blue','yellow','pink','lime','orange','black','teal','magenta','maroon','lavander','coffee','gray'])
 // rectangles for the bar chart
 svg.selectAll(`#${this.props.id}`)
   .data(data)
