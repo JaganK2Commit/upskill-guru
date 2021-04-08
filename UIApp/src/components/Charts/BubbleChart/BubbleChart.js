@@ -1,10 +1,19 @@
-import React from 'react';
+import React, { useRef, useState,useEffect } from "react";
 import * as d3 from 'd3';
 import * as bubbleStyle from './bubbleStyle.css';
 
 class BubbleChart extends React.Component {
+svg
+
+constructor(props){
+  super(props)
+  this.state = {
+    skillNameArray: [...new Set(this.props.data.map(item => item.skill_name))]
+  }
+}
+
 componentDidMount() {
-this.drawChart();
+  this.drawChart();
 }
 
 drawChart() {
@@ -14,7 +23,7 @@ var margin = {top: 20, right: 20, bottom: 30, left: 100},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
-var svg = d3.select(`#${this.props.id}`).append("svg")
+this.svg = d3.select(`#${this.props.id}`).append("svg")
 .attr("width", width + margin.left + margin.right)
 .attr("height", height + margin.top + margin.bottom)
 .append("g")
@@ -28,18 +37,19 @@ var projection = d3.geoMercator().scale(800)
       data.features = data.features.filter( function(d){return d.properties.name=="USA"} )
       
       // colors for data points
-      var color = d3.scaleOrdinal()
-        .domain(["A", "B", "C" ])
-        .range([ "#402D54", "#D18975", "#8FD175"])
-  
+
+      var colors = d3.scaleOrdinal()
+      .domain(this.state.skillNameArray)
+      .range(['red','steelblue','green','blue','yellow','pink','lime','orange','black','teal','magenta','maroon','lavander','coffee','gray' ])
+    
       // scale for bubble size
       var size = d3.scaleLinear()
-        .domain([1,100])  
+        .domain([1,d3.max(markers, function(d){ return d.frequency; })])  
         .range([ 4, 50])  
   
       
       // draw the map
-      svg.append("g")
+      this.svg.append("g")
           .selectAll("path")
           .data(data.features)
           .enter()
@@ -55,49 +65,99 @@ var projection = d3.geoMercator().scale(800)
     
   
       // add circles
-      svg
+      this.svg
         .selectAll("myCircles")
         .data(markers)
         .enter()
         .append("circle")
-          .attr("class" , function(d){ return d.group })
-          .attr("cx", function(d){ return projection([d.long, d.lat])[0] })
-          .attr("cy", function(d){ return projection([d.long, d.lat])[1] })
-          .attr("r", function(d){ return size(d.size) })
-          .style("fill", function(d){ return color(d.group) })
-          .attr("stroke", function(d){ return color(d.group) })
+          .attr("class" , function(d){ return d.skill_name })
+          .attr("cx", function(d){ return projection([d.longi, d.lat])[0] })
+          .attr("cy", function(d){ return projection([d.longi, d.lat])[1] })
+          .attr("r", function(d){ return size(d.frequency) })
+          .style("fill", function(d){ return colors(d.skill_name) })
+          .attr("stroke", function(d){ return colors(d.skill_name) })
           .attr("stroke-width", 3)
           .attr("fill-opacity", .4)
-          // .on("mouseover", showTooltip )
-          // .on("mousemove", moveTooltip )
-          // .on("mouseleave", hideTooltip )
 
-
-          function update(){
-            // if you check box:
-            d3.selectAll(".checkbox").each(function(d){
-              var cb = d3.select(this);
-              var grp = cb.property("value")
-      
-              // if checked, show data
-              if(cb.property("checked")){
-                svg.selectAll("."+grp).transition().duration(1000).style("opacity", 1).attr("r", function(d){ return size(d.size) })
-                
-              // if not checked, hide it
-              }else{
-                svg.selectAll("."+grp).transition().duration(1000).style("opacity", 0).attr("r", 0)
-                
-              }
-            })
-          }      
-
-          d3.selectAll(".checkbox").on("change",update);
-
-          update()
+          
     }).catch(err=>{
       console.log(err)
     })
 
+}
+
+updateChart =(skill_name)=>{
+  var size = d3.scaleLinear()
+        .domain([1,100])  
+        .range([ 4, 50]) 
+
+  this.state.skillNameArray.forEach((skill)=>{
+    // if checked, show data
+
+    if(skill.toLowerCase() == skill_name.toLowerCase()){
+      if(skill.toLowerCase()=='c++'){
+        skill=`C\\+\\+`
+      }
+      if(skill.toLowerCase()=='c#'){
+        skill=`C\\#`
+      }
+      if(skill.toLowerCase()=='react.js'){
+        skill=`React\\.js`
+      }
+      if(skill.toLowerCase()=='vb.net'){
+        skill=`VB\\.NET`
+      }
+      if(skill.toLowerCase()=='.net'){
+        skill=`\\.NET`
+      }
+      if(skill.toLowerCase()=='cpm-cpmhc'){
+        skill=`CPM\\-CPMHC`
+      }
+      if(skill.toLowerCase()=='node.js'){
+        skill=`NODE\\.JS`
+      }
+      if(skill.toLowerCase()=='tcp/ip'){
+        skill=`TCP\\/IP`
+      }
+      if(skill.toLowerCase()=='unix/linux'){
+        skill=`UNIX\\/LINUX`
+      }
+      this.svg.selectAll("."+skill).transition().duration(1000).style("opacity", 1).attr("r", function(d){ return size(d.frequency) })
+      
+    // if not checked, hide it
+    }else{
+      if(skill.toLowerCase()=='c++'){
+        skill=`C\\+\\+`
+      }
+      if(skill.toLowerCase()=='c#'){
+        skill=`C\\#`
+      }
+      if(skill.toLowerCase()=='react.js'){
+        skill=`React\\.js`
+      }
+      if(skill.toLowerCase()=='vb.net'){
+        skill=`VB\\.NET`
+      }
+      if(skill.toLowerCase()=='.net'){
+        skill=`\\.NET`
+      }
+      if(skill.toLowerCase()=='cpm-cpmhc'){
+        skill=`CPM\\-CPMHC`
+      }
+      if(skill.toLowerCase()=='node.js'){
+        skill=`NODE\\.JS`
+      }
+      if(skill.toLowerCase()=='tcp/ip'){
+        skill=`TCP\\/IP`
+      }
+      if(skill.toLowerCase()=='unix/linux'){
+        skill=`UNIX\\/LINUX`
+      }
+      // console.log("skill",skill)
+      this.svg.selectAll("."+skill).transition().duration(1000).style("opacity", 0).attr("r", 0)
+      
+    }
+  })
 }
 
 render(){
