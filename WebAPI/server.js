@@ -7,8 +7,8 @@ const auth = require("./middleware/authorize.js");
 const app = express();
 
 var corsOptions = {
-   origin: "http://localhost:8081",
-  //origin: "https://cs411upskillguru.web.illinois.edu"
+  origin: "http://localhost:8081",
+  //origin: "https://cs411upskillguru.web.illinois.edu",
   //origin: "http://localhost:3000",
   credentials: true
 };

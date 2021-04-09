@@ -1,7 +1,7 @@
 import http from "../http-common";
 
-const get = () => {
-  return http.get("/search");
+const get = (searchKey) => {
+  return http.get(`/search?searchKey=${searchKey}`);
 };
 
 export default {
