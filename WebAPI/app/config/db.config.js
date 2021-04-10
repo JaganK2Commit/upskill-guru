@@ -2,7 +2,7 @@ module.exports = {
   HOST: "localhost",
   USER: "root",
   PASSWORD: "root",
-  DB: "upskillguru",
+  DB: "cs411upskillguru_main",
   dialect: "mysql",
   pool: {
     max: 5,
