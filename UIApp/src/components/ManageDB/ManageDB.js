@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from 'react';
 import MaterialTable from 'material-table';
-import { data } from '../FavSearchData';
+import { data } from './DBData';
 import { forwardRef } from "react";
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
@@ -15,6 +15,8 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
+import AutoComplete from './Autocomplete'
+import {skillsData} from './SkillData';
 
 const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -35,17 +37,19 @@ const tableIcons = {
 
 export default function Editable() {
   const { useState } = React;
+  
   const columns = [
-    { title: 'Job title', field: 'searchName' },
+    { title: 'Job title', field: 'jobTitle' },
+    { title: 'Employer', field: 'company' },
     { title: 'Location', field: 'location' },
-    { title: 'Skills', field: 'skills' }
+    { title: 'Longitude', field: 'long' },
+    { title: 'Latitude', field: 'lat' },
+    { title: 'Skills', field: 'skills', render:prop=><AutoComplete dataa={prop}/>,editComponent:prop=>'Not Editable'}
   ];
-
   const [dataMain, setData] = useState([...data
   ]);
-
   return (
-    <div style={{ maxWidth: '95%' }}>
+    <div className="table" style={{ maxWidth: '95%' }}>
     <MaterialTable
     title='Manage your database'
        localization={{
@@ -57,10 +61,8 @@ export default function Editable() {
       icons={tableIcons}
       options={{
         actionsColumnIndex: -1,
-
         showFirstLastPageButtons: false,
         paging: false
-
       }}
       data={dataMain}
       editable={{

@@ -14,18 +14,20 @@ export default function TopBar() {
   }
 
   return (
-      <nav className="navbar navbar-expand navbar-dark bg-dark ms-Grid">
+      <nav className="navbar navbar-expand navbar-dark bg-primary py-1 ms-Grid">
         {/* <div className='ms-Grid-row'> */}
-          <a href="#" className="navbar-brand">UpSkill-Guru</a>
-          <div className={styles}>
+          <div class="navbar-nav mr-auto mt-2 mt-lg-0" style={{ marginLeft: "20px" }}>
+            <a href="#" className="navbar-brand">UpSkill Guru</a>
+          </div>
+          <div className='form-inline my-2 my-lg-0' style={{ marginRight: "20px" }}>
             {!user
               ? (
                 <div className='float-right'>
-                  <Link href="/Login" className={styles.links}>Login</Link> |  
-                  <Link href="/CreateAccount" className={styles.links}>Register</Link>
+                  <Link href="/Login" className={styles.links} >Login</Link>   
+                  <Link href="/CreateAccount" className={styles.links} style={{ marginLeft: "20px" }}>Register</Link>
                 </div>
               )
-              : <Link href="#" className={styles.links} onClick={() => logout()}>logout</Link>
+              : <Link href="#" className={styles.links} onClick={() => logout()}>Logout</Link>
             }
           </div>
         {/* </div> */}
