@@ -30,7 +30,7 @@ function Front(props) {
            style={{ position: 'absolute', 
                     left: '50%', 
                     top: '50%',
-                    transform: 'translate(-50%, -0%)'}}>
+                    transform: 'translate(-65%, -0%)'}}>
       <div className="ms-Grid-row"> 
  
         <div className="ms-Grid-col ms-lg12" style={{display:"block"}}>

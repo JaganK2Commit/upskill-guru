@@ -80,9 +80,17 @@ function CreateAccount(props) {
 
   return (
     <div>
-      <HeadingStyles>Create Account</HeadingStyles>
-      <div className="ms-Grid main-id" dir="ltr">
-        <div style={{marginTop:'20px',marginRight:'100px', }} className="ms-Grid-row">
+      <div style={{ position: 'absolute', 
+                    left: '50%', 
+                    transform: 'translate(-140%, -0%)'}}>
+      <HeadingStyles>
+                Create Account
+      </HeadingStyles>
+      </div>
+      <div className="ms-Grid main-id" dir="ltr" style={{ position: 'absolute', 
+                                                          left: '50%', 
+                                                          transform: 'translate(-57%, -0%)'}}>
+        <div style={{marginTop:'50px',marginRight:'100px', }} className="ms-Grid-row">
           <div className="ms-Grid-col ms-lg6" style={{display:"inline-block"}}>
             <TextField 
               label="Username" 
