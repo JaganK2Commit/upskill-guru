@@ -1,18 +1,16 @@
 import React, { useRef, useState, useEffect } from "react";
 import styled, { css } from "styled-components";
 import { Label } from "office-ui-fabric-react/lib/Label";
-import {
-  DefaultButton,
-  PrimaryButton,
-  Stack,
-  IStackTokens,
-} from "office-ui-fabric-react";
+import { DefaultButton, PrimaryButton, Stack, IStackTokens } from "office-ui-fabric-react";
 import { IDropdownStyles } from "office-ui-fabric-react/lib/Dropdown";
 import { ColorClassNames, FontClassNames } from "@uifabric/styling";
 import { TextField } from "office-ui-fabric-react/lib/TextField";
 import BarChart from "../Charts/BarChart/BarChart";
 import SearchService from "../../services/SearchService";
-
+import AutocompleteJobTitle from './AutocompleteJobTitle'
+import {jobTitlesData} from './JobTitles';
+import AutocompleteLocation from './AutocompleteLocation'
+import {locationData} from './Locations';
 import BubbleChart from "../Charts/BubbleChart/BubbleChart";
 import { barChartDataMapping } from "../../helper/barChartDataMapping";
 
@@ -38,6 +36,8 @@ function SearchResult(props) {
     barChartRef.current.drawChart();
   };
 
+  
+
   return (
     <div className="account-main">
       <HeadingStyles>Search result</HeadingStyles>
@@ -47,14 +47,14 @@ function SearchResult(props) {
             className="ms-Grid-col ms-lg4"
             style={{ display: "inline-block", marginLeft: "10px" }}
           >
-            <TextField
-              style={{ width: "500px" }}
-              placeholder="Enter job title"
-              onChange={(e) => setSearchTitle(e.target.value)}
+            <AutocompleteJobTitle 
+               onChange={(e) => setSearchTitle(e.target.value)}
             />
           </div>
            <div className="ms-Grid-col ms-lg4" style={{display:"inline-block"}}>
-          <TextField style={{width:"500px"}} placeholder="Enter location" />
+           <AutocompleteLocation 
+              //onChange={(e) => setSearchLocation(e.target.value)} 
+           />
         </div>
           <div
             className="ms-Grid-col ms-lg2"
