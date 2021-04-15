@@ -21,5 +21,6 @@ db.sequelize = sequelize;
 
 db.skills = require("./skill.model.js")(sequelize, Sequelize);
 db.users = require("./users.model.js")(sequelize, Sequelize);
+db.locations = require("./locations.model.js")(sequelize, Sequelize);
 
 module.exports = db;
