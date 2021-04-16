@@ -2,15 +2,11 @@ import React, { useRef, useState, useEffect } from "react";
 import styled, { css } from "styled-components";
 import { Label } from "office-ui-fabric-react/lib/Label";
 import { DefaultButton, PrimaryButton, Stack, IStackTokens } from "office-ui-fabric-react";
-import { IDropdownStyles } from "office-ui-fabric-react/lib/Dropdown";
 import { ColorClassNames, FontClassNames } from "@uifabric/styling";
-import { TextField } from "office-ui-fabric-react/lib/TextField";
 import BarChart from "../Charts/BarChart/BarChart";
 import SearchService from "../../services/SearchService";
 import AutocompleteJobTitle from './AutocompleteJobTitle'
-import {jobTitlesData} from './JobTitles';
 import AutocompleteLocation from './AutocompleteLocation'
-import {locationData} from './Locations';
 import BubbleChart from "../Charts/BubbleChart/BubbleChart";
 import { barChartDataMapping } from "../../helper/barChartDataMapping";
 

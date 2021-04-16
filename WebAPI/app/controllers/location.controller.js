@@ -4,7 +4,7 @@ const { Op } = require("sequelize");
 exports.find = async (req, res) => {
   try {
     const locationKeyword = req.query.searchKey;
-    // console.log("search: " + locationKeyword);
+    const limit = +(req.query.limit);
     const result = await db.locations.findAll({
       attributes: ['city', 'state'],
       where: {
@@ -12,7 +12,7 @@ exports.find = async (req, res) => {
           [Op.like]: locationKeyword + '%'
         }
       },
-      limit: 10,
+      limit: limit,
       group: ['state', 'city']
     });
     // console.log("result: " + result);

@@ -2,12 +2,10 @@ import React from 'react';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import {locationData} from './Locations';
-// fluent-ui imports
-import {PrimaryButton,DefaultButton,ActionButton,IIconProps} from '@fluentui/react';
+import LocationService from "../../services/LocationService";
 
 // fluent-ui icons
-const editIcon: IIconProps = { iconName: 'edit' };
+// const editIcon: IIconProps = { iconName: 'edit' };
 // useStyles
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,47 +43,43 @@ const useStyles = makeStyles((theme) => ({
 export default function Tags({data}) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const [locationSuggestions, setLocationSuggestions] = React.useState([]);
+  const [location, setLocation] = React.useState('');
 
-  const [state, setstate] = React.useState({
-    value:[locationData[0]]
-  })
-// handleClickOpen
   const handleClickOpen = () => {
     setOpen(true);
   };
-// handleClose
+
   const handleClose = () => {
     setOpen(false);
   };
-  // handleChange
-  const handleChange = (e,v) => {
-    setstate({...state,value:v})
+
+  const handleChange = async (value) => {
+    const response = await LocationService.get(value, 10);
+    const locationValues = response.data.message;
+    setLocationSuggestions(locationValues);
   }
   return (
     <div className={classes.root}>
-   
       <Autocomplete
         borderless
         disableClearable
-        freeSolo
         autoSelect
         classes={{ paper: classes.paper }}
-        limitTags={2}
-        options={locationData}
-        onChange={handleChange}
-        getOptionLabel={option => option.title?option.title:option}
-        value={state.value}
+        limitTags={1}
+        options={ locationSuggestions.map((loc) => `${loc.city}, ${loc.state}`) }
         renderInput={(params) => (
           <TextField borderless
-          className={classes.textfield}
+            className={classes.textfield}
+            onChange={ e => handleChange(e.target.value) }
             {...params}
             variant="outlined"
             placeholder={`${data ? 'Location':'Enter location'}`}
+            value = {location}
             size="small"
           />
         )}
       />
-
     </div>
   );
 }
