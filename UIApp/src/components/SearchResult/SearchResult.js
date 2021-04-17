@@ -6,14 +6,16 @@ import { ColorClassNames, FontClassNames } from "@uifabric/styling";
 import BarChart from "../Charts/BarChart/BarChart";
 import SearchService from "../../services/SearchService";
 import AutocompleteJobTitle from './AutocompleteJobTitle'
-import AutocompleteLocation from './AutocompleteLocation'
+import Autocomplete from '../Autocomplete/Autocomplete.js';
+import LocationService from "../../services/LocationService";
 import BubbleChart from "../Charts/BubbleChart/BubbleChart";
 import { barChartDataMapping } from "../../helper/barChartDataMapping";
 
 function SearchResult(props) {
   const { disabled, checked } = props;
+  const [locationSuggestions, setLocationSuggestions] = React.useState([]);
+  const [location, setLocation] = useState('');
   const [searchTitle, setSearchTitle] = useState("");
-  const [searchLocation, setSearchLocation] = useState("");
 
   const [bubbleGraphData, setBubbleGraphData] = useState([]);
   const [barGraphData, setBarGraphData] = useState([]);
@@ -32,7 +34,15 @@ function SearchResult(props) {
     barChartRef.current.drawChart();
   };
 
-  
+  const handleSelectedLocation = (value) => {
+    setLocation(value);
+  }
+
+  const getLocationSuggestions = async (value) => {
+    const response = await LocationService.get(value, 10);
+    const locationValues = response.data.message;
+    setLocationSuggestions(locationValues);
+  }
 
   return (
     <div className="account-main">
@@ -48,9 +58,13 @@ function SearchResult(props) {
             />
           </div>
            <div className="ms-Grid-col ms-lg4" style={{display:"inline-block"}}>
-           <AutocompleteLocation 
-              //onChange={(e) => setSearchLocation(e.target.value)} 
-           />
+           <Autocomplete 
+              placeholder="New York, NY"
+              label="Location"
+              options={ locationSuggestions.map((loc) => `${loc.city}, ${loc.state}`) }
+              limitTags={1}
+              handleChange={getLocationSuggestions}
+              handleSelection={handleSelectedLocation} />
         </div>
           <div
             className="ms-Grid-col ms-lg2"

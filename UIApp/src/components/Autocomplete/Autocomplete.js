@@ -2,7 +2,7 @@ import React from 'react';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import LocationService from "../../services/LocationService";
+import { getPropsWithDefaults } from '@uifabric/utilities';
 
 // fluent-ui icons
 // const editIcon: IIconProps = { iconName: 'edit' };
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   textfield:{
       '& .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"][class*="MuiOutlinedInput-marginDense"]':{
           padding:"2px",
-          width:300,
+          width: 300,
       },
       '& .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"][class*="MuiOutlinedInput-marginDense"] .MuiAutocomplete-input':{
         fontSize:"14px"
@@ -39,12 +39,12 @@ const useStyles = makeStyles((theme) => ({
       },
   },
 }));
-// main fiunction
-export default function Tags({data}) {
+
+// main function
+const Tags = ({placeholder, label, options, limitTags, handleChange, handleSelection}) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const [locationSuggestions, setLocationSuggestions] = React.useState([]);
-  const [location, setLocation] = React.useState('');
+  // const [suggestions, setSuggestions] = React.useState([]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -54,33 +54,33 @@ export default function Tags({data}) {
     setOpen(false);
   };
 
-  const handleChange = async (value) => {
-    const response = await LocationService.get(value, 10);
-    const locationValues = response.data.message;
-    setLocationSuggestions(locationValues);
-  }
   return (
-    <div className={classes.root}>
+    // <div className={classes.root}>
       <Autocomplete
-        borderless
-        disableClearable
+        // borderless
+        // disableClearable
         autoSelect
-        classes={{ paper: classes.paper }}
-        limitTags={1}
-        options={ locationSuggestions.map((loc) => `${loc.city}, ${loc.state}`) }
+        // classes={{ paper: classes.paper }}
+        limitTags={limitTags}
+        fullWidth={true}
+        options={ options }
+        onChange={(e, v) => handleSelection(v)}
         renderInput={(params) => (
-          <TextField borderless
-            className={classes.textfield}
+          <TextField 
+            // borderless
+            // className={classes.textfield}
+            placeholder={placeholder}
+            label={label}
             onChange={ e => handleChange(e.target.value) }
             {...params}
             variant="outlined"
-            placeholder={`${data ? 'Location':'Enter location'}`}
-            value = {location}
+            value=""
             size="small"
           />
         )}
       />
-    </div>
+    // </div>
   );
 }
 
+export default Tags;
