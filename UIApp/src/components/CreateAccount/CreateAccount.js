@@ -1,13 +1,16 @@
 import React, { useState, useContext } from "react";
 import { useHistory } from 'react-router-dom';
 import styled from "styled-components";
-import { TextField } from 'office-ui-fabric-react/lib/TextField';
+import TextField from '@material-ui/core/TextField';
+import { makeStyles } from '@material-ui/core/styles';
 import { PrimaryButton, Label} from 'office-ui-fabric-react';
 import { ColorClassNames } from "@uifabric/styling";
 import AutocompleteComp from './Autocomplete';
 import { Link } from "react-router-dom";
 import http from '../../http-common';
 import { UserContext } from '../../UserContext';
+import AutocompleteLocation from '../AutocompleteLocation/AutocompleteLocation'
+
 
 function CreateAccount(props) {
   const { disabled, checked } = props;
@@ -94,24 +97,37 @@ function CreateAccount(props) {
           <div className="ms-Grid-col ms-lg6" style={{display:"inline-block"}}>
             <TextField 
               label="Username" 
+              style={{ width: 300, marginRight: 2 }}
+              size="small"
               required 
+              variant="outlined"
               errorMessage={usernameError}
               onChange={e => setUsername(e.target.value)} />
           </div>
           <div className="ms-Grid-col ms-lg6" style={{display:"inline-block"}}>
-            <TextField label="Location" />
+          <AutocompleteLocation 
+              //onChange={(e) => setSearchLocation(e.target.value)} 
+           />
           </div>
         </div>
         <div style={{marginTop:'20px',marginRight:'100px', }} className="ms-Grid-row">
           <div className="ms-Grid-col ms-lg6" style={{display:"inline-block"}}>
             <TextField 
               label="First Name" 
+              style={{ width: 300, marginRight: 2  }}
+              size="small"
               required 
+              variant="outlined"
               errorMessage={firstNameError}
               onChange={e => setFirstName(e.target.value)} />
           </div>
           <div className="ms-Grid-col ms-lg6" style={{display:"inline-block"}}>
-            <TextField label="Last Name" onChange={e => setLastName(e.target.value)} />
+            <TextField 
+              label="Last Name" 
+              style={{ width: 300 }}
+              size="small"
+              variant="outlined"
+              onChange={e => setLastName(e.target.value)} />
           </div>
         </div>
         <div style={{marginTop:'20px',marginRight:'100px', }} className="ms-Grid-row">
@@ -119,6 +135,9 @@ function CreateAccount(props) {
             <TextField 
               label="Password" 
               type="password"
+              style={{ width: 300, marginRight: 2  }}
+              size="small"
+              variant="outlined"
               canRevealPassword
               required 
               errorMessage={passwordError}
@@ -127,6 +146,9 @@ function CreateAccount(props) {
           <div className="ms-Grid-col ms-lg6" style={{display:"inline-block"}}>
             <TextField 
               label="Confirm Password" 
+              style={{ width: 300 }}
+              size="small"
+              variant="outlined"
               required 
               type="password"
               canRevealPassword
@@ -153,7 +175,6 @@ function CreateAccount(props) {
      </div>
   );
 }
-
 
 
 const HeadingStyles = styled.span`
