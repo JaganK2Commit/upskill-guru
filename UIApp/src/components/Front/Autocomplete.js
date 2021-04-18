@@ -2,8 +2,7 @@ import React from 'react';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import {data} from '../UserData';
-import {skillsData} from '../SkillData';
+import {jobTitlesData} from './JobTitles';
 // fluent-ui imports
 import {PrimaryButton,DefaultButton,ActionButton,IIconProps} from '@fluentui/react';
 
@@ -32,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
       '& .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"][class*="MuiOutlinedInput-marginDense"]':{
           padding:"2px",
           width:600,
+          height:33,
       },
       '& .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"][class*="MuiOutlinedInput-marginDense"] .MuiAutocomplete-input':{
         fontSize:"14px"
@@ -48,7 +48,7 @@ export default function Tags({data}) {
   const [open, setOpen] = React.useState(false);
 
   const [state, setstate] = React.useState({
-    value:[skillData[0],skillData[1]]
+    value:[jobTitlesData[0]]
   })
 // handleClickOpen
   const handleClickOpen = () => {
@@ -66,23 +66,23 @@ export default function Tags({data}) {
     <div className={classes.root}>
    
       <Autocomplete
-        multiple
         borderless
         disableClearable
+        freeSolo
+        autoSelect
         classes={{ paper: classes.paper }}
         limitTags={2}
         id="tags-standard"
-        options={skillData}
-        fullWidth
+        options={jobTitlesData}
         onChange={handleChange}
-        getOptionLabel={(option) => option.title}
+        getOptionLabel={option => option.title?option.title:option}
         value={state.value}
         renderInput={(params) => (
           <TextField borderless
           className={classes.textfield}
             {...params}
             variant="outlined"
-            placeholder={`${data ? 'Add Skills':'Add a new skill'}`}
+            placeholder={`${data ? 'Job Title':'Enter job title to find skills on demand'}`}
             size="small"
           />
         )}
@@ -92,17 +92,3 @@ export default function Tags({data}) {
   );
 }
 
-
-const skillData = [
-    {title:data[0].skills[0]},
-    {title:data[0].skills[1]},
-    {title:skillsData[0].skillName},
-    {title:skillsData[1].skillName},
-    {title:skillsData[2].skillName},
-    {title:skillsData[3].skillName},
-    {title:skillsData[4].skillName},
-    {title:skillsData[5].skillName},
-    {title:skillsData[6].skillName},
-    {title:skillsData[7].skillName},
-
-];

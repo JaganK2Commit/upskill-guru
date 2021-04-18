@@ -28,11 +28,22 @@ function Login() {
 
   return (
     <div>
-      <HeadingStyles>Login</HeadingStyles>
-      <div className="ms-Grid main-id" dir="ltr">
+      
+      <div className="ms-Grid main-id" dir="ltr"
+            style={{ position: 'absolute', 
+            left: '50%', 
+            top: '50%',
+            transform: 'translate(-75%, -0%)'}}>
         {/* <div style={{marginTop:'20px',marginRight:'100px', }} className="ms-Grid-row">
           <div className="ms-Grid-col ms-lg6" style={{display:"inline-block"}}>
         </div></div> */}
+        <HeadingStyles 
+            style={{ position: 'absolute', 
+            left: '50%', 
+            transform: 'translate(-75%, -0%)'}}>
+              Login
+        </HeadingStyles>
+        <div style={{marginTop:'50px'}}>
           <TextField label="Username" styles={{root: {width: 300}}} required onChange={e => setUsername(e.target.value)} />
           <TextField label="Password" type="password" canRevealPassword styles={{root: {width: 300}}} required onChange={e => setPassword(e.target.value)} />
           <PrimaryButton 
@@ -41,6 +52,7 @@ function Login() {
             allowDisabledFocus 
             styles={{root: {width: 100, marginTop: 15}}} 
             className={[ColorClassNames.blueBackground, ColorClassNames.white].join(" ")} />
+        </div>
         {/* <div style={{marginTop:'20px',marginRight:'100px', }} className="ms-Grid-row">
           <div className="ms-Grid-col ms-lg6" style={{display:"inline-block"}}>
         </div></div> */}

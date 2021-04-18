@@ -10,9 +10,10 @@ import {PrimaryButton,DefaultButton,ActionButton,IIconProps} from '@fluentui/rea
 // fluent-ui icons
 const editIcon: IIconProps = { iconName: 'edit' };
 // useStyles
+
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: 600,
+    width: 750,
     display:'inline-flex',
     '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline':{
         borderWidth:"1px",
@@ -31,10 +32,11 @@ const useStyles = makeStyles((theme) => ({
   textfield:{
       '& .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"][class*="MuiOutlinedInput-marginDense"]':{
           padding:"2px",
-          width:685,
+          width:632,
+          height:40
       },
       '& .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"][class*="MuiOutlinedInput-marginDense"] .MuiAutocomplete-input':{
-        fontSize:"14px"
+        fontSize:"16px"
       },
       '& .MuiChip-root':{
           height:"auto",
