@@ -9,13 +9,15 @@ import AutocompleteComp from './Autocomplete';
 import { Link } from "react-router-dom";
 import http from '../../http-common';
 import { UserContext } from '../../UserContext';
-import AutocompleteLocation from '../AutocompleteLocation/AutocompleteLocation'
-
+import Autocomplete from '../Autocomplete/Autocomplete.js';
+import LocationService from "../../services/LocationService";
 
 function CreateAccount(props) {
   const { disabled, checked } = props;
+  const [locationSuggestions, setLocationSuggestions] = React.useState([]);
   const [username, setUsername] = useState('');
   const [usernameError, setUsernameError] = useState('');
+  const [location, setLocation] = useState('');
   const [firstName, setFirstName] = useState('');
   const [firstNameError, setFirstNameError] = useState('');
   const [lastName, setLastName] = useState('');
@@ -27,7 +29,20 @@ function CreateAccount(props) {
   const { user, setUser } = useContext(UserContext);
   const history = useHistory();
 
+  const handleSelectedLocation = (value) => {
+    setLocation(value);
+  }
+
+  const getLocationSuggestions = async (value) => {
+    const response = await LocationService.get(value, 10);
+    const locationValues = response.data.message;
+    setLocationSuggestions(locationValues);
+  }
+
   const handleSubmit = async e => {
+    // console.log(location);
+    const [city, state] = location.split(', ')
+
     if (!validForm()) {
       return;
     }
@@ -36,10 +51,10 @@ function CreateAccount(props) {
     try {
       const res = await http.post(
         `/register`, { 
-          username, firstName, lastName, password, confirmPassword 
+          username, firstName, lastName, password, confirmPassword, city, state
         }
       );
-      console.log(res.data)
+      
       setUser(res.data);
       localStorage.setItem('user', JSON.stringify(res.data))
       history.push('/home');
@@ -105,9 +120,13 @@ function CreateAccount(props) {
               onChange={e => setUsername(e.target.value)} />
           </div>
           <div className="ms-Grid-col ms-lg6" style={{display:"inline-block"}}>
-          <AutocompleteLocation 
-              //onChange={(e) => setSearchLocation(e.target.value)} 
-           />
+            <Autocomplete 
+              placeholder="New York, NY"
+              label="Location"
+              options={ locationSuggestions.map((loc) => `${loc.city}, ${loc.state}`) }
+              limitTags={1}
+              handleChange={getLocationSuggestions}
+              handleSelection={handleSelectedLocation} />
           </div>
         </div>
         <div style={{marginTop:'20px',marginRight:'100px', }} className="ms-Grid-row">
