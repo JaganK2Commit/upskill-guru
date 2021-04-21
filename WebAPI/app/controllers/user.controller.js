@@ -47,13 +47,26 @@ exports.register = async (req, res) => {
     res.status(449).send({ message: 'password does not match confirm password field'});
   }
 
-  const user = await db.users.create({
+  let user = await db.users.findOne({ where: { username } });
+  if (user) {
+    res.status(449).send({ message: 'username taken, pick another one'});
+  }
+
+  // create user
+  user = await db.users.create({
     UserName: username,
     FirstName: firstName,
     LastName: lastName,
     Password: await hashPassword(password),
     RoleId: 1
   });
+
+  // determine location id
+  const locationId = await db.userlocations.findOne({ 
+    where: city 
+  });
+
+  // add entry to userlocation
 
   const token = jwt.sign({ sub: user.userId }, 'secret', { expiresIn: '7d' });
   res.status(200).send({ 'uid': user.get().UserId, token });
