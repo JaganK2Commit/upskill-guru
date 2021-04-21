@@ -7,6 +7,9 @@ module.exports = (sequelize, Sequelize) => {
     LocationId: {
       type: Sequelize.INTEGER
     }
+  }, {
+    tableName: 'userlocation',
+    timestamps: false
   });
 
   return UserLocations;

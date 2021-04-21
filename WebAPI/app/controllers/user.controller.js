@@ -29,7 +29,7 @@ exports.login = async (req, res) => {
 };
 
 exports.register = async (req, res) => {
-  const {username, firstName, lastName, password, confirmPassword} = req.body;
+  const {username, firstName, lastName, password, confirmPassword, city, state} = req.body;
   if (!username) {
     res.status(449).send({ message: 'username cannot be blank'});
     // throw new Error('username cannot be blank');
@@ -62,13 +62,31 @@ exports.register = async (req, res) => {
   });
 
   // determine location id
-  const locationId = await db.userlocations.findOne({ 
-    where: city 
-  });
+  if (city != '' && state != '') {
+    const location = await db.locations.findOne({
+      where:  {
+        city: city,
+        state: state
+      }
+    });
+    // console.log(location);
 
-  // add entry to userlocation
+    // add entry to userlocation
+    if (location) {
+      console.log("user.userId: " + user.get().UserId);
+      console.log("location.LocationId: " + location.LocationId);
+      const userLocation = await db.userlocation.create({
+        UserId: user.get().UserId,
+        LocationId: location.LocationId
+      });
+    }
+    else {
+      res.status(449).send({ message: 'unknown city and state'});
+    }
+  }
 
-  const token = jwt.sign({ sub: user.userId }, 'secret', { expiresIn: '7d' });
+
+  const token = jwt.sign({ sub: user.get().UserId }, 'secret', { expiresIn: '7d' });
   res.status(200).send({ 'uid': user.get().UserId, token });
 }
 
