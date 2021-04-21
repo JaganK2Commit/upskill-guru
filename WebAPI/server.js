@@ -44,6 +44,7 @@ require("./app/routes/skill.routes")(app);
 require("./app/routes/user.routes")(app);
 require("./app/routes/favorite.routes")(app);
 require("./app/routes/search.routes")(app);
+require("./app/routes/location.routes")(app);
 
 // app.use(auth);
 app.get('/api/account', auth, (req, res) => {

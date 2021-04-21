@@ -2,14 +2,11 @@ import React from 'react';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import {locationData} from './Locations';
-// fluent-ui imports
-import {PrimaryButton,DefaultButton,ActionButton,IIconProps} from '@fluentui/react';
+import { getPropsWithDefaults } from '@uifabric/utilities';
 
 // fluent-ui icons
-const editIcon: IIconProps = { iconName: 'edit' };
+// const editIcon: IIconProps = { iconName: 'edit' };
 // useStyles
-
 const useStyles = makeStyles((theme) => ({
   root: {
     width: 300,
@@ -31,12 +28,10 @@ const useStyles = makeStyles((theme) => ({
   textfield:{
       '& .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"][class*="MuiOutlinedInput-marginDense"]':{
           padding:"2px",
-          width:300,
-          height:40
+          width: 300,
       },
       '& .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"][class*="MuiOutlinedInput-marginDense"] .MuiAutocomplete-input':{
-        fontSize:"16px",
-        color: "black"
+        fontSize:"14px"
       },
       '& .MuiChip-root':{
           height:"auto",
@@ -45,52 +40,47 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// main fiunction
-export default function Tags({data}) {
+// main function
+const Tags = ({placeholder, label, options, limitTags, handleChange, handleSelection}) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  // const [suggestions, setSuggestions] = React.useState([]);
 
-  const [state, setstate] = React.useState({
-    value:[locationData[0]]
-  })
-// handleClickOpen
   const handleClickOpen = () => {
     setOpen(true);
   };
-// handleClose
+
   const handleClose = () => {
     setOpen(false);
   };
-  // handleChange
-  const handleChange = (e,v) => {
-    setstate({...state,value:v})
-  }
+
   return (
-    <div>
-   
+    // <div className={classes.root}>
       <Autocomplete
-        borderless
-        disableClearable
-        freeSolo
+        // borderless
+        // disableClearable
         autoSelect
-        classes={{ paper: classes.paper }}
-        limitTags={2}
-        options={locationData}
-        onChange={handleChange}
-        getOptionLabel={option => option.title?option.title:option}
-        value={state.value}
+        // classes={{ paper: classes.paper }}
+        limitTags={limitTags}
+        fullWidth={true}
+        options={ options }
+        onChange={(e, v) => handleSelection(v)}
         renderInput={(params) => (
-          <TextField borderless
-          className={classes.textfield}
+          <TextField 
+            // borderless
+            // className={classes.textfield}
+            placeholder={placeholder}
+            label={label}
+            onChange={ e => handleChange(e.target.value) }
             {...params}
             variant="outlined"
-            placeholder={`${data ? 'Location':'Enter location'}`}
+            value=""
             size="small"
           />
         )}
       />
-
-    </div>
+    // </div>
   );
 }
 
+export default Tags;
