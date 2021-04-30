@@ -166,3 +166,31 @@ exports.findAllPublished = (req, res) => {
       });
     });
 };
+
+exports.findSuggestions = async (req, res) => {
+  // console.log("findSuggestions")
+  // console.log(req.query)
+  try {
+    const skillKeyword = req.query.searchKey;
+    const limit = +(req.query.limit);
+    const result = await dbSkill.findAll({
+      attributes: ['skillName'],
+      where: {
+        skillName: {
+          [Op.like]: skillKeyword + '%'
+        }
+      },
+      limit: limit,
+      group: ['skillName']
+    });
+    // console.log("result: " + result);
+    res.send({
+      message: result,
+    });
+  } catch (err) {
+    console.log("Error while retrieving search results " + err);
+    res.status(500).send({
+      message: "Error while retrieving search results " + err,
+    });
+  }
+};

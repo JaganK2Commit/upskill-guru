@@ -8,6 +8,7 @@ import SearchService from "../../services/SearchService";
 import AutocompleteJobTitle from './AutocompleteJobTitle'
 import Autocomplete from '../Autocomplete/Autocomplete.js';
 import LocationService from "../../services/LocationService";
+import SkillService from "../../services/SkillService";
 import BubbleChart from "../Charts/BubbleChart/BubbleChart";
 import { barChartDataMapping } from "../../helper/barChartDataMapping";
 import WordCloudJobs from "./WordCloudJobs";
@@ -18,16 +19,15 @@ import { TextField } from 'office-ui-fabric-react/lib';
 function SearchResult(props) {
   const { disabled, checked } = props;
   const [locationSuggestions, setLocationSuggestions] = React.useState([]);
+  const [skillSuggestions, setSkillSuggestions] = React.useState([]);
   const [location, setLocation] = useState('');
+  const [skill, setSkill] = useState('');
   const [searchTitle, setSearchTitle] = useState("");
 
   const [bubbleGraphData, setBubbleGraphData] = useState([]);
   const [barGraphData, setBarGraphData] = useState([]);
   const [wordcloudData,setWordcloudData] = useState(jobsWordData)
 
-  const [pythonChecked, setPythonChecked] = useState(true);
-  const [mysqlChecked, setMysqlChecked] = useState(true);
-  const [javascriptChecked, setJavascriptChecked] = useState(true);
   const barChartRef = useRef();
   const bubbleChartRef = useRef();
 
@@ -49,6 +49,17 @@ function SearchResult(props) {
     setLocationSuggestions(locationValues);
   }
 
+  const handleSelectedSkill = (value) => {
+    setSkill(value);
+  }
+
+  const getSkillSuggestions = async (value) => {
+    const response = await SkillService.findSuggestions(value, 10);
+    const skillValues = response.data.message;
+    console.log(skillValues);
+    setSkillSuggestions(skillValues);
+  }
+
   return (
     <div className="account-main">
     {/*/////////////////////////////////////////*/} 
@@ -68,9 +79,17 @@ function SearchResult(props) {
             style={{ display: "block", 
                      width: 300 }}
           >
-            <AutocompleteJobTitle 
+            {/* <AutocompleteJobTitle 
                onChange={(e) => setSearchTitle(e.target.value)}
-            />
+            /> */}
+            <Autocomplete 
+              label="JobTitle"
+              placeholder="Software Engineer"
+              // options={ skillSuggestions }
+              options={ skillSuggestions.map((skill) => `${skill.skillName}`) }
+              limitTags={1}
+              handleChange={getSkillSuggestions}
+              handleSelection={handleSelectedSkill} />
           </div>
            <div className="ms-Grid-col ms-lg4" style={{display:"inline-block"}}>
            <Autocomplete 
