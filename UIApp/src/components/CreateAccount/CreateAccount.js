@@ -40,8 +40,7 @@ function CreateAccount(props) {
   }
 
   const handleSubmit = async e => {
-    // console.log(location);
-    const [city, state] = location.split(', ')
+    const [city, state] = location.split(', ');
 
     if (!validForm()) {
       return;
@@ -50,7 +49,7 @@ function CreateAccount(props) {
     e.preventDefault();
     try {
       const res = await http.post(
-        `/register`, { 
+        `/account/register`, { 
           username, firstName, lastName, password, confirmPassword, city, state
         }
       );
