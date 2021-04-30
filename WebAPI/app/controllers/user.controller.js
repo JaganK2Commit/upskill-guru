@@ -14,21 +14,49 @@ exports.login = async (req, res) => {
 
   if (await comparePassword(password, user.dataValues.Password)) {
     const token = jwt.sign({ sub: user.userId }, 'secret', { expiresIn: '7d' });
-    console.log('success!');
-    // exclude password
-    // const { Password, ...userData } = user.get();
-    // console.log({ ...userData, token })
-    // res.status(200).send({ ...userData, token });
-    // console.log(userData);
     res.status(200).send({ 'uid': user.get().UserId, token });
-    // res.send({ token });
   }
   else {
     throw new Error('invalid password');
   }
 };
 
+exports.updateUser = async (req, res) => {
+  const {Username, FirstName, LastName, City, State} = req.body;
+  // console.log(req.body)
+
+  try {
+    const user = await db.users.findOne({ where: {Username} });
+    if (user) {
+      await user.update({ FirstName, LastName, Username });
+      
+      const location = await db.locations.findOne({
+        where:  {
+          city: City,
+          state: State
+        }
+      });
+      console.log(City)
+      console.log(State)
+
+      if (location) {
+        const userlocation = await db.userlocation.findOne({ where: user.get().UserId });
+        await userlocation.update({
+          LocationId: location.LocationId
+        });
+      }
+    }
+  }
+  catch (error) {
+    console.log('error while updating database: ' + error);
+    res.status(204).send({ message: 'error while updating database: ' + error});
+  }
+
+  res.sendStatus(200);
+}
+
 exports.register = async (req, res) => {
+  console.log('user.controller register');
   const {username, firstName, lastName, password, confirmPassword, city, state} = req.body;
   if (!username) {
     res.status(449).send({ message: 'username cannot be blank'});
@@ -73,8 +101,6 @@ exports.register = async (req, res) => {
 
     // add entry to userlocation
     if (location) {
-      console.log("user.userId: " + user.get().UserId);
-      console.log("location.LocationId: " + location.LocationId);
       const userLocation = await db.userlocation.create({
         UserId: user.get().UserId,
         LocationId: location.LocationId
@@ -90,7 +116,82 @@ exports.register = async (req, res) => {
   res.status(200).send({ 'uid': user.get().UserId, token });
 }
 
+exports.changePassword = async (req, res) => {
+  console.log('user.controller changePassword');
+  const { uid, password } = req.body;
+  console.log(uid);
+  console.log(password);
+  const user = await db.users.findOne({ where: { UserId: uid } });
 
+  if (user) {
+    await user.update({ Password: await hashPassword(password) });
+    res.sendStatus(200);
+  }
+}
+
+exports.authenticate = async (req, res) => {
+  console.log('user.controller authenticate')
+  jwt.verify(req.token, 'secret', (err, authData) => {
+    if (err) {
+      console.log('access denied');
+      res.sendStatus(403)
+    }
+    else {
+      res.status(200).json({ message: 'successfully accessed account page'});
+      console.log('successfully accessed account page');
+      // console.log(authData);
+    }
+  });
+}
+
+exports.getUserById = async (req, res) => {
+  console.log('getUserById');
+  const { uid } = req.query;
+  const user = await db.users.findOne({ where: { UserId: uid } });
+
+  let userData = {
+    FirstName: '',
+    LastName: '',
+    Username: '',
+    City: '',
+    State: ''
+  }
+
+  if (user) {
+    userData = {
+      ...userData, 
+      FirstName: user.get().FirstName,
+      LastName: user.get().LastName,
+      Username: user.get().UserName,
+    }
+
+    // find user's location
+    const userlocation = await db.userlocation.findOne({
+      where:  {
+        UserId: user.get().UserId
+      }
+    });
+
+    if (userlocation) {
+      location = await db.locations.findOne({
+        where: {
+          LocationId: userlocation.get().LocationId
+        }
+      });
+
+      userData = {
+        ...userData, 
+        City: location.get().City,
+        State: location.get().State,
+      }
+    }
+    
+    res.status(200).send({ userData });
+  }
+  else {
+    res.status(449).send({ message: 'unknown user'});
+  }
+}
 
 
 const hashPassword = async(password, saltRounds=10) => {
