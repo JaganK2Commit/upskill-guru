@@ -6,5 +6,7 @@ module.exports = app => {
   // Retrieve search results hotskillsbylocation
   router.get("/", search.get);
 
+  router.get("/getRelevantSkillSet", search.getRelevantSkillSet);
+
   app.use('/api/search', router);
 };
