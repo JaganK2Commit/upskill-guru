@@ -47,20 +47,20 @@ require("./app/routes/search.routes")(app);
 require("./app/routes/location.routes")(app);
 
 // app.use(auth);
-app.get('/api/account', auth, (req, res) => {
-  // console.log(req.token)
-  jwt.verify(req.token, 'secret', (err, authData) => {
-    if (err) {
-      console.log('access denied');
-      res.sendStatus(403)
-    }
-    else {
-      res.status(200).json({ message: 'successfully accessed account page'});
-      console.log('successfully accessed account page');
-      // console.log(authData);
-    }
-  })
-});
+// app.get('/api/account', auth, (req, res) => {
+//   // console.log(req.token)
+//   jwt.verify(req.token, 'secret', (err, authData) => {
+//     if (err) {
+//       console.log('access denied');
+//       res.sendStatus(403)
+//     }
+//     else {
+//       res.status(200).json({ message: 'successfully accessed account page'});
+//       console.log('successfully accessed account page');
+//       // console.log(authData);
+//     }
+//   })
+// });
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

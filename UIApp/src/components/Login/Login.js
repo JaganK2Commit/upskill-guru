@@ -16,7 +16,7 @@ function Login() {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    const res = await http.get(`/login?username=${username}&password=${password}`);
+    const res = await http.post(`/account/login?username=${username}&password=${password}`);
 
     // if login was successful
     if (res.data.token) {

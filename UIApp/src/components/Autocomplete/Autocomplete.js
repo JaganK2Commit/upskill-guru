@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 // main function
-const Tags = ({placeholder, label, options, limitTags, handleChange, handleSelection}) => {
+const Tags = ({value, placeholder, label, options, limitTags, handleChange, handleSelection}) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   // const [suggestions, setSuggestions] = React.useState([]);
@@ -59,6 +59,7 @@ const Tags = ({placeholder, label, options, limitTags, handleChange, handleSelec
       <Autocomplete
         // borderless
         // disableClearable
+        value={value}
         autoSelect
         // classes={{ paper: classes.paper }}
         limitTags={limitTags}
@@ -74,7 +75,7 @@ const Tags = ({placeholder, label, options, limitTags, handleChange, handleSelec
             onChange={ e => handleChange(e.target.value) }
             {...params}
             variant="outlined"
-            value=""
+            
             size="small"
           />
         )}

@@ -13,10 +13,13 @@ module.exports = app => {
   router.get("/published", skills.findAllPublished);
 
   // Retrieve a single Skill with id
-  router.get("/:id", skills.findOne);
+  // router.get("/:id", skills.findOne);
+
+  router.get("/getSuggested", skills.findSuggestions);
 
   // Update a Skill with id
   router.put("/:id", skills.update);
+
 
   // Delete a Skill with id
   router.delete("/:id", skills.delete);

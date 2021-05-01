@@ -1,13 +1,14 @@
 module.exports = app => {
   const users = require('../controllers/user.controller.js');
 
-  const router = require('express').Router();
+  let router = require('express').Router();
 
-  // login
-  router.get('/', users.login);
-  app.use('/api/login', router);
-
-  // registration
-  router.post('/', users.register);
-  app.use('/api/register', router);
+  router.post('/login', users.login);
+  router.post('/register', users.register);
+  router.post('/update', users.updateUser);
+  router.post('/changePassword', users.changePassword);
+  
+  // router.get('/account', users.authenticate);
+  router.get('/', users.getUserById);
+  app.use('/api/account', router);
 }
