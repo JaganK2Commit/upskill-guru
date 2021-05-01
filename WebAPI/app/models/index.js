@@ -20,6 +20,9 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.skills = require("./skill.model.js")(sequelize, Sequelize);
+db.jobs = require("./job.model.js")(sequelize, Sequelize);
+db.joblocation = require("./joblocation.model.js")(sequelize, Sequelize);
+db.jobskills = require("./jobskills.model.js")(sequelize, Sequelize);
 db.users = require("./users.model.js")(sequelize, Sequelize);
 db.locations = require("./locations.model.js")(sequelize, Sequelize);
 db.userlocation = require("./userlocation.model.js")(sequelize, Sequelize);
