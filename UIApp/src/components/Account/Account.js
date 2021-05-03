@@ -79,9 +79,20 @@ export default function Account() {
   };
   
   const updateUserData = async () => {
-    const response = await httpCommon.post('/account/update', userInfo);
-    if (response.status == 200) {
-      alert('user details updated');
+    if (userInfo.Username === "") {
+      alert("username cannot be blank");
+    }
+    else if (userInfo.City === "") {
+      alert("location must have a value");
+    }
+    else if (userInfo.State === "") {
+      alert("location must have a value");
+    }
+    else {
+      const response = await httpCommon.post('/account/update', userInfo);
+      if (response.status == 200) {
+        alert('user details updated');
+      }
     }
   }
 
@@ -92,12 +103,15 @@ export default function Account() {
   }
 
   const handleSelectedLocation = (value) => {
-    const [city, state] = value.split(', ');
-    setUserInfo({
-      ...userInfo,
-      City: city,
-      State: state
-    });
+    console.log(value)
+    if (value !== "" && value !== null) {
+      const [city, state] = value.split(', ');
+      setUserInfo({
+        ...userInfo,
+        City: city,
+        State: state
+      });
+    }
   }
 
   const getLocationSuggestions = async (value) => {
