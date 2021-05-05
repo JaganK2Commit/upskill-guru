@@ -7,6 +7,7 @@ import {
 } from 'office-ui-fabric-react';
 import { Link } from 'office-ui-fabric-react';
 import TextField from '@material-ui/core/TextField';
+import { Button } from '@material-ui/core';
 import { useBoolean } from '@uifabric/react-hooks';
 import { data } from '../UserData';
 import AutocompleteComp from './Autocomplete'
@@ -109,23 +110,31 @@ export default function Account() {
   const dialogContentProps = {
     type: DialogType.normal,
     closeButtonAriaLabel: 'Close',
-    subText: <TextField placeholder="type in new password" onBlur={(e) => newPass = e.target.value} />
+    subText: <TextField 
+                placeholder="type in new password" 
+                variant="outlined"
+                style={{ width: "300px" }}
+                margin="dense"
+                onBlur={(e) => newPass = e.target.value} />
     // subText: <TextField onBlur={handleChange(state.name)} />
   };
 
   return (
     <div className="account-main">
       <HeadingStyles>Your Profile</HeadingStyles>
-      <div className="ms-Grid main-id" dir="ltr">
+      <div className="ms-Grid main-id" dir="ltr" style={{ marginLeft: '10px' }}>
         <div style={{ marginTop: '20px', marginRight: '120px' }} className="ms-Grid-row">
-          <div className="ms-Grid-col ms-lg2" style={{ display: "inline-flex" }}>
+          {/* <div className="ms-Grid-col ms-lg2" style={{ display: "inline-flex" }}>
             <Label>First Name</Label>
-          </div>
-          <div className="ms-Grid-col ms-lg2" style={{ display: "inline-flex" }}>
+          </div> */}
+          <div className="ms-Grid-col ms-lg6" style={{ display: "inline-flex" }}>
             <TextField id="t1" 
               name="FirstName"
               value={userInfo.FirstName} 
-              borderless 
+              variant="outlined"
+              label="First Name"
+              style={{ width: "400px" }}
+              margin="dense"
               autoComplete="off"
               onChange={e => handleChange(e)} 
               />
@@ -134,14 +143,17 @@ export default function Account() {
             <ActionButton id="" onClick={() => { toggleHideDialog(); setState({ ...state, field: userInfo.FirstName, name:"FirstName" }) }} iconProps={editIcon} style={{ marginTop: "-4px", marginRight: "300px", color: "gray" }}>Edit</ActionButton>
           </div> */}
 
-          <div className="ms-Grid-col ms-lg2" style={{ display: "inline-flex" }}>
+          {/* <div className="ms-Grid-col ms-lg2" style={{ display: "inline-flex" }}>
             <Label>Last Name</Label>
-          </div>
-          <div className="ms-Grid-col ms-lg2" style={{ display: "inline-flex" }}>
+          </div> */}
+          <div className="ms-Grid-col ms-lg6" style={{ display: "inline-flex" }}>
             <TextField 
               name="LastName"
               value={userInfo.LastName} 
-              borderless 
+              variant="outlined"
+              label="Last Name"
+              style={{ width: "400px" }}
+              margin="dense" 
               className="input-style" 
               onChange={e => handleChange(e)} />
           </div>
@@ -150,26 +162,59 @@ export default function Account() {
           </div> */}
         </div>
 
-        <div style={{ marginRight: '120px' }} className="ms-Grid-row">
-          <div className="ms-Grid-col ms-lg2" style={{ display: "inline-flex" }}>
+        <div style={{ marginTop: '20px', marginRight: '120px' }} className="ms-Grid-row">
+          {/* <div className="ms-Grid-col ms-lg2" style={{ display: "inline-flex" }}>
             <Label>Username</Label>
-          </div>
-          <div className="ms-Grid-col ms-lg2" style={{ display: "inline-flex" }}>
+        </div> */}
+          <div className="ms-Grid-col ms-lg6" style={{ display: "inline-flex" }}>
             <TextField 
               name="Username"
               value={userInfo.Username} 
-              borderless 
+              label="Username"
+              variant="outlined"
+              style={{ width: "400px" }}
+              margin="dense" 
               className="input-style"
               onChange={e => handleChange(e)} />
           </div>
           {/* <div className="ms-Grid-col ms-lg2" style={{ display: "inline-flex" }}>
             <ActionButton onClick={() => { toggleHideDialog(); setState({ ...state, field: userInfo.Username, name:"Username" }) }} iconProps={editIcon} style={{ marginTop: "-4px", color: "gray" }}>Edit</ActionButton>
           </div> */}
-          <div className="ms-Grid-col ms-lg2" style={{ display: "inline-flex" }}>
-            <Label>Password</Label>
+           <div className="ms-Grid-col ms-lg6" style={{ display: "inline-flex", marginTop: '8px', width: "415px" }}>
+            <Autocomplete 
+              name="Location"
+              value={userInfo.City + ", " + userInfo.State}
+              placeholder="City, State"
+              label="Location"
+              variant="outlined"
+              style={{ width: "300px" }}
+              margin="dense"
+              options={ locationSuggestions.map((loc) => `${loc.city}, ${loc.state}`) }
+              limitTags={1}
+              handleChange={getLocationSuggestions}
+              handleSelection={handleSelectedLocation} />
           </div>
-          <div className="ms-Grid-col ms-lg2" style={{ display: "inline-flex" }}>
-            <Link onClick={ () => toggleHideDialog() }>Change Password</Link>
+          {/* <div className="ms-Grid-col ms-lg2" style={{ display: "inline-flex" }}>
+            <ActionButton onClick={() => { toggleHideDialog(); setState({ ...state, field: state.data.password, name: 'password' }) }} iconProps={editIcon} style={{ marginTop: "-4px", color: "gray" }}>Edit</ActionButton>
+          </div> */}
+        </div>
+
+        <div style={{ marginTop: '20px', marginRight: '120px' }} className="ms-Grid-row">
+        <div className="ms-Grid-col ms-lg6" style={{ display: "inline-flex"}}>
+              <AutocompleteComp 
+                label="Your skills"
+                variant="outlined"
+                style={{ width: "300px" }}
+               // margin="dense"
+                data={state.skills} />
+            </div>
+        <div className="ms-Grid-col ms-lg6" style={{ marginTop: '15px', width: "415px", display: "inline-flex" }}>
+            <Button 
+                variant="outlined"
+                size="large"
+                style={{ width: "400px" }} 
+                onClick={ () => toggleHideDialog() }>Change Password
+            </Button>
             {/* <TextField 
               value={state.data.password} 
               type="password" 
@@ -177,26 +222,8 @@ export default function Account() {
               className="input-style" 
               onChange={e => handleChange(e)} /> */}
           </div>
-          {/* <div className="ms-Grid-col ms-lg2" style={{ display: "inline-flex" }}>
-            <ActionButton onClick={() => { toggleHideDialog(); setState({ ...state, field: state.data.password, name: 'password' }) }} iconProps={editIcon} style={{ marginTop: "-4px", color: "gray" }}>Edit</ActionButton>
-          </div> */}
-        </div>
-
-        <div style={{ marginRight: '120px' }} className="ms-Grid-row">
-          <div className="ms-Grid-col ms-lg2" style={{ display: "inline-flex" }}>
-            <Label>Location</Label>
-          </div>
-          <div className="ms-Grid-col ms-lg2" style={{ display: "inline-flex" }}>
-            <Autocomplete 
-              name="Location"
-              value={userInfo.City + ", " + userInfo.State}
-              placeholder="New York, NY"
-              label=""
-              options={ locationSuggestions.map((loc) => `${loc.city}, ${loc.state}`) }
-              limitTags={1}
-              handleChange={getLocationSuggestions}
-              handleSelection={handleSelectedLocation} />
-          </div>
+         
+        
           {/* <div className="ms-Grid-col ms-lg2" style={{ display: "inline-flex" }}>
             <ActionButton onClick={() => { toggleHideDialog(); setState({ ...state, field: userInfo.City + ", " + userInfo.State, name: 'location' }) }} iconProps={editIcon} style={{ marginTop: "-4px", color: "gray" }}>Edit</ActionButton>
           </div> */}
@@ -212,23 +239,33 @@ export default function Account() {
         </div>
 
         <div style={{ marginTop: '20px', marginBottom: '20px', marginRight: '120px' }} className="ms-Grid-row">
-          <HeadingStyles>Your Skills</HeadingStyles>
+        
           <div className="ms-Grid-row" style={{ marginBottom: '10px', marginTop: '20px', marginLeft: '1px' }}>
-            <div className="ms-Grid-col ms-lg10">
-              <AutocompleteComp data={state.skills} />
-            </div>
+           
           </div>
         </div>
-        <div className="ms-Grid-row" style={{ textAlign: "center" }}>
-          <PrimaryButton onClick={() => updateUserData()}>
+        <div className="ms-Grid-row" style={{ textAlign: "center", marginRight: '120px' }}>
+          <Button 
+              style={{
+                backgroundColor: "#0078D4",
+                color: "white",
+                width: "300px"
+              }} 
+              onClick={() => updateUserData()}>
             Save Changes
-          </PrimaryButton>
+          </Button>
         </div>
       </div>
 
       <Dialog hidden={hideDialog} onDismiss={toggleHideDialog} dialogContentProps={dialogContentProps} >
         <DialogFooter>
-          <PrimaryButton onClick={() => { toggleHideDialog(); handlePasswordChange(newPass) }} text="Save" />
+          <PrimaryButton 
+              style={{
+                backgroundColor: "#0078D4",
+                color: "white",
+                width: "50px"
+              }}  
+              onClick={() => { toggleHideDialog(); handlePasswordChange(newPass) }} text="Save" />
           <DefaultButton onClick={() => { toggleHideDialog(); setState({ ...state, skills: false }) }} text="Close" />
         </DialogFooter>
       </Dialog>
