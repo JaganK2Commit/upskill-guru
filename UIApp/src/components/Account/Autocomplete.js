@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
         borderRadius:"0px"
     },
     '& .MuiOutlinedInput-notchedOutline':{
-        borderRadius:"0px"
+        borderRadius:"5px"
     },
     '& .Mui-paper		':{
     }
@@ -31,7 +31,8 @@ const useStyles = makeStyles((theme) => ({
   textfield:{
       '& .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"][class*="MuiOutlinedInput-marginDense"]':{
           padding:"2px",
-          width:600,
+          width:400,
+          height: 40,
       },
       '& .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"][class*="MuiOutlinedInput-marginDense"] .MuiAutocomplete-input':{
         fontSize:"14px"
@@ -67,7 +68,7 @@ export default function Tags({data}) {
    
       <Autocomplete
         multiple
-        borderless
+        //borderless
         disableClearable
         classes={{ paper: classes.paper }}
         limitTags={2}
@@ -82,6 +83,8 @@ export default function Tags({data}) {
           className={classes.textfield}
             {...params}
             variant="outlined"
+            label="Your skills"
+            margin="normal"
             placeholder={`${data ? 'Add Skills':'Add a new skill'}`}
             size="small"
           />
