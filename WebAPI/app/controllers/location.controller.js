@@ -1,12 +1,12 @@
 const db = require("../models");
-const { Op } = require("sequelize");
+const { fn, col, Op } = require("sequelize");
 
 exports.find = async (req, res) => {
   try {
     const locationKeyword = req.query.searchKey;
     const limit = +(req.query.limit);
     const result = await db.locations.findAll({
-      attributes: ['city', 'state'],
+      attributes: [[fn('min', col('LocationId')), 'locationId'],'city', 'state'],
       where: {
         city: {
           [Op.like]: locationKeyword + '%'

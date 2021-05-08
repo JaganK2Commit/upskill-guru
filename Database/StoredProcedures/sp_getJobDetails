@@ -1,0 +1,21 @@
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getJobDetails`(
+	IN `pageNumber` int,
+    IN `pageSize` int)
+BEGIN
+DECLARE skiprows INT DEFAULT 0;
+IF pageNumber <=0 THEN
+    SET pageNumber = 1;
+    IF pageSize<=0 THEN
+    SET pageSize = 20;
+    END IF;
+END IF;
+SET skiprows = (pageNumber - 1) * pageSize;
+SELECT j.JobId, JobTitle, EmployerName, jl.LocationId, City,State, GROUP_CONCAT(js.SkillId ORDER BY js.SkillId ASC SEPARATOR ', ') as skillSet
+FROM jobs j
+INNER JOIN joblocation jl ON jl.JobId = j.JobId
+INNER JOIN jobskills js ON js.JobId = j.JobId
+INNER JOIN locations l ON jl.LocationId = l.LocationId
+Group by j.jobId
+ORDER BY j.JobId DESC
+LIMIT skiprows,pageSize;
+END
