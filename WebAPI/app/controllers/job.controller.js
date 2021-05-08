@@ -23,7 +23,7 @@ exports.create = (req, res) => {
   // Validate request
   if (!req.body.title) {
     res.status(400).send({
-      message: "Content can not be empty!"
+      message: "Content can not be empty!",
     });
     return;
   }
@@ -31,53 +31,77 @@ exports.create = (req, res) => {
   // Create a Job
   const job = {
     title: req.body.title,
-    employer: req.body.employer
+    employer: req.body.employer,
   };
 
   // Save Job in the database
-  dbJob.create(job)
-    .then(data => {
+  dbJob
+    .create(job)
+    .then((data) => {
       res.send(data);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
-        message:
-          err.message || "Some error occurred while creating the Job."
+        message: err.message || "Some error occurred while creating the Job.",
       });
     });
 };
 
-// Retrieve all Jobs from the database.
-exports.findAll = (req, res) => {
-  const { page, size, title } = req.query;
-  var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
+// // Retrieve all Jobs from the database.
+// exports.findAll = (req, res) => {
+//   const { page, size, title } = req.query;
+//   var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
 
-  const { limit, offset } = getPagination(page, size);
+//   const { limit, offset } = getPagination(page, size);
 
-  dbJob.findAndCountAll({ where: condition, limit, offset })
-    .then(data => {
-      const response = getPagingData(data, page, limit);
-      res.send(response);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving jobs."
-      });
+//   dbJob.findAndCountAll({ where: condition, limit, offset })
+//     .then(data => {
+//       const response = getPagingData(data, page, limit);
+//       res.send(response);
+//     })
+//     .catch(err => {
+//       res.status(500).send({
+//         message:
+//           err.message || "Some error occurred while retrieving jobs."
+//       });
+//     });
+// };
+
+exports.findAll = async (req, res) => {
+  try {
+    const { page, size, title } = req.query;
+    var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
+    const result = await db.sequelize.query(
+      "CALL getJobDetails (:pageNumber, :pageSize)",
+      { replacements: { pageNumber: page || 1, pageSize: size || 20 } }
+    );
+
+    const totalCount = await dbJob.findAll({
+      attributes: [
+        [db.Sequelize.fn("COUNT", db.Sequelize.col("JobId")), "totalJobs"],
+      ],
     });
+
+    res.send({ result, totalCount });
+  } catch (err) {
+    res.status(500).send({
+      message: "Error while retrieving jobs results " + err,
+    });
+  }
 };
 
 // Find a single Job with an id
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
-  dbJob.findByPk(id)
-    .then(data => {
+  dbJob
+    .findByPk(id)
+    .then((data) => {
       res.send(data);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
-        message: "Error retrieving Job with id=" + id
+        message: "Error retrieving Job with id=" + id,
       });
     });
 };
@@ -86,23 +110,28 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
   const id = req.params.id;
 
-  dbJob.update(req.body, {
-    where: { JobID: id }
-  })
-    .then(num => {
-      if (num == 1) {
-        res.send({
-          message: "Job was updated successfully."
-        });
-      } else {
-        res.send({
-          message: `Cannot update Job with id=${id}. Maybe Job was not found or req.body is empty!`
-        });
+  console.log("update payload", req.body);
+  dbJob
+    .update(
+      { JobTitle: req.body.JobTitle, EmployerName: req.body.EmployerName },
+      {
+        where: { JobID: id },
       }
+    )
+    .then((num) => {
+      console.log("update result", num);
+
+      dbJobLocation
+        .update({ LocationId: req.body.LocationId }, { where: { JobId: id } })
+        .then((num) => {
+          res.send({
+            message: "Job was updated successfully.",
+          });
+        });
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
-        message: "Error updating Job with id=" + id
+        message: "Error updating Job with id=" + id,
       });
     });
 };
@@ -111,68 +140,66 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
   const id = req.params.id;
 
-  dbJobLocation.destroy({
-    where: { JobID: id }
-  })
-    .then(num => {
-        db.jobskills.destroy({
-          where: { JobID: id }
-        })
-          .then(num => {
-              dbJob.destroy({
-                where: { JobID: id }
-              })
-                .then(num => {
-                  if (num == 1) {
-                    res.send({
-                      message: "Job was deleted successfully!"
-                    });
-                  } else {
-                    res.send({
-                      message: `Cannot delete job with id=${id}. Maybe job was not found!`
-                    });
-                  }
-                })
-                .catch(err => {
-                  console.log(err);
-                  res.status(500).send({
-                    message: "Could not delete job with id=" + id + " " + err
-                  });
-                });
-          })
-          .catch(err => {
-            console.log(err);
-            res.status(500).send({
-              message: "Could not delete jobskills with id=" + id + " " + err
-            });
-          });
-
-        
+  dbJobLocation
+    .destroy({
+      where: { JobID: id },
     })
-    .catch(err => {
+    .then((num) => {
+      db.jobskills
+        .destroy({
+          where: { JobID: id },
+        })
+        .then((num) => {
+          dbJob
+            .destroy({
+              where: { JobID: id },
+            })
+            .then((num) => {
+              if (num == 1) {
+                res.send({
+                  message: "Job was deleted successfully!",
+                });
+              } else {
+                res.send({
+                  message: `Cannot delete job with id=${id}. Maybe job was not found!`,
+                });
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+              res.status(500).send({
+                message: "Could not delete job with id=" + id + " " + err,
+              });
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(500).send({
+            message: "Could not delete jobskills with id=" + id + " " + err,
+          });
+        });
+    })
+    .catch((err) => {
       console.log(err);
       res.status(500).send({
-        message: "Could not delete JobLocation with id=" + id + " " + err
+        message: "Could not delete JobLocation with id=" + id + " " + err,
       });
     });
-
-  
 };
 
 // Delete all Jobs from the database.
 exports.deleteAll = (req, res) => {
-  dbJob.destroy({
-    where: {},
-    truncate: false
-  })
-    .then(nums => {
+  dbJob
+    .destroy({
+      where: {},
+      truncate: false,
+    })
+    .then((nums) => {
       res.send({ message: `${nums} Jobs were deleted successfully!` });
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
-        message:
-          err.message || "Some error occurred while removing all jobs."
+        message: err.message || "Some error occurred while removing all jobs.",
       });
     });
 };
-
