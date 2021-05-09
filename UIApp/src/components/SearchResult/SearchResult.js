@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useContext, useEffect } from "react";
 import styled, { css } from "styled-components";
 import { Label } from "office-ui-fabric-react/lib/Label";
 import BarChart from "../Charts/BarChart/BarChart";
@@ -9,20 +9,20 @@ import SkillService from "../../services/SkillService";
 import BubbleChart from "../Charts/BubbleChart/BubbleChart";
 import { barChartDataMapping } from "../../helper/barChartDataMapping";
 import WordCloudJobs from "./WordCloudJobs";
-import { jobsWordData } from "./JobsWordData";
 import { TextField } from "office-ui-fabric-react/lib";
 import { Button } from "@material-ui/core";
+import JobService from "../../services/JobService";
+import { UserContext } from "../../UserContext";
 
 function SearchResult(props) {
   const [locationSuggestions, setLocationSuggestions] = React.useState([]);
   const [skillSuggestions, setSkillSuggestions] = React.useState([]);
-  const [location, setLocation] = useState('');
-  const [skill, setSkill] = useState('');
+  const [location, setLocation] = useState("");
+  const [skill, setSkill] = useState("");
   const [searchTitle, setSearchTitle] = useState("");
 
   const [bubbleGraphData, setBubbleGraphData] = useState();
   const [barGraphData, setBarGraphData] = useState();
-  const [wordcloudData, setWordcloudData] = useState(jobsWordData);
 
   const [relevantSkillSets, setRelevantSkillSets] = useState([]);
 
@@ -64,7 +64,28 @@ function SearchResult(props) {
     const response = await SkillService.findSuggestions(value, 10);
     const skillValues = response.data.message;
     setSkillSuggestions(skillValues);
-  }
+  };
+
+  const [relevantJobTitles, setRelevantJobTitles] = useState([]);
+  const { user } = useContext(UserContext);
+
+  const getRelevantJobTitles = (userId) => {
+    JobService.getRelevantJobTitles(userId)
+      .then((response) => {
+        setRelevantJobTitles(response.data.message);
+        console.log(response.data.message);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+
+  useEffect(() => {
+    if (user) {
+      getRelevantJobTitles(user.uid);
+    }
+  }, [user]);
 
   return (
     <div className="account-main">
@@ -90,21 +111,26 @@ function SearchResult(props) {
             {/* <AutocompleteJobTitle 
                onChange={(e) => setSearchTitle(e.target.value)}
             /> */}
-            <Autocomplete 
+            <Autocomplete
               label="JobTitle"
               placeholder="Software Engineer"
-              options={ skillSuggestions.map((skill) => ({label: `${skill.skillName}`, value: `${skill.skillId}`})) }
+              options={ skillSuggestions.map((skill) => ({
+                label: `${skill.skillName}`, 
+                value: `${skill.skillId}`
+              }))}
               limitTags={1}
               handleChange={getSkillSuggestions}
-              handleSelection={handleSelectedSkill} />
+              handleSelection={handleSelectedSkill}
+            />
           </div>
           <div className="ms-Grid-col" style={{ display: "block", width: 200 }}>
             <Autocomplete
               placeholder="New York, NY"
               label="Location"
-              options={locationSuggestions.map(
-                (loc) => ({label: `${loc.city}, ${loc.state}`, value: loc.locationId})
-              )}
+              options={locationSuggestions.map((loc) => ({
+                label: `${loc.city}, ${loc.state}`,
+                value: loc.locationId,
+              }))}
               limitTags={1}
               handleChange={getLocationSuggestions}
               handleSelection={handleSelectedLocation}
@@ -395,7 +421,9 @@ function SearchResult(props) {
             className="ms-Grid-col ms-lg12"
             style={{ display: "block", marginTop: "10px", textAlign: "center" }}
           >
-            <WordCloudJobs id="wordcloud" data={wordcloudData} />
+            {relevantJobTitles.length > 0 && (
+              <WordCloudJobs id="wordcloud" data={relevantJobTitles} />
+            )}
           </div>
         </div>
 
@@ -427,7 +455,6 @@ const _saveAction = () => {
   //     console.log(e);
   //   });
 };
-
 
 function _searchAction() {
   alert("Search for skills!");
