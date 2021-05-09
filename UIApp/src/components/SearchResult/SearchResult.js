@@ -13,7 +13,6 @@ import SearchService from "../../services/SearchService";
 import AutocompleteJobTitle from "./AutocompleteJobTitle";
 import Autocomplete from "../Autocomplete/Autocomplete.js";
 import LocationService from "../../services/LocationService";
-import SkillService from "../../services/SkillService";
 import BubbleChart from "../Charts/BubbleChart/BubbleChart";
 import { barChartDataMapping } from "../../helper/barChartDataMapping";
 import WordCloudJobs from "./WordCloudJobs";
@@ -23,21 +22,24 @@ import { TextField } from "office-ui-fabric-react/lib";
 import { jobTitlesData } from "./JobTitles";
 import { Button } from "@material-ui/core";
 import FavoriteService from "../../services/FavoriteService"
+import JobService from "../../services/JobService"
 
 function SearchResult(props) {
   const { disabled, checked } = props;
   const [locationSuggestions, setLocationSuggestions] = React.useState([]);
-  const [skillSuggestions, setSkillSuggestions] = React.useState([]);
+  const [jobSuggestions, setJobSuggestions] = React.useState([]);
   const [location, setLocation] = useState('');
   const [skill, setSkill] = useState('');
   const [searchTitle, setSearchTitle] = useState("");
+  const [favorites, setFavorites] = useState([]);
+  const [message, setMessage] = useState("");
 
   const [bubbleGraphData, setBubbleGraphData] = useState();
   const [barGraphData, setBarGraphData] = useState();
   const [wordcloudData, setWordcloudData] = useState(jobsWordData);
 
   const [relevantSkillSets, setRelevantSkillSets] = useState([]);
-
+ 
   const barChartRef = useRef();
   const bubbleChartRef = useRef();
 
@@ -68,12 +70,17 @@ function SearchResult(props) {
     setSkill(value);
   }
 
-  const getSkillSuggestions = async (value) => {
-    const response = await SkillService.findSuggestions(value, 10);
-    const skillValues = response.data.message;
-    console.log(skillValues);
-    setSkillSuggestions(skillValues);
+  const getJobSuggestions = async (value) => {
+    const response = await JobService.findSuggestions(value, 10);
+    const jobValues = response.data.message;
+    console.log(jobValues);
+    setJobSuggestions(jobValues);
   }
+
+  const createFavorite = () => {
+    FavoriteService.create({name:skill.label+location.label, jobTitle:skill,location:location});
+    alert("You've added the search result to your favorites");
+  };
 
   return (
     <div className="account-main">
@@ -87,8 +94,8 @@ function SearchResult(props) {
             marginTop: "10px",
             marginBottom: "20px",
             position: "absolute",
-            left: "30%",
-            transform: "translate(-10%, -0%)",
+            left: "10%",
+            transform: "translate(0%, -0%)",
             display: "inline-block",
           }}
         >
@@ -103,17 +110,18 @@ function SearchResult(props) {
               label="JobTitle"
               placeholder="Software Engineer"
               // options={ skillSuggestions }
-              options={ skillSuggestions.map((skill) => `${skill.skillName}`) }
+              options={ jobSuggestions.map(
+                (job) => ({label:job.JobTitle, value:job.JobId}))}
               limitTags={1}
-              handleChange={getSkillSuggestions}
+              handleChange={getJobSuggestions}
               handleSelection={handleSelectedSkill} />
           </div>
-          <div className="ms-Grid-col" style={{ display: "block", width: 200 }}>
+          <div className="ms-Grid-col" style={{ display: "block", width: 300 }}>
             <Autocomplete
               placeholder="New York, NY"
               label="Location"
               options={locationSuggestions.map(
-                (loc) => `${loc.city}, ${loc.state}`
+                (loc) => ({ label : `${loc.city}, ${loc.state}`, value : loc.locationId})
               )}
               limitTags={1}
               handleChange={getLocationSuggestions}
@@ -135,7 +143,7 @@ function SearchResult(props) {
           <div className="ms-Grid-col" style={{ display: "block" }}>
             <Button
               variant="contained"
-              onClick={_saveAction}
+              onClick={createFavorite}
               style={{
                 backgroundColor: "#0078D4",
                 color: "white",

@@ -3,11 +3,15 @@ import styled, { css } from "styled-components";
 import { Label } from 'office-ui-fabric-react/lib/Label';
 import { DefaultButton, PrimaryButton, Stack, TextField, IStackTokens } from 'office-ui-fabric-react';
 import { SearchBox } from 'office-ui-fabric-react/lib/SearchBox';
+import { skillWordData } from "../SkillWordCloud";
+import { Route, Link } from "react-router-dom";
+import { Button } from "@material-ui/core";
 import SearchService from "../../services/SearchService";
 import { ColorClassNames, FontClassNames } from "@uifabric/styling";
 import WordCloudComponent from "../WordCloud/WordCloudComponent";
-import { skillWordData } from "../SkillWordCloud";
-import Autocomplete from './Autocomplete'
+import CreateAccount from "../CreateAccount/CreateAccount";
+
+
 
 function Front(props) {
   const { disabled, checked } = props;
@@ -28,42 +32,42 @@ function Front(props) {
 
       <div className="ms-Grid main-id" dir="ltr" 
            style={{ position: 'absolute', 
-                    left: '50%', 
+                    left: '45%', 
                     top: '50%',
-                    transform: 'translate(-65%, -0%)'}}>
+                    transform: 'translate(-55%, -0%)'}}>
+
       <div className="ms-Grid-row"> 
- 
         <div className="ms-Grid-col ms-lg12" style={{display:"block"}}>
         <WordCloudComponent id="wordcloud" data={wordcloudData} />
-
         </div>
       </div>
 
-      <div style={{marginTop:'20px',position: "center"}} className="ms-Grid-row">
-        <div className="ms-Grid-col ms-lg10" style={{width:600}}>
-          <Autocomplete
-               onChange={(e) => console.log('Search ')}
-            />
-       </div>
-       </div>
-       <div style={{marginTop:'20px',position: "center"}} className="ms-Grid-row">
-       <div
-            className="ms-Grid-col ms-lg12"
-            style={{ display: "block",
-                     textAlign: "center" }}
-          >
-            <PrimaryButton
-              text="Search"
-              onClick={searchHandle}
-              allowDisabledFocus
-              disabled={disabled}
-              checked={checked}
-              className={[
-                ColorClassNames.blueBackground,
-                ColorClassNames.white,
-              ].join(" ")}
-            />
-          </div>
+      <div className="ms-Grid-row" style={{marginTop:'20px',position: "center",marginLeft:'30px'}}>
+        <div className="ms-Grid-col ms-lg4" style={{display:"inline-block",marginLeft:'80px'}}>
+          <Button 
+              href="/CreateAccount" 
+              variant="contained" 
+              style={{
+                width: "200px",
+                backgroundColor: "#0078D4",
+                color: "white",
+              }}> 
+             Register
+          </Button>
+    
+         </div>
+         <div className="ms-Grid-col ms-lg4" style={{display:"inline-block",marginLeft:'80px'}}>
+          <Button 
+              href="/login" 
+              variant="contained" 
+              style={{
+                width: "200px",
+                backgroundColor: "#0078D4",
+                color: "white",
+              }}> 
+             Login
+          </Button>
+         </div>
       </div>
       
       </div>
@@ -71,11 +75,6 @@ function Front(props) {
     </div>
 
   );
-}
-
-function _saveAction(): void {
-  alert('Search has been saved');
-      
 }
 
 const HeadingStyles = styled.span`

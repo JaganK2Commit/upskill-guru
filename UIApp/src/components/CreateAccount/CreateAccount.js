@@ -11,6 +11,7 @@ import http from '../../http-common';
 import { UserContext } from '../../UserContext';
 import Autocomplete from '../Autocomplete/Autocomplete.js';
 import LocationService from "../../services/LocationService";
+import { Button } from "@material-ui/core";
 
 function CreateAccount(props) {
   const { disabled, checked } = props;
@@ -118,7 +119,7 @@ function CreateAccount(props) {
               errorMessage={usernameError}
               onChange={e => setUsername(e.target.value)} />
           </div>
-          <div className="ms-Grid-col ms-lg6" style={{display:"inline-block"}}>
+          <div className="ms-Grid-col ms-lg6" style={{display:"inline-block", width: "316px"}}>
             <Autocomplete 
               placeholder="New York, NY"
               label="Location"
@@ -179,12 +180,16 @@ function CreateAccount(props) {
           </div> 
         </div>
         <div style={{textAlign:"center", marginRight:'100px', marginTop:'30px'}}>
-          <PrimaryButton 
-            text="Create account" 
-            onClick={handleSubmit} 
-            style={{width:300}} 
-            disabled={disabled} 
-            className={[ColorClassNames.blueBackground, ColorClassNames.white].join(" ")} />
+             <Button 
+              variant="contained" 
+              onClick={handleSubmit}
+              style={{
+                width: "300px",
+                backgroundColor: "#0078D4",
+                color: "white",
+              }}> 
+              Create Account
+              </Button>
         </div>
         <div style={{textAlign:"center", marginRight:'100px', marginTop:'30px'}}>
             <Label>If you already have an account, please <Link to="/Login" >login here</Link></Label>

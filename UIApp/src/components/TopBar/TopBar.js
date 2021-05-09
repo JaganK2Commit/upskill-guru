@@ -23,9 +23,7 @@ export default function TopBar() {
             {!user
               ? (
                 <div className='float-right'>
-                  <Link href="/Login" className={styles.links} >Login</Link>   
-                  <Link href="/CreateAccount" className={styles.links} style={{ marginLeft: "20px" }}>Register</Link>
-                </div>
+                 </div>
               )
               : <Link href="#" className={styles.links} onClick={() => logout()}>Logout</Link>
             }

@@ -7,7 +7,9 @@ let db;
 const dbName = 'cs411upskillguru_mongodb';
 const collectionName = 'favorites';
 const connect = async () => {
+  console.log("connecting")
   const client = await new MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+  console.log("connected")
   db = client.db(dbName);
 }
 

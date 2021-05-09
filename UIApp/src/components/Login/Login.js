@@ -1,12 +1,13 @@
 import React, { useState, useContext } from "react";
 import  { useHistory } from 'react-router-dom'
 import styled, { css } from "styled-components";
-import { TextField } from 'office-ui-fabric-react/lib/TextField';
+import TextField from '@material-ui/core/TextField';
 import { PrimaryButton, Label } from 'office-ui-fabric-react';
 import { Link } from "react-router-dom";
 import { ColorClassNames} from "@uifabric/styling";
 import http from '../../http-common';
 import { UserContext } from '../../UserContext';
+import { Button } from "@material-ui/core";
 
 function Login() {
   const { setUser } = useContext(UserContext);
@@ -31,7 +32,7 @@ function Login() {
       
       <div className="ms-Grid main-id" dir="ltr"
             style={{ position: 'absolute', 
-            left: '50%', 
+            left: '46%', 
             top: '50%',
             transform: 'translate(-75%, -0%)'}}>
         {/* <div style={{marginTop:'20px',marginRight:'100px', }} className="ms-Grid-row">
@@ -40,27 +41,55 @@ function Login() {
         <HeadingStyles 
             style={{ position: 'absolute', 
             left: '50%', 
-            transform: 'translate(-75%, -0%)'}}>
+            transform: 'translate(-75%, 30%)'}}>
               Login
         </HeadingStyles>
-        <div style={{marginTop:'50px'}}>
-          <TextField label="Username" styles={{root: {width: 300}}} required onChange={e => setUsername(e.target.value)} />
-          <TextField label="Password" type="password" canRevealPassword styles={{root: {width: 300}}} required onChange={e => setPassword(e.target.value)} />
-          <PrimaryButton 
-            text="Login" 
-            onClick={handleSubmit} 
-            allowDisabledFocus 
-            styles={{root: {width: 100, marginTop: 15}}} 
-            className={[ColorClassNames.blueBackground, ColorClassNames.white].join(" ")} />
+        <div className="ms-Grid main-id" dir="ltr" style={{ position: 'absolute', 
+                                                          left: '50%', 
+                                                          transform: 'translate(-40%, -0%)'}}>
+        <div style={{marginTop:'70px',marginRight:'100px', }} className="ms-Grid-row">
+          <div className="ms-Grid-col ms-lg12" style={{display:"inline-block"}}>
+            <TextField 
+              label="Username" 
+              style={{ width: 300, marginRight: 2 }}
+              size="small"
+              required 
+              variant="outlined"
+              onChange={e => setUsername(e.target.value)}  />
+          </div>
         </div>
-        {/* <div style={{marginTop:'20px',marginRight:'100px', }} className="ms-Grid-row">
-          <div className="ms-Grid-col ms-lg6" style={{display:"inline-block"}}>
-        </div></div> */}
-        {/* <div style={{ marginTop:'40px'}}>
-        </div> */}
-        <div style={{ marginTop:'30px'}}>
-            <Label>If you don't have an account, <Link to="/CreateAccount" >create account</Link> here</Label>
+        <div style={{marginTop:'20px' }} className="ms-Grid-row">
+          <div className="ms-Grid-col ms-lg12" style={{display:"inline-block"}}>
+            <TextField 
+              label="Password" 
+              style={{ width: 300, marginRight: 2 }}
+              size="small"
+              required 
+              variant="outlined"
+              onChange={e => setPassword(e.target.value)}/>
+          </div>
         </div>
+        <div style={{marginTop:'20px'}} className="ms-Grid-row">
+          <div className="ms-Grid-col ms-lg12" style={{display:"inline-block"}}>
+            <Button
+              variant="contained"
+              onClick={handleSubmit}
+              style={{
+                width: "300px",
+                backgroundColor: "#0078D4",
+                color: "white",
+              }}> 
+              Login
+            </Button>
+          </div>
+        </div>
+        <div style={{marginTop:'20px'}} className="ms-Grid-row">
+          <div className="ms-Grid-col ms-lg12" style={{display:"inline-block"}}>
+          <Label>If you don't have an account, <Link to="/CreateAccount" >create account</Link> here</Label>
+          </div>
+        </div>
+        </div>
+
      </div>
      </div>
   );
@@ -71,7 +100,7 @@ const HeadingStyles = styled.span`
   font-family: Roboto;
   font-style: normal;
   font-weight: 400;
-  font-size: 20px;
+  font-size: 24px;
   margin-left: 1px;
   margin-top: 9px;
 `;

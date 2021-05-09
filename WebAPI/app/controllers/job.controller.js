@@ -203,3 +203,31 @@ exports.deleteAll = (req, res) => {
       });
     });
 };
+
+exports.findSuggestions = async (req, res) => {
+  // console.log("findSuggestions")
+  // console.log(req.query)
+  try {
+    const jobKeyword = req.query.searchKey;
+    const limit = +(req.query.limit);
+    const result = await dbJob.findAll({
+      attributes: ['JobTitle', 'JobId'],
+      where: {
+        JobTitle: {
+          [Op.like]: jobKeyword + '%'
+        }
+      },
+      limit: limit,
+     // group: ['skillName']
+    });
+    // console.log("result: " + result);
+    res.send({
+      message: result,
+    });
+  } catch (err) {
+    console.log("Error while retrieving search results " + err);
+    res.status(500).send({
+      message: "Error while retrieving search results " + err,
+    });
+  }
+};

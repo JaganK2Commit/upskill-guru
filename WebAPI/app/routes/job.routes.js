@@ -12,6 +12,7 @@ module.exports = app => {
   // Update a jobs with id
   router.put("/:id", jobs.update);
 
+  router.get("/getSuggested", jobs.findSuggestions);
 
   // Delete a jobs with id
   router.delete("/:id", jobs.delete);

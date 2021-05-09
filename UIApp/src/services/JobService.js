@@ -28,6 +28,10 @@ const findByTitle = title => {
   return http.get(`/jobs?title=${title}`);
 };
 
+const findSuggestions = (searchKey, limit) => {
+  return http.get(`/jobs/getSuggested?searchKey=${searchKey}&limit=${limit}`);
+}
+
 export default {
   getAll,
   get,
@@ -36,4 +40,5 @@ export default {
   remove,
   removeAll,
   findByTitle,
+  findSuggestions,
 };
