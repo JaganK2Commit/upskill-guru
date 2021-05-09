@@ -113,7 +113,7 @@ function SearchResult(props) {
               placeholder="New York, NY"
               label="Location"
               options={locationSuggestions.map(
-                (loc) => `${loc.city}, ${loc.state}`
+                (loc) => ({ label : `${loc.city}, ${loc.state}`, value : loc.locationId})
               )}
               limitTags={1}
               handleChange={getLocationSuggestions}

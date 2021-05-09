@@ -111,6 +111,10 @@ exports.update = (req, res) => {
   const id = req.params.id;
 
   console.log("update payload", req.body);
+  const newSkills = req.body.skills.map((s) => ({
+    JobId: id,
+    SkillId: s.SkillId,
+  }));
   dbJob
     .update(
       { JobTitle: req.body.JobTitle, EmployerName: req.body.EmployerName },
@@ -124,9 +128,19 @@ exports.update = (req, res) => {
       dbJobLocation
         .update({ LocationId: req.body.LocationId }, { where: { JobId: id } })
         .then((num) => {
-          res.send({
-            message: "Job was updated successfully.",
-          });
+          // Remove existing skills in jobskills table
+          db.jobskills
+            .destroy({
+              where: { JobID: id },
+            })
+            .then((num) => {
+              // insert new set of skills
+              db.jobskills.bulkCreate(newSkills).then((num) => {
+                res.send({
+                  message: "JobSkills was updated successfully.",
+                });
+              });
+            });
         });
     })
     .catch((err) => {

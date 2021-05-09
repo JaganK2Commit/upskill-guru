@@ -10,10 +10,13 @@ IF pageNumber <=0 THEN
     END IF;
 END IF;
 SET skiprows = (pageNumber - 1) * pageSize;
-SELECT j.JobId, JobTitle, EmployerName, jl.LocationId, City,State, GROUP_CONCAT(js.SkillId ORDER BY js.SkillId ASC SEPARATOR ', ') as skillSet
+SELECT j.JobId, JobTitle, EmployerName, jl.LocationId, City,State, 
+GROUP_CONCAT(js.SkillId ORDER BY js.SkillId ASC SEPARATOR ',') as skillSet,
+GROUP_CONCAT(s.SkillName ORDER BY js.SkillId ASC SEPARATOR ',') as skillNameSet
 FROM jobs j
 INNER JOIN joblocation jl ON jl.JobId = j.JobId
 INNER JOIN jobskills js ON js.JobId = j.JobId
+INNER JOIN skills s ON s.SkillId = js.SkillId
 INNER JOIN locations l ON jl.LocationId = l.LocationId
 Group by j.jobId
 ORDER BY j.JobId DESC
