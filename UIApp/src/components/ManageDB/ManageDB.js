@@ -220,7 +220,11 @@ export default function Editable() {
               setTimeout(() => {
                 const dataUpdate = [...jobs];
                 const index = oldData.tableData.id;
-                newData.skillNameSet = newData.skills.map(s => s.SkillName).join(",");
+                if (newData.skills) {
+                  newData.skillNameSet = newData.skills
+                    .map((s) => s.SkillName)
+                    .join(",");
+                }
                 dataUpdate[index] = newData;
                 setJobs([...dataUpdate]);
                 resolve();
