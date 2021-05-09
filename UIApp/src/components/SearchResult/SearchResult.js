@@ -15,12 +15,10 @@ import JobService from "../../services/JobService";
 import { UserContext } from "../../UserContext";
 
 function SearchResult(props) {
-  const { disabled, checked } = props;
   const [locationSuggestions, setLocationSuggestions] = React.useState([]);
   const [skillSuggestions, setSkillSuggestions] = React.useState([]);
   const [location, setLocation] = useState("");
   const [skill, setSkill] = useState("");
-  const [searchTitle, setSearchTitle] = useState("");
 
   const [bubbleGraphData, setBubbleGraphData] = useState();
   const [barGraphData, setBarGraphData] = useState();
@@ -31,20 +29,24 @@ function SearchResult(props) {
   const bubbleChartRef = useRef();
 
   const searchHandle = async () => {
-    const response = await SearchService.get(searchTitle);
+    // hotSkillsbyLocation
+    const hotSkillsbyLocation = await SearchService.get(skill, location);
+    // console.log(hotSkillsbyLocation.data.message)
+    
+    // relevantSkills
     const relevantSkillSets = await (
-      await SearchService.getRelevantSkillSet(searchTitle)
+      await SearchService.getRelevantSkillSet(skill)
     ).data.message;
 
     setRelevantSkillSets(relevantSkillSets);
-    setBubbleGraphData(response.data.message);
-    setBarGraphData(barChartDataMapping(response.data.message));
+    setBubbleGraphData(hotSkillsbyLocation.data.message);
+    setBarGraphData(barChartDataMapping(hotSkillsbyLocation.data.message));
     bubbleChartRef.current.drawChart();
     barChartRef.current.drawChart();
   };
 
   const handleSelectedLocation = (value) => {
-    setLocation(value);
+    setLocation(value.label);
   };
 
   const getLocationSuggestions = async (value) => {
@@ -54,13 +56,12 @@ function SearchResult(props) {
   };
 
   const handleSelectedSkill = (value) => {
-    setSkill(value);
-  };
+    setSkill(value.label);
+  }
 
   const getSkillSuggestions = async (value) => {
     const response = await SkillService.findSuggestions(value, 10);
     const skillValues = response.data.message;
-    console.log(skillValues);
     setSkillSuggestions(skillValues);
   };
 
@@ -112,8 +113,10 @@ function SearchResult(props) {
             <Autocomplete
               label="JobTitle"
               placeholder="Software Engineer"
-              // options={ skillSuggestions }
-              options={skillSuggestions.map((skill) => `${skill.skillName}`)}
+              options={skillSuggestions.map((s) => ({
+                label: `${s.SkillName}`, 
+                value: s.SkillId
+              }))}
               limitTags={1}
               handleChange={getSkillSuggestions}
               handleSelection={handleSelectedSkill}

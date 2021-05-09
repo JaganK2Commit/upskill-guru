@@ -133,6 +133,7 @@ export default function Account() {
     // subText: <TextField onBlur={handleChange(state.name)} />
   };
 
+  console.log(userInfo);
   return (
     <div className="account-main">
       <HeadingStyles>Your Profile</HeadingStyles>
