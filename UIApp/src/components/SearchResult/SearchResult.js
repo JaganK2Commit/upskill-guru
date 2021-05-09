@@ -1,16 +1,8 @@
 import React, { useRef, useState, useEffect } from "react";
 import styled, { css } from "styled-components";
 import { Label } from "office-ui-fabric-react/lib/Label";
-import {
-  DefaultButton,
-  PrimaryButton,
-  Stack,
-  IStackTokens,
-} from "office-ui-fabric-react";
-import { ColorClassNames, FontClassNames } from "@uifabric/styling";
 import BarChart from "../Charts/BarChart/BarChart";
 import SearchService from "../../services/SearchService";
-import AutocompleteJobTitle from "./AutocompleteJobTitle";
 import Autocomplete from "../Autocomplete/Autocomplete.js";
 import LocationService from "../../services/LocationService";
 import SkillService from "../../services/SkillService";
@@ -18,14 +10,10 @@ import BubbleChart from "../Charts/BubbleChart/BubbleChart";
 import { barChartDataMapping } from "../../helper/barChartDataMapping";
 import WordCloudJobs from "./WordCloudJobs";
 import { jobsWordData } from "./JobsWordData";
-import { data } from "../UserData";
 import { TextField } from "office-ui-fabric-react/lib";
-import { jobTitlesData } from "./JobTitles";
 import { Button } from "@material-ui/core";
-import FavoriteService from "../../services/FavoriteService"
 
 function SearchResult(props) {
-  const { disabled, checked } = props;
   const [locationSuggestions, setLocationSuggestions] = React.useState([]);
   const [skillSuggestions, setSkillSuggestions] = React.useState([]);
   const [location, setLocation] = useState('');
@@ -42,20 +30,24 @@ function SearchResult(props) {
   const bubbleChartRef = useRef();
 
   const searchHandle = async () => {
-    const response = await SearchService.get(searchTitle);
+    // hotSkillsbyLocation
+    const hotSkillsbyLocation = await SearchService.get(skill, location);
+    // console.log(hotSkillsbyLocation.data.message)
+    
+    // relevantSkills
     const relevantSkillSets = await (
       await SearchService.getRelevantSkillSet(searchTitle)
     ).data.message;
 
     setRelevantSkillSets(relevantSkillSets);
-    setBubbleGraphData(response.data.message);
-    setBarGraphData(barChartDataMapping(response.data.message));
+    setBubbleGraphData(hotSkillsbyLocation.data.message);
+    setBarGraphData(barChartDataMapping(hotSkillsbyLocation.data.message));
     bubbleChartRef.current.drawChart();
     barChartRef.current.drawChart();
   };
 
   const handleSelectedLocation = (value) => {
-    setLocation(value);
+    setLocation(value.label);
   };
 
   const getLocationSuggestions = async (value) => {
@@ -65,13 +57,12 @@ function SearchResult(props) {
   };
 
   const handleSelectedSkill = (value) => {
-    setSkill(value);
+    setSkill(value.label);
   }
 
   const getSkillSuggestions = async (value) => {
     const response = await SkillService.findSuggestions(value, 10);
     const skillValues = response.data.message;
-    console.log(skillValues);
     setSkillSuggestions(skillValues);
   }
 
@@ -102,8 +93,7 @@ function SearchResult(props) {
             <Autocomplete 
               label="JobTitle"
               placeholder="Software Engineer"
-              // options={ skillSuggestions }
-              options={ skillSuggestions.map((skill) => `${skill.skillName}`) }
+              options={ skillSuggestions.map((skill) => ({label: `${skill.skillName}`, value: `${skill.skillId}`})) }
               limitTags={1}
               handleChange={getSkillSuggestions}
               handleSelection={handleSelectedSkill} />
@@ -113,7 +103,7 @@ function SearchResult(props) {
               placeholder="New York, NY"
               label="Location"
               options={locationSuggestions.map(
-                (loc) => `${loc.city}, ${loc.state}`
+                (loc) => ({label: `${loc.city}, ${loc.state}`, value: loc.locationId})
               )}
               limitTags={1}
               handleChange={getLocationSuggestions}
