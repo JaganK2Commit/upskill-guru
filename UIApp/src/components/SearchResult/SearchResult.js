@@ -19,7 +19,6 @@ function SearchResult(props) {
   const [skillSuggestions, setSkillSuggestions] = React.useState([]);
   const [location, setLocation] = useState("");
   const [skill, setSkill] = useState("");
-  const [searchTitle, setSearchTitle] = useState("");
 
   const [bubbleGraphData, setBubbleGraphData] = useState();
   const [barGraphData, setBarGraphData] = useState();
@@ -36,7 +35,7 @@ function SearchResult(props) {
     
     // relevantSkills
     const relevantSkillSets = await (
-      await SearchService.getRelevantSkillSet(searchTitle)
+      await SearchService.getRelevantSkillSet(skill)
     ).data.message;
 
     setRelevantSkillSets(relevantSkillSets);
@@ -114,9 +113,9 @@ function SearchResult(props) {
             <Autocomplete
               label="JobTitle"
               placeholder="Software Engineer"
-              options={ skillSuggestions.map((skill) => ({
-                label: `${skill.skillName}`, 
-                value: `${skill.skillId}`
+              options={skillSuggestions.map((s) => ({
+                label: `${s.SkillName}`, 
+                value: s.SkillId
               }))}
               limitTags={1}
               handleChange={getSkillSuggestions}
