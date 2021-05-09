@@ -28,6 +28,10 @@ const findByTitle = title => {
   return http.get(`/jobs?title=${title}`);
 };
 
+const getRelevantJobTitles = userId => {
+  return http.get(`/jobs/getRelevantJobTitles?userId=${userId}`);
+};
+
 export default {
   getAll,
   get,
@@ -36,4 +40,5 @@ export default {
   remove,
   removeAll,
   findByTitle,
+  getRelevantJobTitles
 };

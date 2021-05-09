@@ -217,3 +217,19 @@ exports.deleteAll = (req, res) => {
       });
     });
 };
+
+exports.getRelevantJobTitles = async (req, res) => {
+  try {
+    const userId = req.query.userId
+    const result = await db.sequelize
+      .query("CALL getRelevantJobTitles (:top, :userId)", { replacements: { top: 15, userId  } })
+      console.log(result);
+    res.send({
+      message: result,
+    });
+  } catch (err) {
+    res.status(500).send({
+      message: "Error while retrieving search results " + err,
+    });
+  }
+};
