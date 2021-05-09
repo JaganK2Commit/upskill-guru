@@ -10,7 +10,7 @@ this.drawChart();
 
 drawChart() {
 const allJobs = this.props.data;
-console.log("allJobs",allJobs[0])
+console.log("allJobs",allJobs)
 var margin = {top: 10, right: 10, bottom: 10, left: 10},
     width = 600 - margin.left - margin.right,
     height = 300 - margin.top - margin.bottom;
@@ -29,7 +29,7 @@ var wordColor = d3.scaleOrdinal().domain(allJobs)
 // new cloud layout to identify word's coordinates
 var layout = cloud()
   .size([width, height])
-  .words(allJobs.map(function(d) { return {text: d.job_title, frequency:d.frequency}; }))
+  .words(allJobs.map(function(d) { return {text: d.JobTitle, frequency:d.Frequency}; }))
   .font('Impact')
   .rotate(function() {return 0;})
   .padding(6)      

@@ -1,14 +1,17 @@
 module.exports = (sequelize, Sequelize) => {
-  const Skill = sequelize.define("skill", {
-    title: {
+  const Skill = sequelize.define("skills", {
+    SkillId: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+    },
+    SkillName: {
       type: Sequelize.STRING
     },
-    description: {
-      type: Sequelize.STRING
-    },
-    published: {
-      type: Sequelize.BOOLEAN
-    }
+  },
+  {
+    tableName: 'skills',
+    timestamps: false
   });
 
   return Skill;
