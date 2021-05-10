@@ -8,7 +8,7 @@ exports.get = async (req, res) => {
 
     const result = await db.sequelize.query(
       "CALL HotSkillsByLocation (:top, :jobTitleKeyword, :city, :state)", 
-      { replacements: { top: 10, jobTitleKeyword, city, state  } }
+      { replacements: { top: 1000, jobTitleKeyword, city, state  } }
     );    
     res.send({ message: result });
   } catch (err) {
@@ -22,7 +22,7 @@ exports.getRelevantSkillSet = async (req, res) => {
   try {
     const jobTitleName = req.query.searchKey
     const result = await db.sequelize
-      .query("CALL getRelevantSkillSet (:top, :jobTitleName)", { replacements: { top: 10, jobTitleName  } })
+      .query("CALL getRelevantSkillSet (:top, :jobTitleName)", { replacements: { top: 1000, jobTitleName  } })
       console.log(result);
     res.send({
       message: result,

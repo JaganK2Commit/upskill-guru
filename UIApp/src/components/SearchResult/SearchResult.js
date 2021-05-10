@@ -34,16 +34,16 @@ function SearchResult(props) {
   const searchHandle = async () => {
     // hotSkillsbyLocation
     const hotSkillsbyLocation = await SearchService.get(skill.label, location.label);
-    // console.log(hotSkillsbyLocation.data.message)
     
     // relevantSkills
     const relevantSkillSets = await (
       await SearchService.getRelevantSkillSet(skill.label)
     ).data.message;
 
+    // console.log(hotSkillsbyLocation.data.message.slice(0, 10))
     setRelevantSkillSets(relevantSkillSets);
+    setBarGraphData(barChartDataMapping(hotSkillsbyLocation.data.message.slice(0, 10)));
     setBubbleGraphData(hotSkillsbyLocation.data.message);
-    setBarGraphData(barChartDataMapping(hotSkillsbyLocation.data.message));
     bubbleChartRef.current.drawChart();
     barChartRef.current.drawChart();
   };
@@ -65,7 +65,6 @@ function SearchResult(props) {
   const getJobSuggestions = async (value) => {
     const response = await JobService.findSuggestions(value, 10);
     const jobValues = response.data.message;
-    console.log(jobValues);
     setJobSuggestions(jobValues);
   }
 
