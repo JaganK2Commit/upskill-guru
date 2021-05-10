@@ -19,9 +19,6 @@ function SearchResult(props) {
   const [jobSuggestions, setJobSuggestions] = React.useState([]);
   const [location, setLocation] = useState('');
   const [skill, setSkill] = useState('');
-  const [searchTitle, setSearchTitle] = useState("");
-  const [favorites, setFavorites] = useState([]);
-  const [message, setMessage] = useState("");
 
   const [bubbleGraphData, setBubbleGraphData] = useState();
   const [barGraphData, setBarGraphData] = useState();
@@ -66,6 +63,7 @@ function SearchResult(props) {
     const response = await JobService.findSuggestions(value, 10);
     const jobValues = response.data.message;
     setJobSuggestions(jobValues);
+    handleSelectedSkill({ label: value, value: value }); // allow searching by partial entry into the search field
   }
 
   const [relevantJobTitles, setRelevantJobTitles] = useState([]);
@@ -121,7 +119,6 @@ function SearchResult(props) {
             <Autocomplete
               label="JobTitle"
               placeholder="Software Engineer"
-              // options={ skillSuggestions }
               options={ jobSuggestions.map(
                 (job) => ({label:job.JobTitle, value:job.JobId}))}
               limitTags={1}
