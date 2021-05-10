@@ -16,6 +16,7 @@ import httpCommon from '../../http-common';
 import { useHistory } from 'react-router-dom';
 import Autocomplete from '../Autocomplete/Autocomplete.js';
 import LocationService from "../../services/LocationService";
+// import AutoComplete from "@material-ui/lab/Autocomplete";
 
 const editIcon = { iconName: 'edit' };
 
@@ -39,7 +40,8 @@ export default function Account() {
     LastName: '',
     Username: '',
     City: '',
-    State: ''
+    State: '',
+    LocationId: ''
   });
 
   const findUserById = async () => {
@@ -105,12 +107,13 @@ export default function Account() {
 
   const handleSelectedLocation = (value) => {
     console.log(value)
-    if (value !== "" && value !== null) {
-      const [city, state] = value.split(', ');
+    if (value) {
+      const [city, state] = value.label.split(', ');
       setUserInfo({
         ...userInfo,
         City: city,
-        State: state
+        State: state,
+        LocationId: value.locationId
       });
     }
   }
@@ -135,9 +138,14 @@ export default function Account() {
 
   console.log(userInfo);
   return (
-    <div className="account-main">
+
+    <div>
+      {userInfo && 
+      <div className="account-main">
       <HeadingStyles>Your Profile</HeadingStyles>
+      
       <div className="ms-Grid main-id" dir="ltr" style={{ marginLeft: '10px' }}>
+        
         <div style={{ marginTop: '20px', marginRight: '120px' }} className="ms-Grid-row">
           {/* <div className="ms-Grid-col ms-lg2" style={{ display: "inline-flex" }}>
             <Label>First Name</Label>
@@ -198,16 +206,23 @@ export default function Account() {
            <div className="ms-Grid-col ms-lg6" style={{ display: "inline-flex", marginTop: '8px', width: "415px" }}>
             <Autocomplete 
               name="Location"
-              value={userInfo.City + ", " + userInfo.State}
+              //value={userInfo.City + ", " + userInfo.State}
+
               placeholder="City, State"
               label="Location"
               variant="outlined"
               style={{ width: "300px" }}
               margin="dense"
-              options={ locationSuggestions.map((loc) => `${loc.city}, ${loc.state}`) }
+              options={ locationSuggestions.map((loc) => ({ label:`${loc.city}, ${loc.state}`, value: loc.locationId  })) }
               limitTags={1}
               handleChange={getLocationSuggestions}
-              handleSelection={handleSelectedLocation} />
+              handleSelection={handleSelectedLocation} 
+              defaultValue={{
+                label: `${userInfo.City}, ${userInfo.State}`,
+                value: userInfo.LocationId,
+              }}/>
+
+
           </div>
           {/* <div className="ms-Grid-col ms-lg2" style={{ display: "inline-flex" }}>
             <ActionButton onClick={() => { toggleHideDialog(); setState({ ...state, field: state.data.password, name: 'password' }) }} iconProps={editIcon} style={{ marginTop: "-4px", color: "gray" }}>Edit</ActionButton>
@@ -285,14 +300,11 @@ export default function Account() {
         </DialogFooter>
       </Dialog>
 
-      {/* <Dialog hidden={hideLocationDialog} onDismiss={toggleHideLocationDialog} dialogContentProps={dialogContentProps} >
-        <DialogFooter>
-          <PrimaryButton onClick={() => { toggleHideDialog(); setState({ ...state, skills: false }) }} text="Save" />
-          <DefaultButton onClick={() => { toggleHideDialog(); setState({ ...state, skills: false }) }} text="Close" />
-        </DialogFooter>
-      </Dialog> */}
 
+    </div>}
     </div>
+
+    
   )
 }
 

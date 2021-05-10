@@ -5,37 +5,40 @@ import BarChart from "../Charts/BarChart/BarChart";
 import SearchService from "../../services/SearchService";
 import Autocomplete from "../Autocomplete/Autocomplete.js";
 import LocationService from "../../services/LocationService";
-import SkillService from "../../services/SkillService";
 import BubbleChart from "../Charts/BubbleChart/BubbleChart";
 import { barChartDataMapping } from "../../helper/barChartDataMapping";
 import WordCloudJobs from "./WordCloudJobs";
 import { TextField } from "office-ui-fabric-react/lib";
 import { Button } from "@material-ui/core";
+import FavoriteService from "../../services/FavoriteService"
 import JobService from "../../services/JobService";
 import { UserContext } from "../../UserContext";
 
 function SearchResult(props) {
   const [locationSuggestions, setLocationSuggestions] = React.useState([]);
-  const [skillSuggestions, setSkillSuggestions] = React.useState([]);
-  const [location, setLocation] = useState("");
-  const [skill, setSkill] = useState("");
+  const [jobSuggestions, setJobSuggestions] = React.useState([]);
+  const [location, setLocation] = useState('');
+  const [skill, setSkill] = useState('');
+  const [searchTitle, setSearchTitle] = useState("");
+  const [favorites, setFavorites] = useState([]);
+  const [message, setMessage] = useState("");
 
   const [bubbleGraphData, setBubbleGraphData] = useState();
   const [barGraphData, setBarGraphData] = useState();
 
   const [relevantSkillSets, setRelevantSkillSets] = useState([]);
-
+ 
   const barChartRef = useRef();
   const bubbleChartRef = useRef();
 
   const searchHandle = async () => {
     // hotSkillsbyLocation
-    const hotSkillsbyLocation = await SearchService.get(skill, location);
+    const hotSkillsbyLocation = await SearchService.get(skill.label, location.label);
     // console.log(hotSkillsbyLocation.data.message)
     
     // relevantSkills
     const relevantSkillSets = await (
-      await SearchService.getRelevantSkillSet(skill)
+      await SearchService.getRelevantSkillSet(skill.label)
     ).data.message;
 
     setRelevantSkillSets(relevantSkillSets);
@@ -46,7 +49,7 @@ function SearchResult(props) {
   };
 
   const handleSelectedLocation = (value) => {
-    setLocation(value.label);
+    setLocation(value);
   };
 
   const getLocationSuggestions = async (value) => {
@@ -56,14 +59,15 @@ function SearchResult(props) {
   };
 
   const handleSelectedSkill = (value) => {
-    setSkill(value.label);
+    setSkill(value);
   }
 
-  const getSkillSuggestions = async (value) => {
-    const response = await SkillService.findSuggestions(value, 10);
-    const skillValues = response.data.message;
-    setSkillSuggestions(skillValues);
-  };
+  const getJobSuggestions = async (value) => {
+    const response = await JobService.findSuggestions(value, 10);
+    const jobValues = response.data.message;
+    console.log(jobValues);
+    setJobSuggestions(jobValues);
+  }
 
   const [relevantJobTitles, setRelevantJobTitles] = useState([]);
   const { user } = useContext(UserContext);
@@ -86,6 +90,11 @@ function SearchResult(props) {
     }
   }, [user]);
 
+  const createFavorite = () => {
+    FavoriteService.create({name:skill.label+location.label, jobTitle:skill,location:location});
+    alert("You've added the search result to your favorites");
+  };
+
   return (
     <div className="account-main">
       {/*/////////////////////////////////////////*/}
@@ -98,8 +107,8 @@ function SearchResult(props) {
             marginTop: "10px",
             marginBottom: "20px",
             position: "absolute",
-            left: "30%",
-            transform: "translate(-10%, -0%)",
+            left: "10%",
+            transform: "translate(0%, -0%)",
             display: "inline-block",
           }}
         >
@@ -113,16 +122,14 @@ function SearchResult(props) {
             <Autocomplete
               label="JobTitle"
               placeholder="Software Engineer"
-              options={skillSuggestions.map((s) => ({
-                label: `${s.SkillName}`, 
-                value: s.SkillId
-              }))}
+              // options={ skillSuggestions }
+              options={ jobSuggestions.map(
+                (job) => ({label:job.JobTitle, value:job.JobId}))}
               limitTags={1}
-              handleChange={getSkillSuggestions}
-              handleSelection={handleSelectedSkill}
-            />
+              handleChange={getJobSuggestions}
+              handleSelection={handleSelectedSkill} />
           </div>
-          <div className="ms-Grid-col" style={{ display: "block", width: 200 }}>
+          <div className="ms-Grid-col" style={{ display: "block", width: 300 }}>
             <Autocomplete
               placeholder="New York, NY"
               label="Location"
@@ -150,7 +157,7 @@ function SearchResult(props) {
           <div className="ms-Grid-col" style={{ display: "block" }}>
             <Button
               variant="contained"
-              onClick={_saveAction}
+              onClick={createFavorite}
               style={{
                 backgroundColor: "#0078D4",
                 color: "white",

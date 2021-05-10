@@ -218,18 +218,48 @@ exports.deleteAll = (req, res) => {
     });
 };
 
-exports.getRelevantJobTitles = async (req, res) => {
+exports.findSuggestions = async (req, res) => {
+  // console.log("findSuggestions")
+  // console.log(req.query)
   try {
-    const userId = req.query.userId
-    const result = await db.sequelize
-      .query("CALL getRelevantJobTitles (:top, :userId)", { replacements: { top: 15, userId  } })
-      console.log(result);
+    const jobKeyword = req.query.searchKey;
+    const limit = +req.query.limit;
+    const result = await dbJob.findAll({
+      attributes: ["JobTitle", [db.Sequelize.fn('min',db.Sequelize.col('JobId')), 'JobId']],
+      where: {
+        JobTitle: {
+          [Op.like]: jobKeyword + "%",
+        },
+      },
+      limit: limit,
+       group: ['JobTitle']
+    });
     res.send({
       message: result,
     });
   } catch (err) {
+    console.log("Error while retrieving search results " + err);
     res.status(500).send({
       message: "Error while retrieving search results " + err,
+    });
+  }
+};
+// console.log("result: " + result);
+exports.getRelevantJobTitles = async (req, res) => {
+  try {
+    const userId = req.query.userId;
+    const result = await db.sequelize.query(
+      "CALL getRelevantJobTitles (:top, :userId)",
+      { replacements: { top: 15, userId } }
+    );
+    console.log(result);
+    res.send({
+      message: result,
+    });
+  } catch (err) {
+    console.log("Error while retrieving relevant titles " + err);
+    res.status(500).send({
+      message: "Error while retrieving relevant titles " + err,
     });
   }
 };

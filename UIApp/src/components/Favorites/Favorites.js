@@ -13,7 +13,13 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
-import FavoriteService from "../../services/FavoriteService"
+import FavoriteService from "../../services/FavoriteService";
+import Autocomplete from '../Autocomplete/Autocomplete.js';
+import LocationService from "../../services/LocationService";
+import AutocompleteJobTitle from '../SearchResult/AutocompleteJobTitle'
+import SearchService from "../../services/SearchService";
+import JobService from "../../services/JobService";
+
 
 const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -34,10 +40,72 @@ const tableIcons = {
 
 export default function Editable() {
   const { useState } = React;
+  const [locationSuggestions, setLocationSuggestions] = React.useState([]);
+  const [location, setLocation] = useState('');
+  const [searchTitle, setSearchTitle] = useState("");
+  const [jobSuggestions, setJobSuggestions] = React.useState([]);
+  const [skill, setSkill] = useState('');
+
+  const handleSelectedLocation = (value) => {
+    setLocation(value);
+  }
+
+  const getLocationSuggestions = async (value) => {
+    const response = await LocationService.get(value, 10);
+    const locationValues = response.data.message;
+    setLocationSuggestions(locationValues);
+  }
+  const handleSelectedSkill = (value) => {
+    setSkill(value);
+  }
+
+  const getJobSuggestions = async (value) => {
+    const response = await JobService.findSuggestions(value, 10);
+    const jobValues = response.data.message;
+    console.log(jobValues);
+    setJobSuggestions(jobValues);
+  }
+  
+  const searchHandle = async () => {
+    const response = await SearchService.get(searchTitle);
+  };
+
   const columns = [
     { title: 'Favorite Name', field: 'name' },
-    { title: 'Job Title', field: 'jobTitle' },
-    { title: 'Location', field: 'location' }
+    { title: 'Job Title', 
+      field: 'jobTitle',
+      render: (l) => l.jobTitle.label,
+      editComponent: (prop) => <Autocomplete 
+      //onChange={(e) => {console.log(e); setSearchTitle(e.target.value)} 
+      options={ jobSuggestions.map(
+        (job) => ({label:job.JobTitle, value:job.JobId}))}
+              limitTags={1}
+              handleChange={getJobSuggestions}
+              handleSelection={(s) => {
+                prop.onChange(s);}}/>,
+    },
+
+    {
+      title: "Location",
+      field: "location",
+      render: (l) => l.location.label,
+      editComponent: (prop) => (
+        <Autocomplete
+          defaultValue = {prop.rowData.location}
+          //placeholder="New York, NY"
+          options={locationSuggestions.map(
+            (loc) => ({ label : `${loc.city}, ${loc.state}`, value : loc.locationId})
+          )}
+          limitTags={1}
+          handleChange={getLocationSuggestions}
+          handleSelection={(s) => {
+            prop.onChange(s);
+          }}
+          
+        />
+      ),
+    }
+
   ];
 
   const [favorites, setFavorites] = useState([]);
@@ -45,7 +113,7 @@ export default function Editable() {
 
   const getFavorites = () => {
     FavoriteService.getAll()
-      .then(response => {
+      .then((response) => {
         setFavorites(response.data);
         console.log(response.data);
       })
@@ -65,6 +133,7 @@ export default function Editable() {
       })
       .catch(e => {
         console.log(e);
+        console.log(favorites);
       });
   };
 
@@ -78,7 +147,7 @@ export default function Editable() {
         console.log(e);
       });
   };
-
+ 
   const deleteFavorite = (favoriteId) => {
     console.log('args',favoriteId);
     FavoriteService.remove(favoriteId)
@@ -121,16 +190,21 @@ export default function Editable() {
           resolve();
         }),
         onRowUpdate: (newData, oldData) =>
-          new Promise((resolve, reject) => {
-            updateFavorite (newData);
-            setTimeout(() => {
-              const dataUpdate = [...favorites];
-              const index = oldData.tableData.id;
-              dataUpdate[index] = newData;
-              setFavorites([...dataUpdate]);
-              resolve();
-            }, 1000)
-          }),
+         new Promise((resolve, reject) => {
+          console.log('MaterialTable Update handler is called', newData);
+          newData.LocationId = newData.location.value;
+          newData.City = newData.location.label.split(',')[0];
+          newData.State = newData.location.label.split(',')[1];
+         // newData.skillName = newData.skill.value;
+          updateFavorite(newData);
+          setTimeout(() => {
+            const dataUpdate = [...favorites];
+            const index = oldData.tableData.id;
+            dataUpdate[index] = newData;
+            setFavorites([...dataUpdate]);
+            resolve();
+          }, 1000);
+        }),
         onRowDelete: oldData =>
           new Promise((resolve, reject) => {
             deleteFavorite(oldData._id)

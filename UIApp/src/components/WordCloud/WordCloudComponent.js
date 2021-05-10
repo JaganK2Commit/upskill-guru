@@ -12,7 +12,7 @@ drawChart() {
 const allSkills = this.props.data;
 console.log("allSkills",allSkills[0])
 var margin = {top: 10, right: 10, bottom: 10, left: 10},
-    width = 600 - margin.left - margin.right,
+    width = 800 - margin.left - margin.right,
     height = 300 - margin.top - margin.bottom;
 
     var svg_word_cloud = d3.select(`#${this.props.id}`).append("svg")
@@ -24,7 +24,8 @@ var margin = {top: 10, right: 10, bottom: 10, left: 10},
 
 var wordColor = d3.scaleOrdinal().domain(allSkills)
                 .range(["#f7cc57", "#3de380", "#966cab", "#f58eab", "#41457a", "#91b0d9", 
-                        "#bab97b", "#9ec765", "#7dc7c6", "#ed645c", "#c9b6b3"])
+                        "#bab97b", "#9ec765", "#7dc7c6", "#ed645c", "#c9b6b3", "#067344",
+                        "#f77b0f", "#ba02f7", "#5869fc", "#466373", "#838485", "#7a5e49"])
 
 // new cloud layout to identify word's coordinates
 var layout = cloud()
