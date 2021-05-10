@@ -51,7 +51,7 @@ function App() {
 
               <div>
               <Switch>
-                <Route exact path={["/"]} component={Front} />
+                <Route exact path={["/"]} component={(user === null) ? Front : SearchResult} />
                 <Route exact path={["/CreateAccount"]} component={CreateAccount} />
                 <Route exact path={["/login"]} component={Login} />
                 
