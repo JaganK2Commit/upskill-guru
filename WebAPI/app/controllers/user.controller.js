@@ -57,7 +57,7 @@ exports.updateUser = async (req, res) => {
 
 exports.register = async (req, res) => {
   console.log('user.controller register');
-  const {username, firstName, lastName, password, confirmPassword, city, state} = req.body;
+  const {username, firstName, lastName, password, confirmPassword, city, state , skills} = req.body;
   if (!username) {
     res.status(449).send({ message: 'username cannot be blank'});
     // throw new Error('username cannot be blank');
@@ -88,6 +88,8 @@ exports.register = async (req, res) => {
     Password: await hashPassword(password),
     RoleId: 1
   });
+
+  userSkills = await db.userskills.bulkCreate(skills.map(s=> ({UserId:  user.get().UserId, SkillId : s.SkillId })));
 
   // determine location id
   if (city != '' && state != '') {

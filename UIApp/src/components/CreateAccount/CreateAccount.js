@@ -12,7 +12,8 @@ import { UserContext } from '../../UserContext';
 import Autocomplete from '../Autocomplete/Autocomplete.js';
 import LocationService from "../../services/LocationService";
 import { Button } from "@material-ui/core";
-
+import SkillDataService from "../../services/SkillService";
+import AutoComplete from "@material-ui/lab/Autocomplete";
 function CreateAccount(props) {
   const { disabled, checked } = props;
   const [locationSuggestions, setLocationSuggestions] = React.useState([]);
@@ -25,7 +26,7 @@ function CreateAccount(props) {
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [skills, setSkills] = useState('');
+  const [skills, setSkills] = useState([]);
 
   const { user, setUser } = useContext(UserContext);
   const history = useHistory();
@@ -40,8 +41,14 @@ function CreateAccount(props) {
     setLocationSuggestions(locationValues);
   }
 
+  const getSkillSuggestions = async (value) => {
+    const response = await SkillDataService.findSuggestions(value, 10);
+    const skills = response.data.message;
+    setSkills(skills);
+  };
+
   const handleSubmit = async e => {
-    const [city, state] = location.split(', ');
+    const [city, state] = location != '' ? location.label.split(', ') : ['',''];
 
     if (!validForm()) {
       return;
@@ -51,7 +58,7 @@ function CreateAccount(props) {
     try {
       const res = await http.post(
         `/account/register`, { 
-          username, firstName, lastName, password, confirmPassword, city, state
+          username, firstName, lastName, password, confirmPassword, city, state, skills
         }
       );
       
@@ -123,7 +130,10 @@ function CreateAccount(props) {
             <Autocomplete 
               placeholder="New York, NY"
               label="Location"
-              options={ locationSuggestions.map((loc) => `${loc.city}, ${loc.state}`) }
+              options={locationSuggestions.map((loc) => ({
+                label: `${loc.city}, ${loc.state}`,
+                value: loc.locationId,
+              }))}
               limitTags={1}
               handleChange={getLocationSuggestions}
               handleSelection={handleSelectedLocation} />
@@ -176,7 +186,29 @@ function CreateAccount(props) {
         </div>
         <div style={{marginTop:'30px',marginRight:'0px', }} className="ms-Grid-row">
           <div className="ms-Grid-col ms-u-sm12 block">
-            <AutocompleteComp data={skills} />
+            <AutoComplete
+          multiple
+          borderless
+          disableClearable
+          limitTags={2}
+          id="tags-standard"
+          options={skills}
+          getOptionLabel={(option) => option.SkillName || ""}
+          onChange={(e, v) => {
+            setSkills(v);
+          }}
+          renderInput={(params) => (
+            <TextField
+              borderless
+              {...params}
+              variant="outlined"
+              placeholder="Add Skills"
+              size="small"
+              onChange={(e) => getSkillSuggestions(e.target.value)}
+            />
+          )}
+        />
+
           </div> 
         </div>
         <div style={{textAlign:"center", marginRight:'100px', marginTop:'30px'}}>
