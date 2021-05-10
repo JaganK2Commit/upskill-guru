@@ -111,6 +111,10 @@ exports.update = (req, res) => {
   const id = req.params.id;
 
   console.log("update payload", req.body);
+  const newSkills = req.body.skills.map((s) => ({
+    JobId: id,
+    SkillId: s.SkillId,
+  }));
   dbJob
     .update(
       { JobTitle: req.body.JobTitle, EmployerName: req.body.EmployerName },
@@ -124,9 +128,19 @@ exports.update = (req, res) => {
       dbJobLocation
         .update({ LocationId: req.body.LocationId }, { where: { JobId: id } })
         .then((num) => {
-          res.send({
-            message: "Job was updated successfully.",
-          });
+          // Remove existing skills in jobskills table
+          db.jobskills
+            .destroy({
+              where: { JobID: id },
+            })
+            .then((num) => {
+              // insert new set of skills
+              db.jobskills.bulkCreate(newSkills).then((num) => {
+                res.send({
+                  message: "JobSkills was updated successfully.",
+                });
+              });
+            });
         });
     })
     .catch((err) => {
@@ -209,18 +223,17 @@ exports.findSuggestions = async (req, res) => {
   // console.log(req.query)
   try {
     const jobKeyword = req.query.searchKey;
-    const limit = +(req.query.limit);
+    const limit = +req.query.limit;
     const result = await dbJob.findAll({
-      attributes: ['JobTitle', 'JobId'],
+      attributes: ["JobTitle", [db.Sequelize.fn('min',db.Sequelize.col('JobId')), 'JobId']],
       where: {
         JobTitle: {
-          [Op.like]: jobKeyword + '%'
-        }
+          [Op.like]: jobKeyword + "%",
+        },
       },
       limit: limit,
-     // group: ['skillName']
+       group: ['JobTitle']
     });
-    // console.log("result: " + result);
     res.send({
       message: result,
     });
@@ -228,6 +241,25 @@ exports.findSuggestions = async (req, res) => {
     console.log("Error while retrieving search results " + err);
     res.status(500).send({
       message: "Error while retrieving search results " + err,
+    });
+  }
+};
+// console.log("result: " + result);
+exports.getRelevantJobTitles = async (req, res) => {
+  try {
+    const userId = req.query.userId;
+    const result = await db.sequelize.query(
+      "CALL getRelevantJobTitles (:top, :userId)",
+      { replacements: { top: 15, userId } }
+    );
+    console.log(result);
+    res.send({
+      message: result,
+    });
+  } catch (err) {
+    console.log("Error while retrieving relevant titles " + err);
+    res.status(500).send({
+      message: "Error while retrieving relevant titles " + err,
     });
   }
 };

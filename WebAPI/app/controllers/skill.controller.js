@@ -174,14 +174,13 @@ exports.findSuggestions = async (req, res) => {
     const skillKeyword = req.query.searchKey;
     const limit = +(req.query.limit);
     const result = await dbSkill.findAll({
-      attributes: ['skillName'],
+      attributes: ['SkillId','SkillName'],
       where: {
         skillName: {
           [Op.like]: skillKeyword + '%'
         }
       },
-      limit: limit,
-      group: ['skillName']
+      limit: limit
     });
     // console.log("result: " + result);
     res.send({

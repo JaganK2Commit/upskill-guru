@@ -14,11 +14,13 @@ import Remove from "@material-ui/icons/Remove";
 import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
-import AutoComplete from "./Autocomplete";
+import AutoComplete from "@material-ui/lab/Autocomplete";
 import { skillsData } from "./SkillData";
 import JobService from "../../services/JobService";
 import Autocomplete from "../Autocomplete/Autocomplete.js";
 import LocationService from "../../services/LocationService";
+import SkillDataService from "../../services/SkillService";
+import TextField from "@material-ui/core/TextField";
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -40,12 +42,19 @@ const tableIcons = {
 export default function Editable() {
   const { useState } = React;
   const [locationSuggestions, setLocationSuggestions] = React.useState([]);
+  const [skillSuggestions, setSkillSuggestions] = React.useState([]);
   const [location, setLocation] = useState();
 
   const getLocationSuggestions = async (value) => {
     const response = await LocationService.get(value, 10);
     const locationValues = response.data.message;
     setLocationSuggestions(locationValues);
+  };
+
+  const getSkillSuggestions = async (value) => {
+    const response = await SkillDataService.findSuggestions(value, 10);
+    const skills = response.data.message;
+    //setSkillSuggestions(skills);
   };
 
   const columns = [
@@ -58,25 +67,57 @@ export default function Editable() {
       render: (job) => `${job.City}, ${job.State}`,
       editComponent: (prop) => (
         <Autocomplete
-          defaultValue = {prop.rowData}
+          defaultValue={{
+            label: `${prop.rowData.City}, ${prop.rowData.State}`,
+            value: prop.rowData.LocationId,
+          }}
           //placeholder="New York, NY"
-          options={locationSuggestions.map(
-            (loc) => ({ label : `${loc.city}, ${loc.state}`, value : loc.locationId})
-          )}
+          options={locationSuggestions.map((loc) => ({
+            label: `${loc.city}, ${loc.state}`,
+            value: loc.locationId,
+          }))}
           limitTags={1}
           handleChange={getLocationSuggestions}
           handleSelection={(s) => {
             prop.onChange(s);
           }}
-          
         />
       ),
     },
     {
       title: "Skills",
       field: "skills",
-      render: (prop) => <AutoComplete dataa={prop} />,
-      editComponent: (prop) => "Not Editable",
+      render: (job) => job.skillNameSet,
+      editComponent: (prop) => (
+        <AutoComplete
+          multiple
+          borderless
+          disableClearable
+          limitTags={2}
+          id="tags-standard"
+          options={skillSuggestions}
+          getOptionLabel={(option) => option.SkillName || ""}
+          onChange={(e, v) => {
+            prop.onChange(v);
+          }}
+          defaultValue={prop.rowData.skillSet.split(",").map((s, i) => ({
+            SkillId: s,
+            SkillName: prop.rowData.skillNameSet.split(",")[i],
+          }))}
+          //getOptionLabel={(option) => option}
+          //value={prop.rowData}
+          renderInput={(params) => (
+            <TextField
+              borderless
+              {...params}
+              variant="outlined"
+              placeholder={`${data ? "Add Skills" : "Add a new skill"}`}
+              size="small"
+              onChange={(e) => getSkillSuggestions(e.target.value)}
+            />
+          )}
+        />
+      ),
     },
   ];
 
@@ -126,9 +167,21 @@ export default function Editable() {
       });
   };
 
+  const retrieveSkills = () => {
+    SkillDataService.getAll()
+      .then((response) => {
+        console.log(response.data);
+        setSkillSuggestions(response.data.skills);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
   useEffect(() => {
     getJobs();
     getLocationSuggestions("");
+    retrieveSkills();
   }, []);
 
   const [dataMain, setData] = useState([...data]);
@@ -151,20 +204,27 @@ export default function Editable() {
         data={jobs}
         editable={{
           onRowAdd: (newData) =>
-        new Promise((resolve, reject) => {
-          createJob (newData);
-          resolve();
-        }),
+            new Promise((resolve, reject) => {
+              createJob(newData);
+              resolve();
+            }),
           onRowUpdate: (newData, oldData) =>
             new Promise((resolve, reject) => {
-              console.log('MaterialTable Update handler is called', newData);
-              newData.LocationId = newData.location.value;
-              newData.City = newData.location.label.split(',')[0];
-              newData.State = newData.location.label.split(',')[1];
+              console.log("MaterialTable Update handler is called", newData);
+              if (newData.location) {
+                newData.LocationId = newData.location.value;
+                newData.City = newData.location.label.split(",")[0];
+                newData.State = newData.location.label.split(",")[1];
+              }
               updateJob(newData);
               setTimeout(() => {
                 const dataUpdate = [...jobs];
                 const index = oldData.tableData.id;
+                if (newData.skills) {
+                  newData.skillNameSet = newData.skills
+                    .map((s) => s.SkillName)
+                    .join(",");
+                }
                 dataUpdate[index] = newData;
                 setJobs([...dataUpdate]);
                 resolve();

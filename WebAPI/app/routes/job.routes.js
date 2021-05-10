@@ -9,6 +9,9 @@ module.exports = app => {
   // Retrieve all jobs
   router.get("/", jobs.findAll);
 
+  // Retrieve relevate Job Titles
+  router.get("/getRelevantJobTitles", jobs.getRelevantJobTitles);
+
   // Update a jobs with id
   router.put("/:id", jobs.update);
 

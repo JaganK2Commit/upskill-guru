@@ -1,31 +1,20 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useContext, useEffect } from "react";
 import styled, { css } from "styled-components";
 import { Label } from "office-ui-fabric-react/lib/Label";
-import {
-  DefaultButton,
-  PrimaryButton,
-  Stack,
-  IStackTokens,
-} from "office-ui-fabric-react";
-import { ColorClassNames, FontClassNames } from "@uifabric/styling";
 import BarChart from "../Charts/BarChart/BarChart";
 import SearchService from "../../services/SearchService";
-import AutocompleteJobTitle from "./AutocompleteJobTitle";
 import Autocomplete from "../Autocomplete/Autocomplete.js";
 import LocationService from "../../services/LocationService";
 import BubbleChart from "../Charts/BubbleChart/BubbleChart";
 import { barChartDataMapping } from "../../helper/barChartDataMapping";
 import WordCloudJobs from "./WordCloudJobs";
-import { jobsWordData } from "./JobsWordData";
-import { data } from "../UserData";
 import { TextField } from "office-ui-fabric-react/lib";
-import { jobTitlesData } from "./JobTitles";
 import { Button } from "@material-ui/core";
 import FavoriteService from "../../services/FavoriteService"
-import JobService from "../../services/JobService"
+import JobService from "../../services/JobService";
+import { UserContext } from "../../UserContext";
 
 function SearchResult(props) {
-  const { disabled, checked } = props;
   const [locationSuggestions, setLocationSuggestions] = React.useState([]);
   const [jobSuggestions, setJobSuggestions] = React.useState([]);
   const [location, setLocation] = useState('');
@@ -36,7 +25,6 @@ function SearchResult(props) {
 
   const [bubbleGraphData, setBubbleGraphData] = useState();
   const [barGraphData, setBarGraphData] = useState();
-  const [wordcloudData, setWordcloudData] = useState(jobsWordData);
 
   const [relevantSkillSets, setRelevantSkillSets] = useState([]);
  
@@ -44,14 +32,18 @@ function SearchResult(props) {
   const bubbleChartRef = useRef();
 
   const searchHandle = async () => {
-    const response = await SearchService.get(searchTitle);
+    // hotSkillsbyLocation
+    const hotSkillsbyLocation = await SearchService.get(skill.label, location.label);
+    // console.log(hotSkillsbyLocation.data.message)
+    
+    // relevantSkills
     const relevantSkillSets = await (
-      await SearchService.getRelevantSkillSet(searchTitle)
+      await SearchService.getRelevantSkillSet(skill.label)
     ).data.message;
 
     setRelevantSkillSets(relevantSkillSets);
-    setBubbleGraphData(response.data.message);
-    setBarGraphData(barChartDataMapping(response.data.message));
+    setBubbleGraphData(hotSkillsbyLocation.data.message);
+    setBarGraphData(barChartDataMapping(hotSkillsbyLocation.data.message));
     bubbleChartRef.current.drawChart();
     barChartRef.current.drawChart();
   };
@@ -76,6 +68,27 @@ function SearchResult(props) {
     console.log(jobValues);
     setJobSuggestions(jobValues);
   }
+
+  const [relevantJobTitles, setRelevantJobTitles] = useState([]);
+  const { user } = useContext(UserContext);
+
+  const getRelevantJobTitles = (userId) => {
+    JobService.getRelevantJobTitles(userId)
+      .then((response) => {
+        setRelevantJobTitles(response.data.message);
+        console.log(response.data.message);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+
+  useEffect(() => {
+    if (user) {
+      getRelevantJobTitles(user.uid);
+    }
+  }, [user]);
 
   const createFavorite = () => {
     FavoriteService.create({name:skill.label+location.label, jobTitle:skill,location:location});
@@ -106,7 +119,7 @@ function SearchResult(props) {
             {/* <AutocompleteJobTitle 
                onChange={(e) => setSearchTitle(e.target.value)}
             /> */}
-            <Autocomplete 
+            <Autocomplete
               label="JobTitle"
               placeholder="Software Engineer"
               // options={ skillSuggestions }
@@ -120,9 +133,10 @@ function SearchResult(props) {
             <Autocomplete
               placeholder="New York, NY"
               label="Location"
-              options={locationSuggestions.map(
-                (loc) => ({ label : `${loc.city}, ${loc.state}`, value : loc.locationId})
-              )}
+              options={locationSuggestions.map((loc) => ({
+                label: `${loc.city}, ${loc.state}`,
+                value: loc.locationId,
+              }))}
               limitTags={1}
               handleChange={getLocationSuggestions}
               handleSelection={handleSelectedLocation}
@@ -413,7 +427,9 @@ function SearchResult(props) {
             className="ms-Grid-col ms-lg12"
             style={{ display: "block", marginTop: "10px", textAlign: "center" }}
           >
-            <WordCloudJobs id="wordcloud" data={wordcloudData} />
+            {relevantJobTitles.length > 0 && (
+              <WordCloudJobs id="wordcloud" data={relevantJobTitles} />
+            )}
           </div>
         </div>
 
@@ -445,7 +461,6 @@ const _saveAction = () => {
   //     console.log(e);
   //   });
 };
-
 
 function _searchAction() {
   alert("Search for skills!");

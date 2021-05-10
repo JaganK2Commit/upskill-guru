@@ -154,7 +154,8 @@ exports.getUserById = async (req, res) => {
     LastName: '',
     Username: '',
     City: '',
-    State: ''
+    State: '',
+    LocationId: ''
   }
 
   if (user) {
@@ -183,6 +184,7 @@ exports.getUserById = async (req, res) => {
         ...userData, 
         City: location.get().City,
         State: location.get().State,
+        LocationId: userlocation.get().LocationId,
       }
     }
     

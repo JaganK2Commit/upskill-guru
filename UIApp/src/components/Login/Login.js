@@ -61,6 +61,7 @@ function Login() {
         <div style={{marginTop:'20px' }} className="ms-Grid-row">
           <div className="ms-Grid-col ms-lg12" style={{display:"inline-block"}}>
             <TextField 
+              type="password"
               label="Password" 
               style={{ width: 300, marginRight: 2 }}
               size="small"
