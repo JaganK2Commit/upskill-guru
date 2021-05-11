@@ -14,11 +14,14 @@ import FavoriteService from "../../services/FavoriteService"
 import JobService from "../../services/JobService";
 import { UserContext } from "../../UserContext";
 
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 function SearchResult(props) {
   const [locationSuggestions, setLocationSuggestions] = React.useState([]);
   const [jobSuggestions, setJobSuggestions] = React.useState([]);
   const [location, setLocation] = useState('');
   const [skill, setSkill] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const [bubbleGraphData, setBubbleGraphData] = useState();
   const [barGraphData, setBarGraphData] = useState();
@@ -29,6 +32,7 @@ function SearchResult(props) {
   const bubbleChartRef = useRef();
 
   const searchHandle = async () => {
+    setLoading(true);
     // hotSkillsbyLocation
     const hotSkillsbyLocation = await SearchService.get(skill.label, location.label);
     
@@ -43,6 +47,7 @@ function SearchResult(props) {
     setBubbleGraphData(hotSkillsbyLocation.data.message);
     bubbleChartRef.current.drawChart();
     barChartRef.current.drawChart();
+    setLoading(false);
   };
 
   const handleSelectedLocation = (value) => {
@@ -163,6 +168,8 @@ function SearchResult(props) {
             </Button>
           </div>
         </div>
+
+        {/* { loading && <CircularProgress /> } */}
 
         {relevantSkillSets && relevantSkillSets.length > 0 && (
           <div
