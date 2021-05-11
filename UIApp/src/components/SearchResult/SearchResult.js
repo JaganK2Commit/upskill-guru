@@ -163,71 +163,11 @@ function SearchResult(props) {
             </Button>
           </div>
         </div>
-        {/*//////////////////////////////////////////////////////*/}
-        {/*  Search result for most frequent skills - BAR CHART  */}
-        {/*//////////////////////////////////////////////////////*/}
-        <div
-          className="ms-Grid-row"
-          style={{ marginTop: "70px", marginLeft: "50px" }}
-        >
-          {barGraphData && (
-            <div className="ms-Grid-col ms-lg12" style={{ display: "block" }}>
-              <Label
-                style={{
-                  textAlign: "center",
-                  fontSize: 20,
-                  fontWeight: "normal",
-                }}
-              >
-                {barGraphData.length > 0
-                  ? "The most popular skills for the job title:"
-                  : "No matching results"}
-              </Label>
-              <BarChart
-                style={{ fill: "#3268a8" }}
-                id="barChart"
-                data={barGraphData}
-                ref={barChartRef}
-                //onPressBar={(skill_name)=>bubbleChartRef.current.updateChart(skill_name)}
-              />
-
-              <Label></Label>
-            </div>
-          )}
-
-          {/*/////////////////////////////////////////////////////////////////////////*/}
-          {/*  Search result for most frequent skills by location - MAP/BUBBLE CHART  */}
-          {/*/////////////////////////////////////////////////////////////////////////*/}
-          {barGraphData && (
-            <div
-              className="ms-Grid-col ms-lg12"
-              style={{ display: "block", marginTop: "30px" }}
-            >
-              <Label
-                style={{
-                  textAlign: "center",
-                  fontSize: 20,
-                  fontWeight: "normal",
-                }}
-              >
-                {barGraphData.length > 0
-                  ? "Locations with job offers, based on skills:"
-                  : "No matching results"}
-              </Label>
-              <BubbleChart
-                ref={bubbleChartRef}
-                style={{ width: "100%", float: "left" }}
-                id="bubbleChart"
-                data={bubbleGraphData}
-              />
-            </div>
-          )}
-        </div>
 
         {relevantSkillSets && relevantSkillSets.length > 0 && (
           <div
             className="ms-Grid-row"
-            style={{ marginTop: "30px", marginLeft: "0px" }}
+            style={{ marginTop: "100px", marginLeft: "0px" }}
           >
             {/*///////////////////////////////////////////////*/}
             {/*  Most frequent skills based on user's skills  */}
@@ -391,6 +331,67 @@ function SearchResult(props) {
             </div>
           </div>
         )}
+        
+        {/*//////////////////////////////////////////////////////*/}
+        {/*  Search result for most frequent skills - BAR CHART  */}
+        {/*//////////////////////////////////////////////////////*/}
+        <div
+          className="ms-Grid-row"
+          style={{ marginTop: "70px", marginLeft: "50px" }}
+        >
+          {barGraphData && (
+            <div className="ms-Grid-col ms-lg12" style={{ display: "block" }}>
+              <Label
+                style={{
+                  textAlign: "center",
+                  fontSize: 20,
+                  fontWeight: "normal",
+                }}
+              >
+                {barGraphData.length > 0
+                  ? "The most popular skills for the job title:"
+                  : "No matching results"}
+              </Label>
+              <BarChart
+                style={{ fill: "#3268a8" }}
+                id="barChart"
+                data={barGraphData}
+                ref={barChartRef}
+                //onPressBar={(skill_name)=>bubbleChartRef.current.updateChart(skill_name)}
+              />
+
+              <Label></Label>
+            </div>
+          )}
+
+          {/*/////////////////////////////////////////////////////////////////////////*/}
+          {/*  Search result for most frequent skills by location - MAP/BUBBLE CHART  */}
+          {/*/////////////////////////////////////////////////////////////////////////*/}
+          {barGraphData && (
+            <div
+              className="ms-Grid-col ms-lg12"
+              style={{ display: "block", marginTop: "30px" }}
+            >
+              <Label
+                style={{
+                  textAlign: "center",
+                  fontSize: 20,
+                  fontWeight: "normal",
+                }}
+              >
+                {barGraphData.length > 0
+                  ? "Locations with job offers, based on skills:"
+                  : "No matching results"}
+              </Label>
+              <BubbleChart
+                ref={bubbleChartRef}
+                style={{ width: "100%", float: "left" }}
+                id="bubbleChart"
+                data={bubbleGraphData}
+              />
+            </div>
+          )}
+        </div>
 
         {/*////////////////////////////////////////////////////////////////////////*/}
         {/*  Suggestions for job titles search based on user's skills - WORDCLOUD  */}
