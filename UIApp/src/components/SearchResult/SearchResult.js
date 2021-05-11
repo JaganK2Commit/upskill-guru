@@ -14,11 +14,14 @@ import FavoriteService from "../../services/FavoriteService"
 import JobService from "../../services/JobService";
 import { UserContext } from "../../UserContext";
 
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 function SearchResult(props) {
   const [locationSuggestions, setLocationSuggestions] = React.useState([]);
   const [jobSuggestions, setJobSuggestions] = React.useState([]);
   const [location, setLocation] = useState('');
   const [skill, setSkill] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const [bubbleGraphData, setBubbleGraphData] = useState();
   const [barGraphData, setBarGraphData] = useState();
@@ -29,6 +32,7 @@ function SearchResult(props) {
   const bubbleChartRef = useRef();
 
   const searchHandle = async () => {
+    setLoading(true);
     // hotSkillsbyLocation
     const hotSkillsbyLocation = await SearchService.get(skill.label, location.label);
     
@@ -41,8 +45,10 @@ function SearchResult(props) {
     setRelevantSkillSets(relevantSkillSets);
     setBarGraphData(barChartDataMapping(hotSkillsbyLocation.data.message.slice(0, 10)));
     setBubbleGraphData(hotSkillsbyLocation.data.message);
+    setLoading(false);
     bubbleChartRef.current.drawChart();
     barChartRef.current.drawChart();
+ 
   };
 
   const handleSelectedLocation = (value) => {
@@ -162,7 +168,10 @@ function SearchResult(props) {
               Add to Favorite
             </Button>
           </div>
+          { loading && <CircularProgress />}
         </div>
+
+
 
         {relevantSkillSets && relevantSkillSets.length > 0 && (
           <div

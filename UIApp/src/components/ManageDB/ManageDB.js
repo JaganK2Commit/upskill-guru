@@ -21,6 +21,8 @@ import Autocomplete from "../Autocomplete/Autocomplete.js";
 import LocationService from "../../services/LocationService";
 import SkillDataService from "../../services/SkillService";
 import TextField from "@material-ui/core/TextField";
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -44,7 +46,7 @@ export default function Editable() {
   const [locationSuggestions, setLocationSuggestions] = React.useState([]);
   const [skillSuggestions, setSkillSuggestions] = React.useState([]);
   const [location, setLocation] = useState();
-
+  const [loading, setLoading] = useState(false);
   const getLocationSuggestions = async (value) => {
     const response = await LocationService.get(value, 10);
     const locationValues = response.data.message;
@@ -179,14 +181,17 @@ export default function Editable() {
   };
 
   useEffect(() => {
+    setLoading(true);
     getJobs();
     getLocationSuggestions("");
     retrieveSkills();
+    setLoading(false);
   }, []);
 
   const [dataMain, setData] = useState([...data]);
   return (
     <div className="table" style={{ maxWidth: "95%" }}>
+      { loading && <CircularProgress />}
       <MaterialTable
         title="Manage your database"
         localization={{
