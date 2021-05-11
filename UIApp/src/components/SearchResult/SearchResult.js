@@ -45,9 +45,10 @@ function SearchResult(props) {
     setRelevantSkillSets(relevantSkillSets);
     setBarGraphData(barChartDataMapping(hotSkillsbyLocation.data.message.slice(0, 10)));
     setBubbleGraphData(hotSkillsbyLocation.data.message);
+    setLoading(false);
     bubbleChartRef.current.drawChart();
     barChartRef.current.drawChart();
-    setLoading(false);
+ 
   };
 
   const handleSelectedLocation = (value) => {
@@ -167,9 +168,10 @@ function SearchResult(props) {
               Add to Favorite
             </Button>
           </div>
+          { loading && <CircularProgress />}
         </div>
 
-        {/* { loading && <CircularProgress /> } */}
+
 
         {relevantSkillSets && relevantSkillSets.length > 0 && (
           <div
