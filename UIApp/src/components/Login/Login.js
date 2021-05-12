@@ -14,16 +14,22 @@ function Login() {
   const history = useHistory();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState();
 
   const handleSubmit = async e => {
     e.preventDefault();
     const res = await http.post(`/account/login?username=${username}&password=${password}`);
 
-    // if login was successful
-    if (res.data.token) {
-      setUser(res.data);
-      localStorage.setItem('user', JSON.stringify(res.data))
-      history.push('/home');
+    if (res.data.message === "no such user in the DB") {
+      setError(username + " is not valid")
+    }
+    else {
+      // if login was successful
+      if (res.data.token) {
+        setUser(res.data);
+        localStorage.setItem('user', JSON.stringify(res.data))
+        history.push('/home');
+      }
     }
   }
 
@@ -35,9 +41,6 @@ function Login() {
             left: '46%', 
             top: '50%',
             transform: 'translate(-75%, -0%)'}}>
-        {/* <div style={{marginTop:'20px',marginRight:'100px', }} className="ms-Grid-row">
-          <div className="ms-Grid-col ms-lg6" style={{display:"inline-block"}}>
-        </div></div> */}
         <HeadingStyles 
             style={{ position: 'absolute', 
             left: '50%', 
@@ -50,7 +53,8 @@ function Login() {
         <div style={{marginTop:'70px',marginRight:'100px', }} className="ms-Grid-row">
           <div className="ms-Grid-col ms-lg12" style={{display:"inline-block"}}>
             <TextField 
-              label="Username" 
+              label={error || "Username"}
+              error={error}
               style={{ width: 300, marginRight: 2 }}
               size="small"
               required 

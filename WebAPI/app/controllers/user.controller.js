@@ -9,7 +9,8 @@ exports.login = async (req, res) => {
   const user = await db.users.findOne({ where: { username } });
 
   if (!user) {
-    throw new Error(username + ' not found in the database');
+    res.send({message: "no such user in the DB"});
+    // throw new Error(username + ' not found in the database');
   }
 
   if (await comparePassword(password, user.dataValues.Password)) {
