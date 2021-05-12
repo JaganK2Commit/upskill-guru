@@ -2,11 +2,7 @@ import React from 'react';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import { getPropsWithDefaults } from '@uifabric/utilities';
 
-// fluent-ui icons
-// const editIcon: IIconProps = { iconName: 'edit' };
-// useStyles
 const useStyles = makeStyles((theme) => ({
   root: {
     width: 300,
@@ -40,11 +36,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// main function
 const Tags = ({value, placeholder, label, options, limitTags, handleChange, handleSelection, defaultValue}) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  // const [suggestions, setSuggestions] = React.useState([]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -55,14 +49,10 @@ const Tags = ({value, placeholder, label, options, limitTags, handleChange, hand
   };
 
   return (
-    // <div className={classes.root}>
       <Autocomplete
-        // borderless
-        // disableClearable
         defaultValue={defaultValue}
         value={value}
         autoSelect
-        // classes={{ paper: classes.paper }}
         limitTags={limitTags}
         fullWidth={true}
         options={ options }
@@ -71,8 +61,6 @@ const Tags = ({value, placeholder, label, options, limitTags, handleChange, hand
         getOptionSelected={(option, value) => option.value === value.value }
         renderInput={(params) => (
           <TextField 
-            // borderless
-            // className={classes.textfield}
             placeholder={placeholder}
             label={label}
             onChange={ e => handleChange(e.target.value) }
@@ -83,7 +71,6 @@ const Tags = ({value, placeholder, label, options, limitTags, handleChange, hand
           />
         )}
       />
-    // </div>
   );
 }
 
