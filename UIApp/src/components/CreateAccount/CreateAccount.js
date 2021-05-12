@@ -2,10 +2,7 @@ import React, { useState, useContext } from "react";
 import { useHistory } from 'react-router-dom';
 import styled from "styled-components";
 import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
-import { PrimaryButton, Label} from 'office-ui-fabric-react';
-import { ColorClassNames } from "@uifabric/styling";
-import AutocompleteComp from './Autocomplete';
+import { Label} from 'office-ui-fabric-react';
 import { Link } from "react-router-dom";
 import http from '../../http-common';
 import { UserContext } from '../../UserContext';
@@ -27,6 +24,7 @@ function CreateAccount(props) {
   const [passwordError, setPasswordError] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [skills, setSkills] = useState([]);
+  const [error, setError] = useState();
 
   const { user, setUser } = useContext(UserContext);
   const history = useHistory();
@@ -62,12 +60,18 @@ function CreateAccount(props) {
         }
       );
       
-      setUser(res.data);
-      localStorage.setItem('user', JSON.stringify(res.data))
-      history.push('/home');
+      if (res.data.message === "username taken, pick another one") {
+        setUsernameError("username taken");
+      }
+      else {
+        setUser(res.data);
+        localStorage.setItem('user', JSON.stringify(res.data))
+        history.push('/home');
+      }
     }
     catch (err) {
       console.log(err);
+      setError(err);
     }
   }
 
@@ -118,12 +122,12 @@ function CreateAccount(props) {
         <div style={{marginTop:'50px',marginRight:'100px', }} className="ms-Grid-row">
           <div className="ms-Grid-col ms-lg6" style={{display:"inline-block"}}>
             <TextField 
-              label="Username" 
+              label={usernameError || "Username"}
+              error={usernameError}
               style={{ width: 300, marginRight: 2 }}
               size="small"
               required 
               variant="outlined"
-              errorMessage={usernameError}
               onChange={e => setUsername(e.target.value)} />
           </div>
           <div className="ms-Grid-col ms-lg6" style={{display:"inline-block", width: "316px"}}>
@@ -142,12 +146,12 @@ function CreateAccount(props) {
         <div style={{marginTop:'20px',marginRight:'100px', }} className="ms-Grid-row">
           <div className="ms-Grid-col ms-lg6" style={{display:"inline-block"}}>
             <TextField 
-              label="First Name" 
+              label={firstNameError || "First Name"} 
+              error={firstNameError}
               style={{ width: 300, marginRight: 2  }}
               size="small"
               required 
               variant="outlined"
-              errorMessage={firstNameError}
               onChange={e => setFirstName(e.target.value)} />
           </div>
           <div className="ms-Grid-col ms-lg6" style={{display:"inline-block"}}>
@@ -162,19 +166,20 @@ function CreateAccount(props) {
         <div style={{marginTop:'20px',marginRight:'100px', }} className="ms-Grid-row">
           <div className="ms-Grid-col ms-lg6" style={{display:"inline-block"}}>
             <TextField 
-              label="Password" 
+              label={passwordError || "Password"} 
+              error={passwordError}
               type="password"
               style={{ width: 300, marginRight: 2  }}
               size="small"
               variant="outlined"
               canRevealPassword
               required 
-              errorMessage={passwordError}
               onChange={e => setPassword(e.target.value)} />
           </div>
           <div className="ms-Grid-col ms-lg6" style={{display:"inline-block"}}>
             <TextField 
-              label="Confirm Password" 
+              label={passwordError || "Confirm Password"}
+              error={passwordError}
               style={{ width: 300 }}
               size="small"
               variant="outlined"

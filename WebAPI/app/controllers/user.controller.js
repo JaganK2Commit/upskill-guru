@@ -77,7 +77,7 @@ exports.register = async (req, res) => {
 
   let user = await db.users.findOne({ where: { username } });
   if (user) {
-    res.status(449).send({ message: 'username taken, pick another one'});
+    res.send({ message: 'username taken, pick another one'});
   }
 
   // create user
