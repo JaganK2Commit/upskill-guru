@@ -217,7 +217,7 @@ export default function Account() {
               limitTags={1}
               handleChange={getLocationSuggestions}
               handleSelection={handleSelectedLocation} 
-              defaultValue={{
+              value={{
                 label: `${userInfo.City}, ${userInfo.State}`,
                 value: userInfo.LocationId,
               }}/>
