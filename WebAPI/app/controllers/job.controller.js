@@ -73,7 +73,7 @@ exports.findAll = async (req, res) => {
     var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
     const result = await db.sequelize.query(
       "CALL getJobDetails (:pageNumber, :pageSize)",
-      { replacements: { pageNumber: page || 1, pageSize: size || 20 } }
+      { replacements: { pageNumber: page || 1, pageSize: size || 20000 } }
     );
 
     const totalCount = await dbJob.findAll({

@@ -56,7 +56,6 @@ export default function Editable() {
   const getSkillSuggestions = async (value) => {
     const response = await SkillDataService.findSuggestions(value, 10);
     const skills = response.data.message;
-    //setSkillSuggestions(skills);
   };
 
   const columns = [
@@ -73,7 +72,6 @@ export default function Editable() {
             label: `${prop.rowData.City}, ${prop.rowData.State}`,
             value: prop.rowData.LocationId,
           }}
-          //placeholder="New York, NY"
           options={locationSuggestions.map((loc) => ({
             label: `${loc.city}, ${loc.state}`,
             value: loc.locationId,
@@ -106,8 +104,6 @@ export default function Editable() {
             SkillId: s,
             SkillName: prop.rowData.skillNameSet.split(",")[i],
           }))}
-          //getOptionLabel={(option) => option}
-          //value={prop.rowData}
           renderInput={(params) => (
             <TextField
               borderless
