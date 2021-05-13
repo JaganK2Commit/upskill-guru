@@ -108,6 +108,7 @@ function SearchResult(props) {
 
   return (
     <div className="account-main">
+      
       {/*/////////////////////////////////////////*/}
       {/*  Search box for job title and location  */}
       {/*/////////////////////////////////////////*/}
@@ -138,16 +139,14 @@ function SearchResult(props) {
         </div>
         <div
           className="ms-Grid-row"
-          style={{ marginTop: "10px", marginLeft: "50px", display: "block" }}
+          style={{ marginTop: "25px", justifyContent: 'center',
+          display: "flex", }}
         >
-          <div
-            className="ms-Grid-col ms-lg12"
-            style={{ display: "block", marginTop: "10px", textAlign: "center" }}
-          >
+
             {relevantJobTitles.length > 0 && (
               <WordCloudJobs id="wordcloud" data={relevantJobTitles} />
             )}
-          </div>
+
         </div>
 
         <div
@@ -155,10 +154,8 @@ function SearchResult(props) {
           style={{
             marginTop: "30px",
             marginBottom: "20px",
-            position: "absolute",
-            left: "10%",
-            transform: "translate(0%, -0%)",
-            display: "inline-block",
+            justifyContent: 'center',
+            display: "flex",
           }}
         >
           <div
@@ -220,7 +217,7 @@ function SearchResult(props) {
         {relevantSkillSets && relevantSkillSets.length > 0 && (
           <div
             className="ms-Grid-row"
-            style={{ marginTop: "100px", marginLeft: "0px" }}
+            style={{ marginTop: "50px", marginLeft: "0px" }}
           >
             {/*///////////////////////////////////////////////*/}
             {/*  Most frequent skills based on user's skills  */}
@@ -228,21 +225,21 @@ function SearchResult(props) {
 
             <div
               className="ms-Grid-col ms-lg12"
-              style={{ display: "block", marginTop: "30px" }}
+              style={{ display: "block"}}
             >
-              <TextField
-                value="Frequent combination of skills needed by employers:"
+                            <Label
                 style={{
-                  fontWeight: "normal",
+                  textAlign: "center",
                   fontSize: 20,
-                  width: 800,
-                  position: "absolute",
-                  left: "50%",
-                  transform: "translate(-40%, -0%)",
+                  fontWeight: "normal",
                 }}
-                readOnly
-                borderless
-              />
+              >
+                {relevantSkillSets.length > 0
+                  ? "Frequent combination of skills needed by employers:"
+                  : ""}
+              </Label>
+
+              
             </div>
 
             {/*///////////////////////////////////////////*/}
@@ -250,7 +247,7 @@ function SearchResult(props) {
             {/*///////////////////////////////////////////*/}
             <div
               className="ms-Grid-col ms-lg6"
-              style={{ display: "block", textAlign: "right" }}
+              style={{ display: "block",  marginTop: "30px", textAlign: "right" }}
             >
               <TextField
                 value={relevantSkillSets[0].skillSet}
@@ -325,7 +322,7 @@ function SearchResult(props) {
             {/*///////////////////////////////////////////*/}
             {/*///////////////   Legend   ////////////////*/}
             {/*///////////////////////////////////////////*/}
-            <div className="ms-Grid-col ms-lg6" style={{ display: "block" }}>
+            <div className="ms-Grid-col ms-lg6" style={{ display: "block", marginTop: "30px",  }}>
               <TextField
                 value="■ Most frequent"
                 style={{
@@ -390,7 +387,7 @@ function SearchResult(props) {
         {/*//////////////////////////////////////////////////////*/}
         <div
           className="ms-Grid-row"
-          style={{ marginTop: "70px", marginLeft: "50px" }}
+          style={{ marginTop: "30px", marginLeft: "50px" }}
         >
           {barGraphData && (
             <div className="ms-Grid-col ms-lg12" style={{ display: "block" }}>
@@ -438,7 +435,8 @@ function SearchResult(props) {
               </Label>
               <BubbleChart
                 ref={bubbleChartRef}
-                style={{ width: "100%", float: "left" }}
+                style={{justifyContent: 'center',
+    display: "flex", }}
                 id="bubbleChart"
                 data={bubbleGraphData}
               />

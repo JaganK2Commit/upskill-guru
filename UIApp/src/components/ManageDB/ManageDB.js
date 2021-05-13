@@ -192,7 +192,7 @@ export default function Editable() {
   const [dataMain, setData] = useState([...data]);
   return (
     <div>
-      <div style={{justifyContent:'center', width:'100%', height: '100%', position: 'absolute', zIndex: 2000, }}> {loading && <LinearProgress />} </div>
+      <div style={{justifyContent:'center', width:'100%', position: 'absolute', zIndex: 2000, }}> {loading && <LinearProgress />} </div>
       <div className="table" >
         <MaterialTable
           title="Manage your database"
