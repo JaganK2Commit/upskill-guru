@@ -117,9 +117,9 @@ function CreateAccount(props) {
       </HeadingStyles>
       </div>
       <div className="ms-Grid main-id" dir="ltr" style={{ position: 'absolute', 
-                                                          left: '50%', 
-                                                          transform: 'translate(-57%, -0%)'}}>
-        <div style={{marginTop:'50px',marginRight:'100px', }} className="ms-Grid-row">
+                                                          left: '40%', 
+                                                          transform: 'translate(-50%, -0%)'}}>
+        <div style={{marginTop:'50px' }} className="ms-Grid-row">
           <div className="ms-Grid-col ms-lg6" style={{display:"inline-block"}}>
             <TextField 
               label={usernameError || "Username"}
@@ -143,7 +143,7 @@ function CreateAccount(props) {
               handleSelection={handleSelectedLocation} />
           </div>
         </div>
-        <div style={{marginTop:'20px',marginRight:'100px', }} className="ms-Grid-row">
+        <div style={{marginTop:'20px' }} className="ms-Grid-row">
           <div className="ms-Grid-col ms-lg6" style={{display:"inline-block"}}>
             <TextField 
               label={firstNameError || "First Name"} 
@@ -163,7 +163,7 @@ function CreateAccount(props) {
               onChange={e => setLastName(e.target.value)} />
           </div>
         </div>
-        <div style={{marginTop:'20px',marginRight:'100px', }} className="ms-Grid-row">
+        <div style={{marginTop:'20px' }} className="ms-Grid-row">
           <div className="ms-Grid-col ms-lg6" style={{display:"inline-block"}}>
             <TextField 
               label={passwordError || "Password"} 
@@ -192,15 +192,15 @@ function CreateAccount(props) {
         <div style={{marginTop:'30px',marginRight:'0px', }} className="ms-Grid-row">
           <div className="ms-Grid-col ms-u-sm12 block">
             <AutoComplete
-          multiple
-          borderless
-          disableClearable
-          limitTags={2}
-          id="tags-standard"
-          options={skills}
-          getOptionLabel={(option) => option.SkillName || ""}
-          onChange={(e, v) => {
-            setSkills(v);
+              multiple
+              borderless
+              disableClearable
+              limitTags={2}
+              id="tags-standard"
+              options={skills}
+              getOptionLabel={(option) => option.SkillName || ""}
+              onChange={(e, v) => {
+              setSkills(v);
           }}
           renderInput={(params) => (
             <TextField
@@ -208,6 +208,7 @@ function CreateAccount(props) {
               {...params}
               variant="outlined"
               placeholder="Add Skills"
+              style={{ width: 625 }}
               size="small"
               onChange={(e) => getSkillSuggestions(e.target.value)}
             />
@@ -216,7 +217,7 @@ function CreateAccount(props) {
 
           </div> 
         </div>
-        <div style={{textAlign:"center", marginRight:'100px', marginTop:'30px'}}>
+        <div style={{textAlign:"center", marginTop:'30px'}}>
              <Button 
               variant="contained" 
               onClick={handleSubmit}
@@ -228,7 +229,7 @@ function CreateAccount(props) {
               Create Account
               </Button>
         </div>
-        <div style={{textAlign:"center", marginRight:'100px', marginTop:'30px'}}>
+        <div style={{textAlign:"center", marginTop:'30px'}}>
             <Label>If you already have an account, please <Link to="/Login" >login here</Link></Label>
         </div>
      </div>
