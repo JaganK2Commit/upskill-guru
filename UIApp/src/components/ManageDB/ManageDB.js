@@ -6,6 +6,8 @@ import AddBox from "@material-ui/icons/AddBox";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import Check from "@material-ui/icons/Check";
 import ChevronRight from "@material-ui/icons/ChevronRight";
+
+import ChevronLeft from "@material-ui/icons/ChevronLeft";
 import Clear from "@material-ui/icons/Clear";
 import DeleteOutline from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
@@ -21,7 +23,7 @@ import Autocomplete from "../Autocomplete/Autocomplete.js";
 import LocationService from "../../services/LocationService";
 import SkillDataService from "../../services/SkillService";
 import TextField from "@material-ui/core/TextField";
-import CircularProgress from '@material-ui/core/CircularProgress';
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -39,6 +41,8 @@ const tableIcons = {
   SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
   ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
+  NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+  PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
 };
 
 export default function Editable() {
@@ -46,10 +50,11 @@ export default function Editable() {
   const [locationSuggestions, setLocationSuggestions] = React.useState([]);
   const [skillSuggestions, setSkillSuggestions] = React.useState([]);
   const [location, setLocation] = useState();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const getLocationSuggestions = async (value) => {
     const response = await LocationService.get(value, 10);
     const locationValues = response.data.message;
+    console.log(locationValues)
     setLocationSuggestions(locationValues);
   };
 
@@ -126,6 +131,7 @@ export default function Editable() {
       .then((response) => {
         setJobs(response.data.result);
         console.log(response.data);
+        setLoading(false);
       })
       .catch((e) => {
         console.log(e);
@@ -181,70 +187,71 @@ export default function Editable() {
     getJobs();
     getLocationSuggestions("");
     retrieveSkills();
-    setLoading(false);
   }, []);
 
   const [dataMain, setData] = useState([...data]);
   return (
-    <div className="table" style={{ maxWidth: "95%" }}>
-      { loading && <CircularProgress />}
-      <MaterialTable
-        title="Manage your database"
-        localization={{
-          header: {
-            actions: "Edit Delete",
-          },
-        }}
-        columns={columns}
-        icons={tableIcons}
-        options={{
-          actionsColumnIndex: -1,
-          showFirstLastPageButtons: false,
-          paging: true,
-        }}
-        data={jobs}
-        editable={{
-          onRowAdd: (newData) =>
-            new Promise((resolve, reject) => {
-              createJob(newData);
-              resolve();
-            }),
-          onRowUpdate: (newData, oldData) =>
-            new Promise((resolve, reject) => {
-              console.log("MaterialTable Update handler is called", newData);
-              if (newData.location) {
-                newData.LocationId = newData.location.value;
-                newData.City = newData.location.label.split(",")[0];
-                newData.State = newData.location.label.split(",")[1];
-              }
-              updateJob(newData);
-              setTimeout(() => {
-                const dataUpdate = [...jobs];
-                const index = oldData.tableData.id;
-                if (newData.skills) {
-                  newData.skillNameSet = newData.skills
-                    .map((s) => s.SkillName)
-                    .join(",");
+    <div>
+      <div style={{justifyContent:'center', width:'100%', height: '100%', position: 'absolute', zIndex: 2000, }}> {loading && <LinearProgress />} </div>
+      <div className="table" >
+        <MaterialTable
+          title="Manage your database"
+          localization={{
+            header: {
+              actions: "Edit Delete",
+            },
+          }}
+          columns={columns}
+          icons={tableIcons}
+          options={{
+            actionsColumnIndex: -1,
+            showFirstLastPageButtons: false,
+            paging: true,
+          }}
+          data={jobs}
+          editable={{
+            onRowAdd: (newData) =>
+              new Promise((resolve, reject) => {
+                createJob(newData);
+                resolve();
+              }),
+            onRowUpdate: (newData, oldData) =>
+              new Promise((resolve, reject) => {
+                console.log("MaterialTable Update handler is called", newData);
+                if (newData.location) {
+                  newData.LocationId = newData.location.value;
+                  newData.City = newData.location.label.split(",")[0];
+                  newData.State = newData.location.label.split(",")[1];
                 }
-                dataUpdate[index] = newData;
-                setJobs([...dataUpdate]);
-                resolve();
-              }, 1000);
-            }),
-          onRowDelete: (oldData) =>
-            new Promise((resolve, reject) => {
-              deleteJob(oldData.JobId);
-              setTimeout(() => {
-                const dataDelete = [...jobs];
-                const index = oldData.tableData.id;
-                dataDelete.splice(index, 1);
-                setJobs([...dataDelete]);
+                updateJob(newData);
+                setTimeout(() => {
+                  const dataUpdate = [...jobs];
+                  const index = oldData.tableData.id;
+                  if (newData.skills) {
+                    newData.skillNameSet = newData.skills
+                      .map((s) => s.SkillName)
+                      .join(",");
+                  }
+                  dataUpdate[index] = newData;
+                  setJobs([...dataUpdate]);
+                  resolve();
+                }, 1000);
+              }),
+            onRowDelete: (oldData) =>
+              new Promise((resolve, reject) => {
+                deleteJob(oldData.JobId);
+                setTimeout(() => {
+                  const dataDelete = [...jobs];
+                  const index = oldData.tableData.id;
+                  dataDelete.splice(index, 1);
+                  setJobs([...dataDelete]);
 
-                resolve();
-              }, 1000);
-            }),
-        }}
-      />
+                  resolve();
+                }, 1000);
+              }),
+          }}
+        />
+      </div>
     </div>
   );
 }
