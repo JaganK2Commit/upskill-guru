@@ -14,9 +14,8 @@ import AutocompleteComp from './Autocomplete'
 import { UserContext } from '../../UserContext';
 import httpCommon from '../../http-common';
 import { useHistory } from 'react-router-dom';
-import Autocomplete from '../Autocomplete/Autocomplete.js';
 import LocationService from "../../services/LocationService";
-import AutoComplete from "@material-ui/lab/Autocomplete";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import SkillDataService from "../../services/SkillService";
 
 const editIcon = { iconName: 'edit' };
@@ -41,6 +40,7 @@ export default function Account() {
     FirstName: '',
     LastName: '',
     Username: '',
+    Skills: [],
     City: '',
     State: '',
     LocationId: ''
@@ -109,12 +109,10 @@ export default function Account() {
 
   let newPass="";
   const handlePasswordChange = async (newPassword) => {
-    // console.log({uid: user.uid, newPassword})
     const response = await httpCommon.post('/account/changePassword', {uid: user.uid, password: newPassword});
   }
 
   const handleSelectedLocation = (value) => {
-    console.log(value)
     if (value) {
       const [city, state] = value.label.split(', ');
       setUserInfo({
@@ -123,6 +121,14 @@ export default function Account() {
         State: state,
         LocationId: value.locationId
       });
+    }
+  }
+
+  const handleSelectedSkill = (value) => {
+    if (value) {
+      const data = {...userInfo};
+      data.Skills = value;
+      setUserInfo(data);
     }
   }
 
@@ -144,7 +150,6 @@ export default function Account() {
  
   };
 
-  console.log(userInfo);
   return (
 
     <div>
@@ -203,53 +208,58 @@ export default function Account() {
           </div>
         
            <div className="ms-Grid-col ms-lg6" style={{ display: "inline-block", marginTop: '8px', width: "415px" }}>
-            <Autocomplete 
-              name="Location"
-              placeholder="City, State"
-              label="Location"
-              variant="outlined"
-              style={{ width: "300px" }}
-              margin="dense"
-              options={ locationSuggestions.map((loc) => ({ label:`${loc.city}, ${loc.state}`, value: loc.locationId  })) }
+           {userInfo.Username && <Autocomplete
+              disableClearable
               limitTags={1}
-              handleChange={getLocationSuggestions}
-              handleSelection={handleSelectedLocation} 
-              value={{
+              options={ locationSuggestions.map((loc) => ({ label:`${loc.city}, ${loc.state}`, value: loc.locationId  })) }
+              getOptionLabel={(loc) => `${loc.label}`}
+              defaultValue={{
                 label: `${userInfo.City}, ${userInfo.State}`,
                 value: userInfo.LocationId,
-              }}/>
-
-
+              }}
+              onChange={(e, v) => handleSelectedLocation(v)}
+              renderInput={(params) => (
+                <TextField
+                borderless
+                {...params}
+                  variant="outlined"
+                  placeholder={`New York, NY`}
+                  size="small"
+                  onChange={(e) => getLocationSuggestions(e.target.value)}
+                  />
+              )}
+            />}
           </div>
          
         </div>
 
         <div style={{ marginTop: '20px', marginRight: '0px' }} className="ms-Grid-row">
-        <div className="ms-Grid-col ms-lg6" style={{ display: "inline-block"}}>
-        <AutoComplete
-              multiple
-              borderless
-              disableClearable
-              limitTags={2}
-              id="tags-standard"
-              options={skills}
-              getOptionLabel={(option) => option.SkillName || ""}
-              onChange={(e, v) => {
-              setSkills(v);
-          }}
-          renderInput={(params) => (
-            <TextField
-              borderless
-              {...params}
-              variant="outlined"
-              placeholder="Add Skills"
-              style={{ width: 400, marginTop: 14}}
-              size="small"
-              onChange={(e) => getSkillSuggestions(e.target.value)}
-            />
-          )}
-        />
-            </div>
+        <div className="ms-Grid-col ms-lg6" style={{ display: "inline-block" }}>
+          {userInfo.Username && <Autocomplete
+            multiple
+            borderless
+            disableClearable
+            limitTags={5}
+            id="tags-standard"
+            options={ skills }
+            getOptionLabel={(Skills) => Skills.SkillName || ""}
+            onChange={(e, v) => { handleSelectedSkill(v); }}
+            defaultValue={userInfo.Skills.map((s, i) => ({
+              SkillId: s.SkillId,
+              SkillName: s.SkillName,
+            }))}
+            renderInput={(params) => (
+              <TextField
+                borderless
+                {...params}
+                variant="outlined"
+                placeholder="add skills"
+                size="small"
+                onChange={(e) => getSkillSuggestions(e.target.value)}
+              />
+            )}
+          />}
+        </div>
         <div className="ms-Grid-col ms-lg6" style={{ marginTop: '12px', width: "415px", display: "inline-block" }}>
             <Button 
                 variant="outlined"
