@@ -10,8 +10,8 @@ const get = (searchKey, location) => {
   }
 };
 
-const getRelevantSkillSet = (searchKey) => {
-  return http.get(`/search/getRelevantSkillSet?searchKey=${searchKey}`);
+const getRelevantSkillSet = (searchKey,userId) => {
+  return http.get(`/search/getRelevantSkillSet?searchKey=${searchKey}&userId=${userId}`);
 };
 
 export default {
