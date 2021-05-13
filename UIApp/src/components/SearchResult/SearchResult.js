@@ -38,7 +38,7 @@ function SearchResult(props) {
     
     // relevantSkills
     const relevantSkillSets = await (
-      await SearchService.getRelevantSkillSet(skill.label)
+      await SearchService.getRelevantSkillSet(skill.label, user.uid)
     ).data.message;
 
     // console.log(hotSkillsbyLocation.data.message.slice(0, 10))

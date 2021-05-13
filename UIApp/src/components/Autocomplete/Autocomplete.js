@@ -55,7 +55,6 @@ const Tags = ({value, placeholder, label, options, limitTags, handleChange, hand
   };
 
   return (
-    // <div className={classes.root}>
       <Autocomplete
         // borderless
         // disableClearable
@@ -83,7 +82,6 @@ const Tags = ({value, placeholder, label, options, limitTags, handleChange, hand
           />
         )}
       />
-    // </div>
   );
 }
 
