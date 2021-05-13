@@ -76,7 +76,7 @@ export default function Editable() {
       field: 'jobTitle',
       render: (l) => l.jobTitle.label,
       editComponent: (prop) => <Autocomplete 
-      //onChange={(e) => {console.log(e); setSearchTitle(e.target.value)} 
+      defaultValue = {prop.rowData.jobTitle}
       options={ jobSuggestions.map(
         (job) => ({label:job.JobTitle, value:job.JobId}))}
               limitTags={1}

@@ -14,7 +14,7 @@ import FavoriteService from "../../services/FavoriteService"
 import JobService from "../../services/JobService";
 import { UserContext } from "../../UserContext";
 
-import CircularProgress from '@material-ui/core/CircularProgress';
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 function SearchResult(props) {
   const [locationSuggestions, setLocationSuggestions] = React.useState([]);
@@ -34,7 +34,7 @@ function SearchResult(props) {
   const searchHandle = async () => {
     setLoading(true);
     // hotSkillsbyLocation
-    const hotSkillsbyLocation = await SearchService.get(skill.label, location.label);
+    const hotSkillsbyLocation = await SearchService.get(skill?.label, location?.label);
     
     // relevantSkills
     const relevantSkillSets = await (
@@ -78,8 +78,16 @@ function SearchResult(props) {
   const getRelevantJobTitles = (userId) => {
     JobService.getRelevantJobTitles(userId)
       .then((response) => {
-        setRelevantJobTitles(response.data.message);
-        console.log(response.data.message);
+        let relevantTitles = response.data.message;
+
+        console.log(relevantTitles.map(r => r.Frequency));
+        const maxFrequency = Math.max(...relevantTitles.map(r => r.Frequency));
+        console.log('maxFrequency', maxFrequency);
+        relevantTitles = relevantTitles.map(r => ({ JobTitle : r.JobTitle, Frequency : (r.Frequency * 50 / maxFrequency)}));
+
+
+        setRelevantJobTitles(relevantTitles);
+        console.log(relevantTitles);
       })
       .catch((e) => {
         console.log(e);
@@ -104,10 +112,48 @@ function SearchResult(props) {
       {/*  Search box for job title and location  */}
       {/*/////////////////////////////////////////*/}
       <div className="ms-Grid main-id" dir="ltr">
+        
+        {/*////////////////////////////////////////////////////////////////////////*/}
+        {/*  Suggestions for job titles search based on user's skills - WORDCLOUD  */}
+        {/*////////////////////////////////////////////////////////////////////////*/}
+        <div
+          className="ms-Grid-row"
+          style={{ marginTop: "10px", display: "block" }}
+        >
+          <div className="ms-Grid-col ms-lg12">
+            <TextField
+              value="Based on your skills you might be interested in these job titles:"
+              style={{
+                fontWeight: "normal",
+                fontSize: 20,
+                width: 800,
+                position: "absolute",
+                left: "50%",
+                transform: "translate(-40%, -0%)",
+              }}
+              readOnly
+              borderless
+            />
+          </div>
+        </div>
+        <div
+          className="ms-Grid-row"
+          style={{ marginTop: "10px", marginLeft: "50px", display: "block" }}
+        >
+          <div
+            className="ms-Grid-col ms-lg12"
+            style={{ display: "block", marginTop: "10px", textAlign: "center" }}
+          >
+            {relevantJobTitles.length > 0 && (
+              <WordCloudJobs id="wordcloud" data={relevantJobTitles} />
+            )}
+          </div>
+        </div>
+
         <div
           className="ms-Grid-row"
           style={{
-            marginTop: "10px",
+            marginTop: "30px",
             marginBottom: "20px",
             position: "absolute",
             left: "10%",
@@ -119,9 +165,6 @@ function SearchResult(props) {
             className="ms-Grid-col "
             style={{ display: "block", width: 300 }}
           >
-            {/* <AutocompleteJobTitle 
-               onChange={(e) => setSearchTitle(e.target.value)}
-            /> */}
             <Autocomplete
               label="JobTitle"
               placeholder="Software Engineer"
@@ -168,7 +211,8 @@ function SearchResult(props) {
               Add to Favorite
             </Button>
           </div>
-          { loading && <CircularProgress />}
+          
+          <div style={{justifyContent:'center', width:'100%',position: 'absolute', zIndex: 2000, marginTop: '100px' }}> {loading && <LinearProgress />} </div>
         </div>
 
 
@@ -402,71 +446,11 @@ function SearchResult(props) {
           )}
         </div>
 
-        {/*////////////////////////////////////////////////////////////////////////*/}
-        {/*  Suggestions for job titles search based on user's skills - WORDCLOUD  */}
-        {/*////////////////////////////////////////////////////////////////////////*/}
-        <div
-          className="ms-Grid-row"
-          style={{ marginTop: "30px", display: "block" }}
-        >
-          <div className="ms-Grid-col ms-lg12">
-            <TextField
-              value="Based on your skills you might be interested in these job titles:"
-              style={{
-                fontWeight: "normal",
-                fontSize: 20,
-                width: 800,
-                position: "absolute",
-                left: "50%",
-                transform: "translate(-40%, -0%)",
-              }}
-              readOnly
-              borderless
-            />
-          </div>
-        </div>
-        <div
-          className="ms-Grid-row"
-          style={{ marginTop: "30px", marginLeft: "50px", display: "block" }}
-        >
-          <div
-            className="ms-Grid-col ms-lg12"
-            style={{ display: "block", marginTop: "10px", textAlign: "center" }}
-          >
-            {relevantJobTitles.length > 0 && (
-              <WordCloudJobs id="wordcloud" data={relevantJobTitles} />
-            )}
-          </div>
-        </div>
-
-        {/*/////////////////////////////////*/}
-        {/*  Save search result to MongoDB  */}
-        {/*/////////////////////////////////*/}
-        <div
-          className="ms-Grid-row"
-          style={{
-            marginTop: "30px",
-            marginRight: "120px",
-            marginBottom: "100px",
-          }}
-        ></div>
       </div>
     </div>
   );
 }
 
-const _saveAction = () => {
-  // FavoriteService.create({
-  //   jobTitle: searchTitle,
-  //   location: Location
-  // })
-  //   .then(response => {
-  //     console.log(response.data);
-  //   })
-  //   .catch(e => {
-  //     console.log(e);
-  //   });
-};
 
 function _searchAction() {
   alert("Search for skills!");

@@ -211,7 +211,7 @@ export default function Account() {
            {userInfo.Username && <Autocomplete
               disableClearable
               limitTags={1}
-              options={ locationSuggestions.map((loc) => ({ label:`${loc.city}, ${loc.state}`, value: loc.locationId  })) }
+              options={ locationSuggestions?.map((loc) => ({ label:`${loc.city}, ${loc.state}`, value: loc.locationId  })) }
               getOptionLabel={(loc) => `${loc.label}`}
               defaultValue={{
                 label: `${userInfo.City}, ${userInfo.State}`,
@@ -244,7 +244,7 @@ export default function Account() {
             options={ skills }
             getOptionLabel={(Skills) => Skills.SkillName || ""}
             onChange={(e, v) => { handleSelectedSkill(v); }}
-            defaultValue={userInfo.Skills.map((s, i) => ({
+            defaultValue={userInfo.Skills?.map((s, i) => ({
               SkillId: s.SkillId,
               SkillName: s.SkillName,
             }))}
@@ -253,6 +253,7 @@ export default function Account() {
                 borderless
                 {...params}
                 variant="outlined"
+                style={{ width: 400, marginTop: '15px',  }}
                 placeholder="add skills"
                 size="small"
                 onChange={(e) => getSkillSuggestions(e.target.value)}
