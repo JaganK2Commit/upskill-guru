@@ -9,7 +9,8 @@ exports.login = async (req, res) => {
   const user = await db.users.findOne({ where: { username } });
 
   if (!user) {
-    throw new Error(username + ' not found in the database');
+    res.send({message: "no such user in the DB"});
+    // throw new Error(username + ' not found in the database');
   }
 
   if (await comparePassword(password, user.dataValues.Password)) {
@@ -22,7 +23,7 @@ exports.login = async (req, res) => {
 };
 
 exports.updateUser = async (req, res) => {
-  const {Username, FirstName, LastName, City, State} = req.body;
+  const {Username, FirstName, LastName, City, State, Skills} = req.body;
   // console.log(req.body)
 
   try {
@@ -36,8 +37,9 @@ exports.updateUser = async (req, res) => {
           state: State
         }
       });
-      console.log(City)
-      console.log(State)
+      
+      await db.userskills.destroy({ where: { UserID: user.get().UserId } });
+      userSkills = await db.userskills.bulkCreate(Skills.map(s => ({ UserId:  user.get().UserId, SkillId: s.SkillId })));
 
       if (location) {
         const userlocation = await db.userlocation.findOne({ where: user.get().UserId });
@@ -77,7 +79,7 @@ exports.register = async (req, res) => {
 
   let user = await db.users.findOne({ where: { username } });
   if (user) {
-    res.status(449).send({ message: 'username taken, pick another one'});
+    res.send({ message: 'username taken, pick another one'});
   }
 
   // create user
@@ -168,6 +170,12 @@ exports.getUserById = async (req, res) => {
       Username: user.get().UserName,
     }
 
+    // find user's skills
+    const skills = await db.sequelize.query(
+      "CALL getUserSkills (:uid)",
+      { replacements: { uid: uid } }
+    );
+
     // find user's location
     const userlocation = await db.userlocation.findOne({
       where:  {
@@ -186,6 +194,7 @@ exports.getUserById = async (req, res) => {
         ...userData, 
         City: location.get().City,
         State: location.get().State,
+        Skills: skills,
         LocationId: userlocation.get().LocationId,
       }
     }
