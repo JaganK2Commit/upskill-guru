@@ -1,6 +1,6 @@
 const MongoClient = require('mongodb').MongoClient;
 const ObjectId = require('mongodb').ObjectId;
-const uri = "mongodb+srv://cs411upskillguru_admin:admin123admin@mongodbcluster.jjvj7.mongodb.net/cs411upskillguru_mongodb?retryWrites=true&w=majority";
+const uri = "";
 
 let client;
 let db;
