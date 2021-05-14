@@ -164,6 +164,8 @@ export default function Editable() {
   useEffect(() => {
     if(user)
       getFavorites();
+      getLocationSuggestions("");
+      getJobSuggestions("J");
   }, [user]);
 
   return (

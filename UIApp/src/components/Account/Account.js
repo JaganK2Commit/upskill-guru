@@ -220,6 +220,7 @@ export default function Account() {
               onChange={(e, v) => handleSelectedLocation(v)}
               renderInput={(params) => (
                 <TextField
+                label="Location"
                 borderless
                 {...params}
                   variant="outlined"
@@ -250,6 +251,7 @@ export default function Account() {
             }))}
             renderInput={(params) => (
               <TextField
+              label="Skills"
                 borderless
                 {...params}
                 variant="outlined"
