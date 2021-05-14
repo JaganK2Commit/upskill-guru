@@ -64,9 +64,9 @@ function CreateAccount(props) {
         setUsernameError("username taken");
       }
       else {
-        setUser(res.data);
-        localStorage.setItem('user', JSON.stringify(res.data))
-        history.push('/home');
+        // setUser(res.data);
+        // localStorage.setItem('user', JSON.stringify(res.data))
+        history.push('/login');
       }
     }
     catch (err) {
