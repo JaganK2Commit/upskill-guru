@@ -10,14 +10,14 @@ export default mergeStyleSets({
     position: 'relative',
     left: pxToRem(layout.constants.leftNav.width),
     width : '80%',
-    paddingTop: pxToRem(layout.constants.mainContentContainer.topMargin)
+    //paddingTop: pxToRem(layout.constants.mainContentContainer.topMargin)
   },
   Container: {
-    backgroundColor: theme.palette.white,
+    // backgroundColor: theme.palette.white,
     position: 'relative',
     horizontalAlign : 'center',
-    left: pxToRem(layout.constants.leftNav.width),
-    width : '80%',
-    minHeight : pxToRem(layout.constants.mainContainer.minHeight),
+    //left: pxToRem(layout.constants.leftNav.width),
+    //width : '80%',
+    // minHeight : pxToRem(layout.constants.mainContainer.minHeight),
   },
 });

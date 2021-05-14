@@ -15,7 +15,7 @@ exports.login = async (req, res) => {
 
   if (await comparePassword(password, user.dataValues.Password)) {
     const token = jwt.sign({ sub: user.userId }, 'secret', { expiresIn: '7d' });
-    res.status(200).send({ 'uid': user.get().UserId, token });
+    res.status(200).send({ 'uid': user.get().UserId, 'roleId': user.RoleId, token });
   }
   else {
     throw new Error('invalid password');

@@ -160,13 +160,13 @@ export default function Account() {
       <div className="ms-Grid main-id" dir="ltr" style={{ 
                                                           left: '30%', 
                                                           transform: 'translate(1%, -0%)'}}>
-        <div style={{ marginTop: '0px', marginRight: '0px' }} className="ms-Grid-row">
-          <div className="ms-Grid-col ms-lg12" style={{ display: "inline-flex" }}>
+        <div style={{ marginTop: '0px', marginRight: '0px', display: "flex", justifyContent:'center' }} className="ms-Grid-row">
+          <div className="ms-Grid-col ms-lg12">
             <HeadingStyles>Your Profile</HeadingStyles>
           </div>
         </div>
         <div style={{ marginTop: '10px', marginRight: '0px' }} className="ms-Grid-row">
-          <div className="ms-Grid-col ms-lg6" style={{ display: "inline-block" }}>
+          <div className="ms-Grid-col ms-lg6" style={{ display: "flex", justifyContent:'center'}}>
             <TextField id="t1" 
               name="FirstName"
               value={userInfo.FirstName} 
@@ -179,7 +179,7 @@ export default function Account() {
               />
           </div>
          
-          <div className="ms-Grid-col ms-lg6" style={{ display: "inline-block" }}>
+          <div className="ms-Grid-col ms-lg6" style={{  display: "inline-block"}}>
             <TextField 
               name="LastName"
               value={userInfo.LastName} 
@@ -187,7 +187,7 @@ export default function Account() {
               label="Last Name"
               style={{ width: "400px" }}
               margin="dense" 
-              className="input-style" 
+              //className="input-style" 
               onChange={e => handleChange(e)} />
           </div>
          
@@ -195,7 +195,7 @@ export default function Account() {
 
         <div style={{ marginTop: '20px', marginRight: '0px' }} className="ms-Grid-row">
          
-          <div className="ms-Grid-col ms-lg6" style={{ display: "inline-block" }}>
+          <div className="ms-Grid-col ms-lg6"  style={{ display: "flex", justifyContent:'center'}}>
             <TextField 
               name="Username"
               value={userInfo.Username} 
@@ -234,7 +234,7 @@ export default function Account() {
         </div>
 
         <div style={{ marginTop: '20px', marginRight: '0px' }} className="ms-Grid-row">
-        <div className="ms-Grid-col ms-lg6" style={{ display: "inline-block" }}>
+        <div className="ms-Grid-col ms-lg6"  style={{ display: "flex", justifyContent:'center'}}>
           {userInfo.Username && <Autocomplete
             multiple
             borderless
