@@ -131,7 +131,7 @@ function SearchResult(props) {
         >
           <div className="ms-Grid-col ms-lg12">
             <TextField
-              value="Based on your skills you might be interested in these job titles:"
+              value="Based on your current skills consider learning the following frequently sought after skill:"
               style={{
                 fontWeight: "normal",
                 fontSize: 20,
