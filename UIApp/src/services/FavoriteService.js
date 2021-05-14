@@ -1,7 +1,7 @@
 import http from "../http-common";
 
-const getAll = () => {
-  return http.get("/favorites");
+const getAll = (userId) => {
+  return http.get(`/favorites?userId=${userId}`);
 };
 
 const create = data => {

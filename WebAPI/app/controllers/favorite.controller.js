@@ -41,6 +41,7 @@ exports.create = async (req, res) => {
       // Create a Favorite
   const favorite = {
     name: req.body.name,
+    userId: req.body.userId,
     jobTitle : req.body.jobTitle,
     location: req.body.location
   };
@@ -61,8 +62,8 @@ exports.create = async (req, res) => {
 exports.findAll = async (req, res) => {
 
   try {
-  const { page, size, title } = req.query;
-  var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
+  const { page, size, title, userId } = req.query;
+  var condition = userId ? { userId: Number( userId) } : null;
 
   const { limit, offset } = getPagination(page, size);
 

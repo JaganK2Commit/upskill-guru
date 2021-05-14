@@ -10,7 +10,7 @@ import { barChartDataMapping } from "../../helper/barChartDataMapping";
 import WordCloudJobs from "./WordCloudJobs";
 import { TextField } from "office-ui-fabric-react/lib";
 import { Button } from "@material-ui/core";
-import FavoriteService from "../../services/FavoriteService"
+import FavoriteService from "../../services/FavoriteService";
 import JobService from "../../services/JobService";
 import { UserContext } from "../../UserContext";
 
@@ -19,23 +19,26 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 function SearchResult(props) {
   const [locationSuggestions, setLocationSuggestions] = React.useState([]);
   const [jobSuggestions, setJobSuggestions] = React.useState([]);
-  const [location, setLocation] = useState('');
-  const [skill, setSkill] = useState('');
+  const [location, setLocation] = useState("");
+  const [skill, setSkill] = useState("");
   const [loading, setLoading] = useState(false);
 
   const [bubbleGraphData, setBubbleGraphData] = useState();
   const [barGraphData, setBarGraphData] = useState();
 
   const [relevantSkillSets, setRelevantSkillSets] = useState([]);
- 
+
   const barChartRef = useRef();
   const bubbleChartRef = useRef();
 
   const searchHandle = async () => {
     setLoading(true);
     // hotSkillsbyLocation
-    const hotSkillsbyLocation = await SearchService.get(skill?.label, location?.label);
-    
+    const hotSkillsbyLocation = await SearchService.get(
+      skill?.label,
+      location?.label
+    );
+
     // relevantSkills
     const relevantSkillSets = await (
       await SearchService.getRelevantSkillSet(skill.label, user.uid)
@@ -43,12 +46,13 @@ function SearchResult(props) {
 
     // console.log(hotSkillsbyLocation.data.message.slice(0, 10))
     setRelevantSkillSets(relevantSkillSets);
-    setBarGraphData(barChartDataMapping(hotSkillsbyLocation.data.message.slice(0, 10)));
+    setBarGraphData(
+      barChartDataMapping(hotSkillsbyLocation.data.message.slice(0, 10))
+    );
     setBubbleGraphData(hotSkillsbyLocation.data.message);
     setLoading(false);
     bubbleChartRef.current.drawChart();
     barChartRef.current.drawChart();
- 
   };
 
   const handleSelectedLocation = (value) => {
@@ -63,14 +67,14 @@ function SearchResult(props) {
 
   const handleSelectedSkill = (value) => {
     setSkill(value);
-  }
+  };
 
   const getJobSuggestions = async (value) => {
     const response = await JobService.findSuggestions(value, 10);
     const jobValues = response.data.message;
     setJobSuggestions(jobValues);
     handleSelectedSkill({ label: value, value: value }); // allow searching by partial entry into the search field
-  }
+  };
 
   const [relevantJobTitles, setRelevantJobTitles] = useState([]);
   const { user } = useContext(UserContext);
@@ -80,11 +84,13 @@ function SearchResult(props) {
       .then((response) => {
         let relevantTitles = response.data.message;
 
-        console.log(relevantTitles.map(r => r.Frequency));
-        const maxFrequency = Math.max(...relevantTitles.map(r => r.Frequency));
-        console.log('maxFrequency', maxFrequency);
-        relevantTitles = relevantTitles.map(r => ({ JobTitle : r.JobTitle, Frequency : (r.Frequency * 50 / maxFrequency)}));
-
+        const maxFrequency = Math.max(
+          ...relevantTitles.map((r) => r.Frequency)
+        );
+        relevantTitles = relevantTitles.map((r) => ({
+          JobTitle: r.JobTitle,
+          Frequency: (r.Frequency * 50) / maxFrequency,
+        }));
 
         setRelevantJobTitles(relevantTitles);
         console.log(relevantTitles);
@@ -94,7 +100,6 @@ function SearchResult(props) {
       });
   };
 
-
   useEffect(() => {
     if (user) {
       getRelevantJobTitles(user.uid);
@@ -102,7 +107,11 @@ function SearchResult(props) {
   }, [user]);
 
   const createFavorite = () => {
-    FavoriteService.create({name:skill.label+location.label, jobTitle:skill,location:location});
+    FavoriteService.create({
+      name: skill.label + location.label,
+      jobTitle: skill,
+      location: location,
+    });
     alert("You've added the search result to your favorites");
   };
 
@@ -112,7 +121,6 @@ function SearchResult(props) {
       {/*  Search box for job title and location  */}
       {/*/////////////////////////////////////////*/}
       <div className="ms-Grid main-id" dir="ltr">
-        
         {/*////////////////////////////////////////////////////////////////////////*/}
         {/*  Suggestions for job titles search based on user's skills - WORDCLOUD  */}
         {/*////////////////////////////////////////////////////////////////////////*/}
@@ -138,16 +146,15 @@ function SearchResult(props) {
         </div>
         <div
           className="ms-Grid-row"
-          style={{ marginTop: "10px", marginLeft: "50px", display: "block" }}
+          style={{
+            marginTop: "25px",
+            justifyContent: "center",
+            display: "flex",
+          }}
         >
-          <div
-            className="ms-Grid-col ms-lg12"
-            style={{ display: "block", marginTop: "10px", textAlign: "center" }}
-          >
-            {relevantJobTitles.length > 0 && (
-              <WordCloudJobs id="wordcloud" data={relevantJobTitles} />
-            )}
-          </div>
+          {relevantJobTitles.length > 0 && (
+            <WordCloudJobs id="wordcloud" data={relevantJobTitles} />
+          )}
         </div>
 
         <div
@@ -155,10 +162,8 @@ function SearchResult(props) {
           style={{
             marginTop: "30px",
             marginBottom: "20px",
-            position: "absolute",
-            left: "10%",
-            transform: "translate(0%, -0%)",
-            display: "inline-block",
+            justifyContent: "center",
+            display: "flex",
           }}
         >
           <div
@@ -168,11 +173,14 @@ function SearchResult(props) {
             <Autocomplete
               label="JobTitle"
               placeholder="Software Engineer"
-              options={ jobSuggestions.map(
-                (job) => ({label:job.JobTitle, value:job.JobId}))}
+              options={jobSuggestions.map((job) => ({
+                label: job.JobTitle,
+                value: job.JobId,
+              }))}
               limitTags={1}
               handleChange={getJobSuggestions}
-              handleSelection={handleSelectedSkill} />
+              handleSelection={handleSelectedSkill}
+            />
           </div>
           <div className="ms-Grid-col" style={{ display: "block", width: 300 }}>
             <Autocomplete
@@ -211,38 +219,42 @@ function SearchResult(props) {
               Add to Favorite
             </Button>
           </div>
-          
-          <div style={{justifyContent:'center', width:'100%',position: 'absolute', zIndex: 2000, marginTop: '100px' }}> {loading && <LinearProgress />} </div>
+
+          <div
+            style={{
+              justifyContent: "center",
+              width: "100%",
+              position: "absolute",
+              zIndex: 2000,
+              marginTop: "100px",
+            }}
+          >
+            {" "}
+            {loading && <LinearProgress />}{" "}
+          </div>
         </div>
-
-
 
         {relevantSkillSets && relevantSkillSets.length > 0 && (
           <div
             className="ms-Grid-row"
-            style={{ marginTop: "100px", marginLeft: "0px" }}
+            style={{ marginTop: "50px", marginLeft: "0px" }}
           >
             {/*///////////////////////////////////////////////*/}
             {/*  Most frequent skills based on user's skills  */}
             {/*///////////////////////////////////////////////*/}
 
-            <div
-              className="ms-Grid-col ms-lg12"
-              style={{ display: "block", marginTop: "30px" }}
-            >
-              <TextField
-                value="Frequent combination of skills needed by employers:"
+            <div className="ms-Grid-col ms-lg12" style={{ display: "block" }}>
+              <Label
                 style={{
-                  fontWeight: "normal",
+                  textAlign: "center",
                   fontSize: 20,
-                  width: 800,
-                  position: "absolute",
-                  left: "50%",
-                  transform: "translate(-40%, -0%)",
+                  fontWeight: "normal",
                 }}
-                readOnly
-                borderless
-              />
+              >
+                {relevantSkillSets.length > 0
+                  ? "Frequent combination of skills needed by employers:"
+                  : ""}
+              </Label>
             </div>
 
             {/*///////////////////////////////////////////*/}
@@ -250,7 +262,11 @@ function SearchResult(props) {
             {/*///////////////////////////////////////////*/}
             <div
               className="ms-Grid-col ms-lg6"
-              style={{ display: "block", textAlign: "right" }}
+              style={{
+                display: "block",
+                marginTop: "30px",
+                textAlign: "right",
+              }}
             >
               <TextField
                 value={relevantSkillSets[0].skillSet}
@@ -325,7 +341,10 @@ function SearchResult(props) {
             {/*///////////////////////////////////////////*/}
             {/*///////////////   Legend   ////////////////*/}
             {/*///////////////////////////////////////////*/}
-            <div className="ms-Grid-col ms-lg6" style={{ display: "block" }}>
+            <div
+              className="ms-Grid-col ms-lg6"
+              style={{ display: "block", marginTop: "30px" }}
+            >
               <TextField
                 value="■ Most frequent"
                 style={{
@@ -384,13 +403,13 @@ function SearchResult(props) {
             </div>
           </div>
         )}
-        
+
         {/*//////////////////////////////////////////////////////*/}
         {/*  Search result for most frequent skills - BAR CHART  */}
         {/*//////////////////////////////////////////////////////*/}
         <div
           className="ms-Grid-row"
-          style={{ marginTop: "70px", marginLeft: "50px" }}
+          style={{ marginTop: "30px", marginLeft: "50px" }}
         >
           {barGraphData && (
             <div className="ms-Grid-col ms-lg12" style={{ display: "block" }}>
@@ -438,19 +457,17 @@ function SearchResult(props) {
               </Label>
               <BubbleChart
                 ref={bubbleChartRef}
-                style={{ width: "100%", float: "left" }}
+                style={{ justifyContent: "center", display: "flex" }}
                 id="bubbleChart"
                 data={bubbleGraphData}
               />
             </div>
           )}
         </div>
-
       </div>
     </div>
   );
 }
-
 
 function _searchAction() {
   alert("Search for skills!");

@@ -1,36 +1,38 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Nav } from 'office-ui-fabric-react/lib/Nav';
-import { useHistory, useLocation } from 'react-router-dom';
-import styles from './LeftNav.style';
-import httpCommon from '../../http-common';
-
-const LeftNav = ({className: classNameProp, ...other }) => {
+import React, { useContext } from "react";
+import PropTypes from "prop-types";
+import { Nav } from "office-ui-fabric-react/lib/Nav";
+import { useHistory, useLocation } from "react-router-dom";
+import styles from "./LeftNav.style";
+import httpCommon from "../../http-common";
+import { UserContext } from "../../UserContext";
+const LeftNav = ({ className: classNameProp, ...other }) => {
   const history = useHistory();
   const location = useLocation();
-
+  const { user } = useContext(UserContext);
   const links = [
     {
-      name: 'Home',
-      url: '/home',
-      key: 'home',
+      name: "Home",
+      url: "/home",
+      key: "home",
     },
     {
-      name: 'Account',
-      url: '/account',
-      key: 'account',
+      name: "Account",
+      url: "/account",
+      key: "account",
     },
     {
-      name: 'Favorite Search',
-      url: '/favorites',
-      key: 'favorites',
-    },
-    {
-      name: 'Manage Database',
-      url: '/ManageDB',
-      key: 'ManageDB',
+      name: "Favorite Search",
+      url: "/favorites",
+      key: "favorites",
     },
   ];
+
+  if (user.roleId != 1)
+    links.push({
+      name: "Manage Database",
+      url: "/ManageDB",
+      key: "ManageDB",
+    });
 
   const handleLinkClick = (event, link) => {
     if (!link.external) {
@@ -40,20 +42,18 @@ const LeftNav = ({className: classNameProp, ...other }) => {
   };
 
   const getSelectedKey = () => {
-    const pathParts = location.pathname.split('/');
-    if (pathParts[1] === '') return 'home';
+    const pathParts = location.pathname.split("/");
+    if (pathParts[1] === "") return "home";
 
-    const activeLink = links.find(link => pathParts[1] === link.key);
+    const activeLink = links.find((link) => pathParts[1] === link.key);
     return activeLink ? activeLink.key : null;
   };
 
   return (
-    <div >
+    <div>
       <Nav
-        onRenderLink={item => (
-          <div className="ms-Nav-linkText">
-            {item.name}
-          </div>
+        onRenderLink={(item) => (
+          <div className="ms-Nav-linkText">{item.name}</div>
         )}
         selectedKey={getSelectedKey()}
         className={styles}
@@ -75,7 +75,7 @@ LeftNav.propTypes = {
 };
 
 LeftNav.defaultProps = {
-  className: '',
+  className: "",
 };
 
 export default LeftNav;

@@ -108,7 +108,12 @@ class BarChart extends React.Component {
   }
 
   render() {
-    return <div id={this.props.id}></div>;
+    return (
+      <div
+        id={this.props.id}
+        style={{ justifyContent: "center", display: "flex" }}
+      ></div>
+    );
   }
 }
 

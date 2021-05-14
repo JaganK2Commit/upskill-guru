@@ -64,9 +64,9 @@ function CreateAccount(props) {
         setUsernameError("username taken");
       }
       else {
-        setUser(res.data);
-        localStorage.setItem('user', JSON.stringify(res.data))
-        history.push('/home');
+        // setUser(res.data);
+        // localStorage.setItem('user', JSON.stringify(res.data))
+        history.push('/login');
       }
     }
     catch (err) {
@@ -109,16 +109,14 @@ function CreateAccount(props) {
 
   return (
     <div>
-      <div style={{ position: 'absolute', 
-                    left: '50%', 
-                    transform: 'translate(-140%, -0%)'}}>
+      <div style={{  display: "flex", justifyContent:'center'}}>
       <HeadingStyles>
                 Create Account
       </HeadingStyles>
       </div>
       <div className="ms-Grid main-id" dir="ltr" style={{ position: 'absolute', 
                                                           left: '40%', 
-                                                          transform: 'translate(-50%, -0%)'}}>
+                                                          transform: 'translate(-30%, -0%)'}}>
         <div style={{marginTop:'50px' }} className="ms-Grid-row">
           <div className="ms-Grid-col ms-lg6" style={{display:"inline-block"}}>
             <TextField 
