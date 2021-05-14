@@ -61,6 +61,7 @@ export default function Editable() {
   const getSkillSuggestions = async (value) => {
     const response = await SkillDataService.findSuggestions(value, 10);
     const skills = response.data.message;
+    setSkillSuggestions(skills);
   };
 
   const columns = [
@@ -186,13 +187,13 @@ export default function Editable() {
     setLoading(true);
     getJobs();
     getLocationSuggestions("");
-    retrieveSkills();
+    getSkillSuggestions("J");
   }, []);
 
   const [dataMain, setData] = useState([...data]);
   return (
     <div>
-      <div style={{justifyContent:'center', width:'100%', height: '100%', position: 'absolute', zIndex: 2000, }}> {loading && <LinearProgress />} </div>
+      <div style={{justifyContent:'center', width:'100%', position: 'absolute', zIndex: 2000, }}> {loading && <LinearProgress />} </div>
       <div className="table" >
         <MaterialTable
           title="Manage your database"
