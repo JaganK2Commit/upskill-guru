@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState,useContext, useEffect } from "react";
 import MaterialTable from 'material-table';
 import { forwardRef } from "react";
 import AddBox from '@material-ui/icons/AddBox';
@@ -19,7 +19,7 @@ import LocationService from "../../services/LocationService";
 import AutocompleteJobTitle from '../SearchResult/AutocompleteJobTitle'
 import SearchService from "../../services/SearchService";
 import JobService from "../../services/JobService";
-
+import { UserContext } from '../../UserContext';
 
 const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -45,7 +45,7 @@ export default function Editable() {
   const [searchTitle, setSearchTitle] = useState("");
   const [jobSuggestions, setJobSuggestions] = React.useState([]);
   const [skill, setSkill] = useState('');
-
+  const { user } = useContext(UserContext);
   const handleSelectedLocation = (value) => {
     setLocation(value);
   }
@@ -112,7 +112,7 @@ export default function Editable() {
   const [message, setMessage] = useState("");
 
   const getFavorites = () => {
-    FavoriteService.getAll()
+    FavoriteService.getAll(user.uid)
       .then((response) => {
         setFavorites(response.data);
         console.log(response.data);
@@ -123,7 +123,8 @@ export default function Editable() {
   };
 
   const createFavorite = (newFavorite) => {
-    FavoriteService.create(newFavorite)
+
+    FavoriteService.create({userId:user.uid,...newFavorite})
       .then(response => {
         console.log(response.data);
         setMessage("The favorite was updated successfully!");
@@ -161,8 +162,9 @@ export default function Editable() {
   };
 
   useEffect(() => {
-    getFavorites();
-  }, []);
+    if(user)
+      getFavorites();
+  }, [user]);
 
   return (
     <div style={{ maxWidth: '95%' }}>
