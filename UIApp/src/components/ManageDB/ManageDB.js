@@ -61,6 +61,7 @@ export default function Editable() {
   const getSkillSuggestions = async (value) => {
     const response = await SkillDataService.findSuggestions(value, 10);
     const skills = response.data.message;
+    setSkillSuggestions(skills);
   };
 
   const columns = [
@@ -186,7 +187,7 @@ export default function Editable() {
     setLoading(true);
     getJobs();
     getLocationSuggestions("");
-    retrieveSkills();
+    getSkillSuggestions("J");
   }, []);
 
   const [dataMain, setData] = useState([...data]);

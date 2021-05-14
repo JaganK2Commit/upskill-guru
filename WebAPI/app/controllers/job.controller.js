@@ -111,10 +111,10 @@ exports.update = (req, res) => {
   const id = req.params.id;
 
   console.log("update payload", req.body);
-  const newSkills = req.body.skills.map((s) => ({
+  const newSkills = req.body.skills ? req.body.skills.map((s) => ({
     JobId: id,
     SkillId: s.SkillId,
-  }));
+  })): undefined;
   dbJob
     .update(
       { JobTitle: req.body.JobTitle, EmployerName: req.body.EmployerName },
@@ -128,19 +128,24 @@ exports.update = (req, res) => {
       dbJobLocation
         .update({ LocationId: req.body.LocationId }, { where: { JobId: id } })
         .then((num) => {
-          // Remove existing skills in jobskills table
-          db.jobskills
-            .destroy({
-              where: { JobID: id },
-            })
-            .then((num) => {
-              // insert new set of skills
-              db.jobskills.bulkCreate(newSkills).then((num) => {
-                res.send({
-                  message: "JobSkills was updated successfully.",
+          if (newSkills) {
+            // Remove existing skills in jobskills table
+            db.jobskills
+              .destroy({
+                where: { JobID: id },
+              })
+              .then((num) => {
+                // insert new set of skills
+                db.jobskills.bulkCreate(newSkills).then((num) => {
+                  res.send({
+                    message: "JobSkills was updated successfully.",
+                  });
                 });
               });
-            });
+          }
+          res.send({
+            message: "Job and JobLocation was updated successfully.",
+          });
         });
     })
     .catch((err) => {
@@ -225,14 +230,17 @@ exports.findSuggestions = async (req, res) => {
     const jobKeyword = req.query.searchKey;
     const limit = +req.query.limit;
     const result = await dbJob.findAll({
-      attributes: ["JobTitle", [db.Sequelize.fn('min',db.Sequelize.col('JobId')), 'JobId']],
+      attributes: [
+        "JobTitle",
+        [db.Sequelize.fn("min", db.Sequelize.col("JobId")), "JobId"],
+      ],
       where: {
         JobTitle: {
           [Op.like]: jobKeyword + "%",
         },
       },
       limit: limit,
-       group: ['JobTitle']
+      group: ["JobTitle"],
     });
     res.send({
       message: result,
