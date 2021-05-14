@@ -108,7 +108,7 @@ function SearchResult(props) {
 
   const createFavorite = () => {
     FavoriteService.create({
-      name: skill.label + location.label,
+      name: skill?.label + ( location.label ? location.label : ''),
       jobTitle: skill,
       location: location,
       userId: user.uid
