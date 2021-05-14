@@ -111,6 +111,7 @@ function SearchResult(props) {
       name: skill.label + location.label,
       jobTitle: skill,
       location: location,
+      userId: user.uid
     });
     alert("You've added the search result to your favorites");
   };
