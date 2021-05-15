@@ -19,6 +19,7 @@ function CreateAccount(props) {
   const [location, setLocation] = useState('');
   const [firstName, setFirstName] = useState('');
   const [firstNameError, setFirstNameError] = useState('');
+  const [locationError, setLocationError] = useState('');
   const [lastName, setLastName] = useState('');
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
@@ -92,6 +93,13 @@ function CreateAccount(props) {
     else {
       setFirstNameError('');
     }
+    if (!location || location === '') {
+      setLocationError('location cannot be empty *');
+      isValid = false;
+    }
+    else {
+      setLocationError('');
+    }
     if (!password || password === '') {
       setPasswordError('password cannot be empty');
       isValid = false;
@@ -131,7 +139,8 @@ function CreateAccount(props) {
           <div className="ms-Grid-col ms-lg6" style={{display:"inline-block", width: "316px"}}>
             <Autocomplete 
               placeholder="New York, NY"
-              label="Location"
+              label={locationError || "Location *"} 
+              error={locationError}
               options={locationSuggestions.map((loc) => ({
                 label: `${loc.city}, ${loc.state}`,
                 value: loc.locationId,
