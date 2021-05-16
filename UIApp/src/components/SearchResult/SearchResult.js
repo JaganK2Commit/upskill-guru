@@ -131,7 +131,7 @@ function SearchResult(props) {
         >
           <div className="ms-Grid-col ms-lg12">
             <TextField
-              value="Based on your current skills consider learning the following frequently sought after skill:"
+              value="Based on your skills you might be interested in these job titles:"
               style={{
                 fontWeight: "normal",
                 fontSize: 20,
@@ -253,7 +253,7 @@ function SearchResult(props) {
                 }}
               >
                 {relevantSkillSets.length > 0
-                  ? "Frequent combination of skills needed by employers:"
+                  ? "Based on your current skills consider learning the following frequently sought after skill:"
                   : ""}
               </Label>
             </div>
@@ -348,7 +348,7 @@ function SearchResult(props) {
             >
              
               <TextField
-                value={relevantSkillSets[0].PercentMatch}
+                value={relevantSkillSets[0].PercentMatch + '%'}
                 style={{
                   fontWeight: "normal",
                   fontSize: 16,
@@ -361,7 +361,7 @@ function SearchResult(props) {
             
               {relevantSkillSets[1] && (
               <TextField
-                value={relevantSkillSets[1].PercentMatch}
+                value={relevantSkillSets[1].PercentMatch + '%'}
                 style={{
                   fontWeight: "normal",
                   fontSize: 16,
@@ -374,7 +374,7 @@ function SearchResult(props) {
               )}
               {relevantSkillSets[2] && (
               <TextField
-                value={relevantSkillSets[2].PercentMatch}
+                value={relevantSkillSets[2].PercentMatch + '%'}
                 style={{
                   fontWeight: "normal",
                   fontSize: 16,
@@ -387,7 +387,7 @@ function SearchResult(props) {
               )}
               {relevantSkillSets[3] && (
               <TextField
-                value={relevantSkillSets[3].PercentMatch}
+                value={relevantSkillSets[3].PercentMatch + '%'}
                 style={{
                   fontWeight: "normal",
                   fontSize: 16,
@@ -400,7 +400,7 @@ function SearchResult(props) {
               )}
               {relevantSkillSets[4] && (
               <TextField
-                value={relevantSkillSets[4].PercentMatch}
+                value={relevantSkillSets[4].PercentMatch + '%'}
                 style={{
                   fontWeight: "normal",
                   fontSize: 16,
