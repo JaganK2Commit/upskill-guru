@@ -270,7 +270,7 @@ function SearchResult(props) {
               }}
             >
               <TextField
-                value={relevantSkillSets[0].skillSet}
+                value={relevantSkillSets[0].SkillSet}
                 style={{
                   fontWeight: "normal",
                   fontSize: 16,
@@ -283,7 +283,7 @@ function SearchResult(props) {
               />
               {relevantSkillSets[1] && (
                 <TextField
-                  value={relevantSkillSets[1].skillSet}
+                  value={relevantSkillSets[1].SkillSet}
                   style={{
                     fontWeight: "normal",
                     fontSize: 16,
@@ -297,7 +297,7 @@ function SearchResult(props) {
               )}
               {relevantSkillSets[2] && (
                 <TextField
-                  value={relevantSkillSets[2].skillSet}
+                  value={relevantSkillSets[2].SkillSet}
                   style={{
                     fontWeight: "normal",
                     fontSize: 16,
@@ -311,7 +311,7 @@ function SearchResult(props) {
               )}
               {relevantSkillSets[3] && (
                 <TextField
-                  value={relevantSkillSets[3].skillSet}
+                  value={relevantSkillSets[3].SkillSet}
                   style={{
                     fontWeight: "normal",
                     fontSize: 16,
@@ -326,7 +326,7 @@ function SearchResult(props) {
 
               {relevantSkillSets[4] && (
                 <TextField
-                  value={relevantSkillSets[4].skillSet}
+                  value={relevantSkillSets[4].SkillSet}
                   style={{
                     fontWeight: "normal",
                     fontSize: 16,
@@ -346,8 +346,9 @@ function SearchResult(props) {
               className="ms-Grid-col ms-lg6"
               style={{ display: "block", marginTop: "30px" }}
             >
+             
               <TextField
-                value="■ Most frequent"
+                value={relevantSkillSets[0].PercentMatch}
                 style={{
                   fontWeight: "normal",
                   fontSize: 16,
@@ -357,8 +358,10 @@ function SearchResult(props) {
                 readOnly
                 borderless
               />
+            
+              {relevantSkillSets[1] && (
               <TextField
-                value="■"
+                value={relevantSkillSets[1].PercentMatch}
                 style={{
                   fontWeight: "normal",
                   fontSize: 16,
@@ -368,8 +371,10 @@ function SearchResult(props) {
                 readOnly
                 borderless
               />
+              )}
+              {relevantSkillSets[2] && (
               <TextField
-                value="■"
+                value={relevantSkillSets[2].PercentMatch}
                 style={{
                   fontWeight: "normal",
                   fontSize: 16,
@@ -379,8 +384,10 @@ function SearchResult(props) {
                 readOnly
                 borderless
               />
+              )}
+              {relevantSkillSets[3] && (
               <TextField
-                value="■"
+                value={relevantSkillSets[3].PercentMatch}
                 style={{
                   fontWeight: "normal",
                   fontSize: 16,
@@ -390,8 +397,10 @@ function SearchResult(props) {
                 readOnly
                 borderless
               />
+              )}
+              {relevantSkillSets[4] && (
               <TextField
-                value="■ Least frequent"
+                value={relevantSkillSets[4].PercentMatch}
                 style={{
                   fontWeight: "normal",
                   fontSize: 16,
@@ -401,6 +410,8 @@ function SearchResult(props) {
                 readOnly
                 borderless
               />
+              )}
+             
             </div>
           </div>
         )}
