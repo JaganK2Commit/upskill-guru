@@ -5,5 +5,5 @@ const get = (searchKey, limit) => {
 };
 
 export default {
-  get
+  get,
 };

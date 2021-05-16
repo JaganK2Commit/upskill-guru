@@ -1,18 +1,22 @@
 module.exports = (sequelize, Sequelize) => {
-  const JobLocation = sequelize.define("jobskills", {
-    JobId: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-      primaryKey: true,
+  const JobLocation = sequelize.define(
+    "jobskills",
+    {
+      JobId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+      },
+      SkillId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
     },
-    SkillId: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
+    {
+      tableName: "jobskills",
+      timestamps: false,
     }
-  },{
-    tableName: 'jobskills',
-    timestamps: false
-  });
+  );
 
   return JobLocation;
 };

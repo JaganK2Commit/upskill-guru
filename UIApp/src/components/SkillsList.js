@@ -12,18 +12,18 @@ const SkillsList = () => {
     retrieveSkills();
   }, []);
 
-  const onChangeSearchTitle = e => {
+  const onChangeSearchTitle = (e) => {
     const searchTitle = e.target.value;
     setSearchTitle(searchTitle);
   };
 
   const retrieveSkills = () => {
     SkillDataService.getAll()
-      .then(response => {
+      .then((response) => {
         setSkills(response.data.skills);
         console.log(response.data);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   };
@@ -41,22 +41,22 @@ const SkillsList = () => {
 
   const removeAllSkills = () => {
     SkillDataService.removeAll()
-      .then(response => {
+      .then((response) => {
         console.log(response.data);
         refreshList();
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   };
 
   const findByTitle = () => {
     SkillDataService.findByTitle(searchTitle)
-      .then(response => {
+      .then((response) => {
         setSkills(response.data.skills);
         console.log(response.data);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   };
@@ -87,7 +87,8 @@ const SkillsList = () => {
         <h4>Skills List</h4>
 
         <ul className="list-group">
-          {skills && skills.length > 0 &&
+          {skills &&
+            skills.length > 0 &&
             skills.map((skill, index) => (
               <li
                 className={
@@ -101,15 +102,12 @@ const SkillsList = () => {
             ))}
         </ul>
 
-        <button
-          className="m-3 btn btn-sm btn-danger"
-          onClick={removeAllSkills}
-        >
+        <button className="m-3 btn btn-sm btn-danger" onClick={removeAllSkills}>
           Remove All
         </button>
         <Link to={"/add"} className="m-3 btn btn-sm btn-primary">
-              Add
-            </Link>
+          Add
+        </Link>
       </div>
       <div className="col-md-6">
         {currentSkill ? (

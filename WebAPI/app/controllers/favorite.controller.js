@@ -1,21 +1,24 @@
-const MongoClient = require('mongodb').MongoClient;
-const ObjectId = require('mongodb').ObjectId;
+const MongoClient = require("mongodb").MongoClient;
+const ObjectId = require("mongodb").ObjectId;
 const uri = "";
 
 let client;
 let db;
-const dbName = 'cs411upskillguru_mongodb';
-const collectionName = 'favorites';
+const dbName = "cs411upskillguru_mongodb";
+const collectionName = "favorites";
 const connect = async () => {
-  console.log("connecting")
-  const client = await new MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-  console.log("connected")
+  console.log("connecting");
+  const client = await new MongoClient.connect(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+  console.log("connected");
   db = client.db(dbName);
-}
+};
 
 const disconnect = () => {
   client.close();
-}
+};
 
 connect();
 
@@ -34,52 +37,48 @@ const getPagination = (page, size) => {
 //   return { totalItems, skills, totalPages, currentPage };
 // };
 
-
 // Update a favorite by the id in the request
 exports.create = async (req, res) => {
-  try{
-      // Create a Favorite
-  const favorite = {
-    name: req.body.name,
-    userId: req.body.userId,
-    jobTitle : req.body.jobTitle,
-    location: req.body.location
-  };
+  try {
+    // Create a Favorite
+    const favorite = {
+      name: req.body.name,
+      userId: req.body.userId,
+      jobTitle: req.body.jobTitle,
+      location: req.body.location,
+    };
 
-  const result = await db.collection(collectionName).insertOne(favorite);
-  res.send({
-    message: result.ops[0]
-  });
-  }
-  catch(err){
+    const result = await db.collection(collectionName).insertOne(favorite);
+    res.send({
+      message: result.ops[0],
+    });
+  } catch (err) {
     res.status(500).send({
-      message: "Error inserting Favorite " + req.body
+      message: "Error inserting Favorite " + req.body,
     });
   }
 };
 
 // Retrieve all Favorites from the database.
 exports.findAll = async (req, res) => {
-
   try {
-  const { page, size, title, userId } = req.query;
-  var condition = userId ? { userId: Number( userId) } : null;
+    const { page, size, title, userId } = req.query;
+    var condition = userId ? { userId: Number(userId) } : null;
 
-  const { limit, offset } = getPagination(page, size);
+    const { limit, offset } = getPagination(page, size);
 
-  const favorites = await db.collection(collectionName).find(condition)
-  //.skip(parseInt(offset, 10))
-  //.limit(parseInt(count, 10))
-  .toArray();
+    const favorites = await db
+      .collection(collectionName)
+      .find(condition)
+      //.skip(parseInt(offset, 10))
+      //.limit(parseInt(count, 10))
+      .toArray();
 
-  //const favorites = getPagingData(data, page, limit);
-  res.send(favorites);
-  }
-  catch(err)
-  {
+    //const favorites = getPagingData(data, page, limit);
+    res.send(favorites);
+  } catch (err) {
     res.status(500).send({
-      message:
-        err.message || "Some error occurred while retrieving skills."
+      message: err.message || "Some error occurred while retrieving skills.",
     });
   }
 };
@@ -87,20 +86,23 @@ exports.findAll = async (req, res) => {
 // Update a favorite by the id in the request
 exports.update = async (req, res) => {
   const id = req.params.id;
-  try{
-  await db.collection(collectionName).updateOne( {_id: ObjectId(req.body._id)},
-  {$set: {
-    name : req.body.name,
-    jobTitle: req.body.jobTitle,
-    location : req.body.location
-  }});
-  res.send({
-    message: "Favorite was updated successfully."
-  });
-  }
-  catch(err){
+  try {
+    await db.collection(collectionName).updateOne(
+      { _id: ObjectId(req.body._id) },
+      {
+        $set: {
+          name: req.body.name,
+          jobTitle: req.body.jobTitle,
+          location: req.body.location,
+        },
+      }
+    );
+    res.send({
+      message: "Favorite was updated successfully.",
+    });
+  } catch (err) {
     res.status(500).send({
-      message: "Error updating Favorite with id=" + id
+      message: "Error updating Favorite with id=" + id,
     });
   }
 };
@@ -109,15 +111,14 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res) => {
   const id = req.params.id;
 
-  try{
-    await db.collection(collectionName).deleteOne( {_id: ObjectId(id)});
+  try {
+    await db.collection(collectionName).deleteOne({ _id: ObjectId(id) });
     res.send({
-      message: "Favorite was deleted successfully."
+      message: "Favorite was deleted successfully.",
     });
-    }
-    catch(err){
-      res.status(500).send({
-        message: "Could not delete Skill with id=" + id
-      });
-    }
+  } catch (err) {
+    res.status(500).send({
+      message: "Could not delete Skill with id=" + id,
+    });
+  }
 };

@@ -1,4 +1,4 @@
-module.exports = app => {
+module.exports = (app) => {
   const skills = require("../controllers/skill.controller.js");
 
   var router = require("express").Router();
@@ -20,12 +20,11 @@ module.exports = app => {
   // Update a Skill with id
   router.put("/:id", skills.update);
 
-
   // Delete a Skill with id
   router.delete("/:id", skills.delete);
 
   // Create a new Skill
   router.delete("/", skills.deleteAll);
 
-  app.use('/api/skills', router);
+  app.use("/api/skills", router);
 };

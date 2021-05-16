@@ -4,11 +4,11 @@ const getAll = () => {
   return http.get("/jobs");
 };
 
-const get = id => {
+const get = (id) => {
   return http.get(`/jobs/${id}`);
 };
 
-const create = data => {
+const create = (data) => {
   return http.post("/jobs", data);
 };
 
@@ -16,7 +16,7 @@ const update = (id, data) => {
   return http.put(`/jobs/${id}`, data);
 };
 
-const remove = id => {
+const remove = (id) => {
   return http.delete(`/jobs/${id}`);
 };
 
@@ -24,14 +24,14 @@ const removeAll = () => {
   return http.delete(`/jobs`);
 };
 
-const findByTitle = title => {
+const findByTitle = (title) => {
   return http.get(`/jobs?title=${title}`);
 };
 
 const findSuggestions = (searchKey, limit) => {
   return http.get(`/jobs/getSuggested?searchKey=${searchKey}&limit=${limit}`);
-}
-const getRelevantJobTitles = userId => {
+};
+const getRelevantJobTitles = (userId) => {
   return http.get(`/jobs/getRelevantJobTitles?userId=${userId}`);
 };
 
@@ -44,5 +44,5 @@ export default {
   removeAll,
   findByTitle,
   findSuggestions,
-  getRelevantJobTitles
+  getRelevantJobTitles,
 };

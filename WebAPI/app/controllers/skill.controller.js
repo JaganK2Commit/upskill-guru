@@ -22,7 +22,7 @@ exports.create = (req, res) => {
   // Validate request
   if (!req.body.title) {
     res.status(400).send({
-      message: "Content can not be empty!"
+      message: "Content can not be empty!",
     });
     return;
   }
@@ -31,18 +31,18 @@ exports.create = (req, res) => {
   const skill = {
     title: req.body.title,
     description: req.body.description,
-    published: req.body.published ? req.body.published : false
+    published: req.body.published ? req.body.published : false,
   };
 
   // Save Skill in the database
-  dbSkill.create(skill)
-    .then(data => {
+  dbSkill
+    .create(skill)
+    .then((data) => {
       res.send(data);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
-        message:
-          err.message || "Some error occurred while creating the Skill."
+        message: err.message || "Some error occurred while creating the Skill.",
       });
     });
 };
@@ -54,15 +54,15 @@ exports.findAll = (req, res) => {
 
   const { limit, offset } = getPagination(page, size);
 
-  dbSkill.findAndCountAll({ where: condition, limit, offset })
-    .then(data => {
+  dbSkill
+    .findAndCountAll({ where: condition, limit, offset })
+    .then((data) => {
       const response = getPagingData(data, page, limit);
       res.send(response);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving skills."
+        message: err.message || "Some error occurred while retrieving skills.",
       });
     });
 };
@@ -71,13 +71,14 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
-  dbSkill.findByPk(id)
-    .then(data => {
+  dbSkill
+    .findByPk(id)
+    .then((data) => {
       res.send(data);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
-        message: "Error retrieving Skill with id=" + id
+        message: "Error retrieving Skill with id=" + id,
       });
     });
 };
@@ -86,23 +87,24 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
   const id = req.params.id;
 
-  dbSkill.update(req.body, {
-    where: { id: id }
-  })
-    .then(num => {
+  dbSkill
+    .update(req.body, {
+      where: { id: id },
+    })
+    .then((num) => {
       if (num == 1) {
         res.send({
-          message: "Skill was updated successfully."
+          message: "Skill was updated successfully.",
         });
       } else {
         res.send({
-          message: `Cannot update Skill with id=${id}. Maybe Skill was not found or req.body is empty!`
+          message: `Cannot update Skill with id=${id}. Maybe Skill was not found or req.body is empty!`,
         });
       }
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
-        message: "Error updating Skill with id=" + id
+        message: "Error updating Skill with id=" + id,
       });
     });
 };
@@ -111,40 +113,42 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
   const id = req.params.id;
 
-  dbSkill.destroy({
-    where: { id: id }
-  })
-    .then(num => {
+  dbSkill
+    .destroy({
+      where: { id: id },
+    })
+    .then((num) => {
       if (num == 1) {
         res.send({
-          message: "Skill was deleted successfully!"
+          message: "Skill was deleted successfully!",
         });
       } else {
         res.send({
-          message: `Cannot delete Skill with id=${id}. Maybe Skill was not found!`
+          message: `Cannot delete Skill with id=${id}. Maybe Skill was not found!`,
         });
       }
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
-        message: "Could not delete Skill with id=" + id
+        message: "Could not delete Skill with id=" + id,
       });
     });
 };
 
 // Delete all Skills from the database.
 exports.deleteAll = (req, res) => {
-  dbSkill.destroy({
-    where: {},
-    truncate: false
-  })
-    .then(nums => {
+  dbSkill
+    .destroy({
+      where: {},
+      truncate: false,
+    })
+    .then((nums) => {
       res.send({ message: `${nums} Skills were deleted successfully!` });
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while removing all skills."
+          err.message || "Some error occurred while removing all skills.",
       });
     });
 };
@@ -154,15 +158,15 @@ exports.findAllPublished = (req, res) => {
   const { page, size } = req.query;
   const { limit, offset } = getPagination(page, size);
 
-  dbSkill.findAndCountAll({ where: { published: true }, limit, offset })
-    .then(data => {
+  dbSkill
+    .findAndCountAll({ where: { published: true }, limit, offset })
+    .then((data) => {
       const response = getPagingData(data, page, limit);
       res.send(response);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving skills."
+        message: err.message || "Some error occurred while retrieving skills.",
       });
     });
 };
@@ -172,15 +176,15 @@ exports.findSuggestions = async (req, res) => {
   // console.log(req.query)
   try {
     const skillKeyword = req.query.searchKey;
-    const limit = +(req.query.limit);
+    const limit = +req.query.limit;
     const result = await dbSkill.findAll({
-      attributes: ['SkillId','SkillName'],
+      attributes: ["SkillId", "SkillName"],
       where: {
         skillName: {
-          [Op.like]: skillKeyword + '%'
-        }
+          [Op.like]: skillKeyword + "%",
+        },
       },
-      limit: limit
+      limit: limit,
     });
     // console.log("result: " + result);
     res.send({

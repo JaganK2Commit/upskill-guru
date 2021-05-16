@@ -111,10 +111,12 @@ exports.update = (req, res) => {
   const id = req.params.id;
 
   console.log("update payload", req.body);
-  const newSkills = req.body.skills ? req.body.skills.map((s) => ({
-    JobId: id,
-    SkillId: s.SkillId,
-  })): undefined;
+  const newSkills = req.body.skills
+    ? req.body.skills.map((s) => ({
+        JobId: id,
+        SkillId: s.SkillId,
+      }))
+    : undefined;
   dbJob
     .update(
       { JobTitle: req.body.JobTitle, EmployerName: req.body.EmployerName },

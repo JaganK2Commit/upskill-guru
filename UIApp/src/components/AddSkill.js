@@ -6,12 +6,12 @@ const AddSkill = () => {
     id: null,
     title: "",
     description: "",
-    published: false
+    published: false,
   };
   const [skill, setSkill] = useState(initialSkillState);
   const [submitted, setSubmitted] = useState(false);
 
-  const handleInputChange = event => {
+  const handleInputChange = (event) => {
     const { name, value } = event.target;
     setSkill({ ...skill, [name]: value });
   };
@@ -19,21 +19,21 @@ const AddSkill = () => {
   const saveSkill = () => {
     var data = {
       title: skill.title,
-      description: skill.description
+      description: skill.description,
     };
 
     SkillDataService.create(data)
-      .then(response => {
+      .then((response) => {
         setSkill({
           id: response.data.id,
           title: response.data.title,
           description: response.data.description,
-          published: response.data.published
+          published: response.data.published,
         });
         setSubmitted(true);
         console.log(response.data);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   };
