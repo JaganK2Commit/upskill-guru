@@ -42,7 +42,9 @@ const tableIcons = {
   ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
   NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-  PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
+  PreviousPage: forwardRef((props, ref) => (
+    <ChevronLeft {...props} ref={ref} />
+  )),
 };
 
 export default function Editable() {
@@ -54,7 +56,7 @@ export default function Editable() {
   const getLocationSuggestions = async (value) => {
     const response = await LocationService.get(value, 10);
     const locationValues = response.data.message;
-    console.log(locationValues)
+    console.log(locationValues);
     setLocationSuggestions(locationValues);
   };
 
@@ -193,8 +195,18 @@ export default function Editable() {
   const [dataMain, setData] = useState([...data]);
   return (
     <div>
-      <div style={{justifyContent:'center', width:'100%', position: 'absolute', zIndex: 2000, }}> {loading && <LinearProgress />} </div>
-      <div className="table" >
+      <div
+        style={{
+          justifyContent: "center",
+          width: "100%",
+          position: "absolute",
+          zIndex: 2000,
+        }}
+      >
+        {" "}
+        {loading && <LinearProgress />}{" "}
+      </div>
+      <div className="table">
         <MaterialTable
           title="Manage your database"
           localization={{

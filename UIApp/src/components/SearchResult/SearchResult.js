@@ -108,10 +108,10 @@ function SearchResult(props) {
 
   const createFavorite = () => {
     FavoriteService.create({
-      name: skill?.label + ( location.label ? location.label : ''),
+      name: skill?.label + (location.label ? location.label : ""),
       jobTitle: skill,
       location: location,
-      userId: user.uid
+      userId: user.uid,
     });
     alert("You've added the search result to your favorites");
   };
@@ -346,9 +346,8 @@ function SearchResult(props) {
               className="ms-Grid-col ms-lg6"
               style={{ display: "block", marginTop: "30px" }}
             >
-             
               <TextField
-                value={relevantSkillSets[0].PercentMatch + '%'}
+                value={relevantSkillSets[0].PercentMatch + "%"}
                 style={{
                   fontWeight: "normal",
                   fontSize: 16,
@@ -358,60 +357,59 @@ function SearchResult(props) {
                 readOnly
                 borderless
               />
-            
+
               {relevantSkillSets[1] && (
-              <TextField
-                value={relevantSkillSets[1].PercentMatch + '%'}
-                style={{
-                  fontWeight: "normal",
-                  fontSize: 16,
-                  width: 800,
-                  color: "#278a58",
-                }}
-                readOnly
-                borderless
-              />
+                <TextField
+                  value={relevantSkillSets[1].PercentMatch + "%"}
+                  style={{
+                    fontWeight: "normal",
+                    fontSize: 16,
+                    width: 800,
+                    color: "#278a58",
+                  }}
+                  readOnly
+                  borderless
+                />
               )}
               {relevantSkillSets[2] && (
-              <TextField
-                value={relevantSkillSets[2].PercentMatch + '%'}
-                style={{
-                  fontWeight: "normal",
-                  fontSize: 16,
-                  width: 800,
-                  color: "#32664c",
-                }}
-                readOnly
-                borderless
-              />
+                <TextField
+                  value={relevantSkillSets[2].PercentMatch + "%"}
+                  style={{
+                    fontWeight: "normal",
+                    fontSize: 16,
+                    width: 800,
+                    color: "#32664c",
+                  }}
+                  readOnly
+                  borderless
+                />
               )}
               {relevantSkillSets[3] && (
-              <TextField
-                value={relevantSkillSets[3].PercentMatch + '%'}
-                style={{
-                  fontWeight: "normal",
-                  fontSize: 16,
-                  width: 800,
-                  color: "#3e574b",
-                }}
-                readOnly
-                borderless
-              />
+                <TextField
+                  value={relevantSkillSets[3].PercentMatch + "%"}
+                  style={{
+                    fontWeight: "normal",
+                    fontSize: 16,
+                    width: 800,
+                    color: "#3e574b",
+                  }}
+                  readOnly
+                  borderless
+                />
               )}
               {relevantSkillSets[4] && (
-              <TextField
-                value={relevantSkillSets[4].PercentMatch + '%'}
-                style={{
-                  fontWeight: "normal",
-                  fontSize: 16,
-                  width: 800,
-                  color: "#7e807f",
-                }}
-                readOnly
-                borderless
-              />
+                <TextField
+                  value={relevantSkillSets[4].PercentMatch + "%"}
+                  style={{
+                    fontWeight: "normal",
+                    fontSize: 16,
+                    width: 800,
+                    color: "#7e807f",
+                  }}
+                  readOnly
+                  borderless
+                />
               )}
-             
             </div>
           </div>
         )}

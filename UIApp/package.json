@@ -20,10 +20,11 @@
     "axios": "^0.21.1",
     "bcrypt": "^5.0.1",
     "bootstrap": "^4.4.1",
-    "jsonwebtoken": "^8.5.1",
     "d3": "^6.6.2",
+    "jsonwebtoken": "^8.5.1",
     "material-table": "^1.69.2",
     "office-ui-fabric-react": "^7.162.1",
+    "prettier": "^2.3.0",
     "react": "^16.13.1",
     "react-d3-cloud": "^0.7.0",
     "react-d3-library": "^1.1.8",
@@ -40,7 +41,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "pretty": "prettier --write \"./**/*.{js,jsx,json}\""
   },
   "eslintConfig": {
     "extends": "react-app"

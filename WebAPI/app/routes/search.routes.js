@@ -1,4 +1,4 @@
-module.exports = app => {
+module.exports = (app) => {
   const search = require("../controllers/search.controller.js");
 
   var router = require("express").Router();
@@ -8,5 +8,5 @@ module.exports = app => {
 
   router.get("/getRelevantSkillSet", search.getRelevantSkillSet);
 
-  app.use('/api/search', router);
+  app.use("/api/search", router);
 };

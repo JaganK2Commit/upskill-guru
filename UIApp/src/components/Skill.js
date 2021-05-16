@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from "react";
-import SkillDataService from "../services/SkillService"
+import SkillDataService from "../services/SkillService";
 
-const Skill = props => {
+const Skill = (props) => {
   const initialSkillState = {
     id: null,
     title: "",
     description: "",
-    published: false
+    published: false,
   };
   const [currentSkill, setCurrentSkill] = useState(initialSkillState);
   const [message, setMessage] = useState("");
 
-  const getSkill = id => {
+  const getSkill = (id) => {
     SkillDataService.get(id)
-      .then(response => {
+      .then((response) => {
         setCurrentSkill(response.data);
         console.log(response.data);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   };
@@ -26,47 +26,47 @@ const Skill = props => {
     getSkill(props.match.params.id);
   }, [props.match.params.id]);
 
-  const handleInputChange = event => {
+  const handleInputChange = (event) => {
     const { name, value } = event.target;
     setCurrentSkill({ ...currentSkill, [name]: value });
   };
 
-  const updatePublished = status => {
+  const updatePublished = (status) => {
     var data = {
       id: currentSkill.id,
       title: currentSkill.title,
       description: currentSkill.description,
-      published: status
+      published: status,
     };
 
     SkillDataService.update(currentSkill.id, data)
-      .then(response => {
+      .then((response) => {
         setCurrentSkill({ ...currentSkill, published: status });
         console.log(response.data);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   };
 
   const updateSkill = () => {
     SkillDataService.update(currentSkill.id, currentSkill)
-      .then(response => {
+      .then((response) => {
         console.log(response.data);
         setMessage("The skill was updated successfully!");
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   };
 
   const deleteSkill = () => {
     SkillDataService.remove(currentSkill.id)
-      .then(response => {
+      .then((response) => {
         console.log(response.data);
         props.history.push("/skills");
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   };

@@ -1,32 +1,31 @@
-import { loadTheme } from '@uifabric/styling';
+import { loadTheme } from "@uifabric/styling";
 
-const pxToRem = px => `${px * 0.0625}rem`;
-
+const pxToRem = (px) => `${px * 0.0625}rem`;
 
 const palette = {
-  themePrimary: '#781042',
-  themeLighterAlt: '#faf1f5',
-  themeLighter: '#e9c9d9',
-  themeLight: '#d69eba',
-  themeTertiary: '#ae537f',
-  themeSecondary: '#882052',
-  themeDarkerAlt: '#6c0e3b',
-  themeDark: '#5b0c32',
-  themeDarker: '#430925',
-  neutralLighterAlt: '#FAF9F8',
-  neutralLighter: '#F3F2F1',
-  neutralLight: '#EDEBE9',
-  neutralQuaternaryAlt: '#E1DFDD',
-  neutralQuaternary: '#D2D0CE',
-  neutralTertiaryAlt: '#C8C6C4',
-  neutralTertiary: '#A19F9D',
-  neutralSecondary: '#605E5C',
-  neutralPrimaryAlt: '#3B3A39',
-  neutralPrimary: '#323130',
-  neutralDark: '#201F1E',
-  neutralWhite: '#FFFFFF',
-  black: '#3a3836',
-  white: '#faf9f8',
+  themePrimary: "#781042",
+  themeLighterAlt: "#faf1f5",
+  themeLighter: "#e9c9d9",
+  themeLight: "#d69eba",
+  themeTertiary: "#ae537f",
+  themeSecondary: "#882052",
+  themeDarkerAlt: "#6c0e3b",
+  themeDark: "#5b0c32",
+  themeDarker: "#430925",
+  neutralLighterAlt: "#FAF9F8",
+  neutralLighter: "#F3F2F1",
+  neutralLight: "#EDEBE9",
+  neutralQuaternaryAlt: "#E1DFDD",
+  neutralQuaternary: "#D2D0CE",
+  neutralTertiaryAlt: "#C8C6C4",
+  neutralTertiary: "#A19F9D",
+  neutralSecondary: "#605E5C",
+  neutralPrimaryAlt: "#3B3A39",
+  neutralPrimary: "#323130",
+  neutralDark: "#201F1E",
+  neutralWhite: "#FFFFFF",
+  black: "#3a3836",
+  white: "#faf9f8",
 };
 
 const theme = loadTheme({
@@ -77,7 +76,7 @@ export const layout = {
     },
     mainContentContainer: {
       minHeight: 800,
-      topMargin: 45
+      topMargin: 45,
     },
   },
 };
