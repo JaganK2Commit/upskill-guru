@@ -23,7 +23,7 @@ exports.getRelevantSkillSet = async (req, res) => {
     const jobTitleName = req.query.searchKey;
     const userId = req.query.userId;
     const result = await db.sequelize
-      .query("CALL getRelevantSkillSet (:top, :jobTitleName, :userId)", { replacements: { top: 1000, jobTitleName, userId  } })
+      .query("CALL getRelevantSkillSet (:top, :jobTitleName, :userId)", { replacements: { top: 10, jobTitleName, userId  } })
       console.log(result);
     res.send({
       message: result,
