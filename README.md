@@ -47,3 +47,4 @@ UpSkillGuru is from an idea to help professionals who are looking to progress in
 
 ![DatabaseSystems_Project](https://user-images.githubusercontent.com/1959705/119267532-ecb0b880-bba3-11eb-948f-d990d188dd73.gif)
 
+[CS411_Project.pdf](https://github.com/JaganK2Commit/upskill-guru/files/6528425/CS411_Project.pdf)
