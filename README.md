@@ -26,3 +26,20 @@ npm run start
 ```
 # skillProject
 UpSkillGuru is from an idea to help professionals who are looking to progress in their careers. It let users navigate through the job market identifying the relevant industry skills. It is for both users new to the industry, as well as experienced, it starts from individuals submitting their current skills with the desired Job title and location. Application queries 50k+ job titles and skills to provide highly relevant skills that fulfill the gap in achieving your career progression. This project is not about applying to jobs, but rather about finding the relevant skills for a particular domain.
+
+![image](https://user-images.githubusercontent.com/1959705/119267026-ee797c80-bba1-11eb-8ba9-720bc40bd114.png)
+
+![image](https://user-images.githubusercontent.com/1959705/119267107-2aacdd00-bba2-11eb-834e-98571d109a70.png)
+
+![image](https://user-images.githubusercontent.com/1959705/119267131-3ac4bc80-bba2-11eb-9580-fddece135709.png)
+
+![image](https://user-images.githubusercontent.com/1959705/119267170-4c0dc900-bba2-11eb-9ba6-2c4c1ccc937d.png)
+
+![image](https://user-images.githubusercontent.com/1959705/119267196-5cbe3f00-bba2-11eb-8069-3ebdea0207e5.png)
+
+![image](https://user-images.githubusercontent.com/1959705/119267214-68116a80-bba2-11eb-92c4-9cbb7addc175.png)
+
+![image](https://user-images.githubusercontent.com/1959705/119267232-7790b380-bba2-11eb-82f2-73be0bf2d185.png)
+
+![image](https://user-images.githubusercontent.com/1959705/119267261-9b53f980-bba2-11eb-81d6-6ab760dcd11f.png)
+
